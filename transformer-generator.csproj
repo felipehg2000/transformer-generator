@@ -87,10 +87,11 @@
     <Compile Include="src\Model\QueryModel.cs" />
     <Compile Include="src\Model\ControllerResult\Result.cs" />
     <Compile Include="src\Model\Step.cs" />
-    <Compile Include="src\Utils\Generator\CodeGeneratorFactory.cs" />
+    <Compile Include="src\Utils\Generator\CodeGenerator.cs" />
     <Compile Include="src\Utils\Generator\CppGenerator.cs" />
     <Compile Include="src\Utils\Generator\CSharpGenerator.cs" />
     <Compile Include="src\Model\MainConfiguration.cs" />
+    <Compile Include="src\Utils\Generator\GeneratorFactory.cs" />
     <Compile Include="src\Utils\Metadata\MetadataDAO.cs" />
     <Compile Include="src\Utils\Parsing\MParser.cs" />
     <Compile Include="src\View\MainForm.cs">
