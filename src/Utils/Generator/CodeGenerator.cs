@@ -2,6 +2,9 @@
 
 namespace transformer_generator.src.Utils.Generator
 {
+    /// <summary>
+    /// Clase base para los generadores de código. Da la capacidad de usar el polimorfismo para un patrón de fábrica.
+    /// </summary>
     internal abstract class CodeGenerator
     {
         /// <summary>

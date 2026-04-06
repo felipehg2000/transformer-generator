@@ -10,11 +10,11 @@ namespace transformer_generator.src.Model
     {
         public enum OperationType
         {
-            None = 0,       ///<summary>Ninguna operación asignada.</summary>
-            SelectRows,
-            AddColumn,
-            RemoveColumns,
-            SelectColumns
+            None = 0,           ///<summary>Ninguna operación asignada.</summary>
+            SelectRows,         ///<symmary>Operación de selección de fila.</symmary>
+            AddColumn,          ///<summary>Operación de adición de columna.</summary>
+            RemoveColumns,      ///<summary>Operación de eliminación de columnas.</summary>
+            SelectColumns       ///<summary>Operación de selección de columnas.</summary>
         }
 
         /// <summary>
