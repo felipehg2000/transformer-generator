@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\Controller\MainFormController.cs" />
     <Compile Include="src\Controller\TransformationController.cs" />
     <Compile Include="src\Model\Column.cs" />
     <Compile Include="src\Model\ControllerResult\QueryModelResult.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="src\Model\QueryModel.cs" />
     <Compile Include="src\Model\ControllerResult\Result.cs" />
     <Compile Include="src\Model\Step.cs" />
+    <Compile Include="src\Utils\FileExplorer\Files.cs" />
     <Compile Include="src\Utils\Generator\CodeGenerator.cs" />
     <Compile Include="src\Utils\Generator\CppGenerator.cs" />
     <Compile Include="src\Utils\Generator\CSharpGenerator.cs" />

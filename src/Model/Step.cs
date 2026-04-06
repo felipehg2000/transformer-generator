@@ -66,5 +66,26 @@ namespace transformer_generator.src.Model
             Operation = param_operation;
             Arguments = param_arguments;
         }
+
+        /// <summary>
+        /// Traduce el tipo de operación a un texto descriptivo en español.
+        /// </summary>
+        /// <returns>Texto descriptivo en español que define el tipo de operación.</returns>
+        public string GetOperationTypeText()
+        {
+            switch (Operation)
+            {
+                case OperationType.SelectRows:
+                    return "Seleccionar fila.";
+                case OperationType.AddColumn:
+                    return "Añadir columna.";
+                case OperationType.RemoveColumns:
+                    return "Eliminar columna.";
+                case OperationType.SelectColumns:
+                    return "Seleccionar columna.";
+                default:
+                    return "None";
+            }
+        }
     }
 }

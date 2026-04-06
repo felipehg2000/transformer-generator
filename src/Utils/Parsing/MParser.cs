@@ -40,7 +40,10 @@ namespace transformer_generator.src.Utils.Parsing
 
             bool hasLet = lines.First().Equals("let", StringComparison.OrdinalIgnoreCase) || 
                 lines.First().StartsWith("let ", StringComparison.OrdinalIgnoreCase);
-            bool hasIn = lines.Any(line => line.StartsWith("in "));
+
+            bool hasIn = lines.Any(line =>
+                          line.Equals("in", StringComparison.OrdinalIgnoreCase) ||
+                          line.StartsWith("in ", StringComparison.OrdinalIgnoreCase));
 
             return hasLet && hasIn;
         }
@@ -64,7 +67,7 @@ namespace transformer_generator.src.Utils.Parsing
             {
                 return new QueryModelResult(false,
                     "Error en el proceso de lectura.",
-                    "El texto cargado no es un formato de lenguaje M.",
+                    "El texto cargado no es un formato de lenguaje M. Texto leido: \n" + param_text,
                     null);
             }
 
@@ -180,7 +183,7 @@ namespace transformer_generator.src.Utils.Parsing
                         continue;
                     }
 
-                    if (line.StartsWith("in "))
+                    if (line.StartsWith("in"))
                     {
                         output = line.Substring(2).Trim();
                         break;
