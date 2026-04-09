@@ -194,11 +194,7 @@ namespace transformer_generator.src.Utils.Parsing
                         StepResult result = ParseStep(line);
                         if (!result.Correct || result.StepInfo.Operation == Step.OperationType.None)
                         {
-                            return new QueryModelResult(false,
-                                "Error procesando el fichero.",
-                                result.DeveloperText,
-                                null);
-
+                            continue;
                         }
 
                         if (result.StepInfo != null)
