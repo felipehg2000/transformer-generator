@@ -81,6 +81,7 @@
     <Compile Include="src\Controller\MainFormController.cs" />
     <Compile Include="src\Controller\TransformationController.cs" />
     <Compile Include="src\Model\Column.cs" />
+    <Compile Include="src\Model\ControllerResult\ColumnsResult.cs" />
     <Compile Include="src\Model\ControllerResult\QueryModelResult.cs" />
     <Compile Include="src\Model\ControllerResult\StepResult.cs" />
     <Compile Include="src\Model\DataSource.cs" />
@@ -89,11 +90,15 @@
     <Compile Include="src\Model\ControllerResult\Result.cs" />
     <Compile Include="src\Model\Step.cs" />
     <Compile Include="src\Services\FileExplorer\Files.cs" />
+    <Compile Include="src\Services\FileExplorer\Folder.cs" />
     <Compile Include="src\Services\Generator\CodeGenerator.cs" />
     <Compile Include="src\Services\Generator\CppGenerator.cs" />
     <Compile Include="src\Services\Generator\CSharpGenerator.cs" />
     <Compile Include="src\Model\MainConfiguration.cs" />
     <Compile Include="src\Services\Generator\GeneratorFactory.cs" />
+    <Compile Include="src\Services\ManageFileTypes\CSVFiles.cs" />
+    <Compile Include="src\Services\ManageFileTypes\FileManagement.cs" />
+    <Compile Include="src\Services\ManageFileTypes\FileManagmentFactory.cs" />
     <Compile Include="src\Services\Metadata\MetadataDAO.cs" />
     <Compile Include="src\Services\Parsing\MParser.cs" />
     <Compile Include="src\View\MainForm.cs">
