@@ -1,5 +1,8 @@
 ﻿namespace transformer_generator.src.Model
 {
+    /// <summary>
+    /// Representa el resultado de una operación. Contiene información sobre el proceso para el usuario y el desarrollador.
+    /// </summary>
     public class Result
     {
         /// <summary>
