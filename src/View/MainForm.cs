@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using transformer_generator.src.Controller;
 using transformer_generator.src.Model;
+using transformer_generator.src.Model.ControllerResult;
 using transformer_generator.src.Services.FileExplorer;
 using transformer_generator.src.Utils.FileExplorer;
 
@@ -89,7 +90,7 @@ namespace transformer_generator.src.View
             
             textBoxMPath.Text = path;
             listBoxSteps.Items.Clear();
-            foreach (Step step in _controller.QueryModel.Steps)
+            foreach (Step step in _controller.Metadata.QueryModel.Steps)
                 listBoxSteps.Items.Add(step.GetOperationTypeText());
         }
 
@@ -100,7 +101,7 @@ namespace transformer_generator.src.View
         /// <param name="e">Argumentos asociados al evento.</param>
         private void buttonNext_Click(object sender, EventArgs e)
         {
-            if (_controller.QueryModel == null)
+            if (_controller.Metadata.QueryModel == null)
             {
                 MessageBox.Show("Debe seleccionar un archivo de entrada para continuar.",
                     "Error",
@@ -125,11 +126,11 @@ namespace transformer_generator.src.View
         /// <param name="e">Argumentos asociados al evento.</param>
         private void listBoxSteps_SelectedIndexChanged(object sender, EventArgs e)
         {
-            textBoxName.Text = _controller.QueryModel.Steps[listBoxSteps.SelectedIndex].Name.ToString();
-            textBoxInput.Text = _controller.QueryModel.Steps[listBoxSteps.SelectedIndex].Input.ToString();
+            textBoxName.Text = _controller.Metadata.QueryModel.Steps[listBoxSteps.SelectedIndex].Name.ToString();
+            textBoxInput.Text = _controller.Metadata.QueryModel.Steps[listBoxSteps.SelectedIndex].ToString();
 
             dataGridViewArgument.Rows.Clear();
-            Dictionary<string, string> tmp = _controller.QueryModel.Steps[listBoxSteps.SelectedIndex].Arguments;
+            Dictionary<string, string> tmp = _controller.Metadata.QueryModel.Steps[listBoxSteps.SelectedIndex].Arguments;
             foreach (KeyValuePair<string, string> argument in tmp)
             {
                 dataGridViewArgument.Rows.Add(argument.Key, argument.Value);
@@ -172,7 +173,7 @@ namespace transformer_generator.src.View
                 return;
             }
 
-            TableInfoForm table_info_form = new TableInfoForm(_controller);
+            TableInfoForm table_info_form = new TableInfoForm(_controller.Metadata.Source.Columns);
             table_info_form.ShowDialog();
         }
 
@@ -264,5 +265,21 @@ namespace transformer_generator.src.View
         }
 
         #endregion "Private Methods"
+
+        private void cargarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MetadataResult result = _controller.ReadMetadataFile();
+
+            if (!result.Correct)
+            {
+                MessageBox.Show(result.UserText,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
+
+        }
     }
 }

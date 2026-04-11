@@ -82,6 +82,7 @@
     <Compile Include="src\Controller\TransformationController.cs" />
     <Compile Include="src\Model\Column.cs" />
     <Compile Include="src\Model\ControllerResult\ColumnsResult.cs" />
+    <Compile Include="src\Model\ControllerResult\MetadataResult.cs" />
     <Compile Include="src\Model\ControllerResult\QueryModelResult.cs" />
     <Compile Include="src\Model\ControllerResult\StepResult.cs" />
     <Compile Include="src\Model\DataSource.cs" />

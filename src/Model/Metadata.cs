@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json.Serialization;
-using System.Xml.Linq;
+﻿using System.Text.Json.Serialization;
 using transformer_generator.src.Utils.Generator;
-using static transformer_generator.src.Model.DataSource;
 
 namespace transformer_generator.src.Model
 {
@@ -24,6 +19,11 @@ namespace transformer_generator.src.Model
         public DataSource Source { get; set; }
 
         /// <summary>
+        /// Datos sobre el fichero de lenguaje M de entrada y las ordenes que contiene.
+        /// </summary>
+        public QueryModel QueryModel { get; set; }
+
+        /// <summary>
         /// Constructor, inicializa atributos a vacío.
         /// </summary>
         [JsonConstructor]
@@ -31,6 +31,7 @@ namespace transformer_generator.src.Model
         {
             Source = new DataSource();
             Configuration = new MainConfiguration();
+            QueryModel = new QueryModel();
         }
 
         /// <summary>
@@ -38,10 +39,14 @@ namespace transformer_generator.src.Model
         /// </summary>
         /// <param name="configuration">Configuración del generador.</param>
         /// <param name="param_source">Información de la fuente de datos.</param>
-        public Metadata(MainConfiguration configuration, DataSource param_source)
+        /// <param name="param_query_model">Datos sobre el fichero de lenguaje M de entrada y las ordenes que contiene.</param>
+        public Metadata(MainConfiguration configuration, 
+            DataSource param_source,
+            QueryModel param_query_model)
         {
             Configuration = configuration;
             Source = param_source;
+            QueryModel = param_query_model;
         }
     }
 }

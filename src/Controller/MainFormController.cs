@@ -3,6 +3,7 @@ using transformer_generator.src.Model;
 using transformer_generator.src.Model.ControllerResult;
 using transformer_generator.src.Services.ManageFileTypes;
 using transformer_generator.src.Utils.FileExplorer;
+using transformer_generator.src.Utils.MetadataDAO;
 using transformer_generator.src.Utils.Parsing;
 
 namespace transformer_generator.src.Controller
@@ -13,11 +14,6 @@ namespace transformer_generator.src.Controller
     public class MainFormController
     {
         #region "Attributes"
-
-        /// <summary>
-        /// Datos del fichero en lenguaje M procesados.
-        /// </summary>
-        public QueryModel QueryModel { get; set; }
 
         /// <summary>
         /// Datos adicionales para la generación de la salida.
@@ -32,8 +28,7 @@ namespace transformer_generator.src.Controller
         /// Constructor de la clase, inicializa los atributos a vacío.
         /// </summary>
         public MainFormController()
-        {
-            QueryModel = new QueryModel();
+        { 
             Metadata = new Metadata();
         }
 
@@ -61,7 +56,8 @@ namespace transformer_generator.src.Controller
             QueryModelResult result = MParser.Parse(text);
             if (result.Correct)
             {
-                QueryModel = result.QueryModelInfo;
+                Metadata.QueryModel.InputFile = param_m_file_path;
+                Metadata.QueryModel = result.QueryModelInfo;
             }
 
             return result;
@@ -110,6 +106,37 @@ namespace transformer_generator.src.Controller
             return ret_result;
         }
 
+        public MetadataResult ReadMetadataFile()
+        {
+            // Busca ruta del archivo
+            string path = Files.GetFilePath("Seleccionar archivo de metadatos..",
+                "Archivos JSON (*.json)|*.json|Todos los archivos (*.*)|*.*");
+            if (string.IsNullOrEmpty(path))
+            {
+                return new MetadataResult(true, 
+                    "No se ha seleccionado ninguna ruta.",
+                    "No se ha seleccionado ninguna ruta.",
+                    null);
+            }
+
+            Metadata metadata = null;
+            try
+            {
+                metadata = MetadataDAO.ReadFile(path);
+            }
+            catch (Exception exception)
+            {
+                return new MetadataResult(false,
+                    "Error al leer el archivo de metadatos.",
+                    exception.Message,
+                    null);
+            }
+
+            return new MetadataResult(true,
+                "Archivo de metadatos leído correctamente.",
+                "Archivo de metadatos leído correctamente.",
+                metadata);
+        }
         #endregion "Public Methods"
     }
 }

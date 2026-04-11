@@ -51,7 +51,7 @@ namespace transformer_generator.src.Utils.Generator
                 string cmake_lists_txt = Cpp.CMakeLists;
 
                 // Crear estructura de directorios
-                string basePath = _metadata.Configuration.OutputPath;
+                string basePath = _metadata.Configuration.OutputPathCode;
                 string srcPath = Path.Combine(basePath, "src");
 
                 Directory.CreateDirectory(basePath);

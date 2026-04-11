@@ -53,7 +53,9 @@
             this.textBoxMPath = new System.Windows.Forms.TextBox();
             this.panelConfiguration = new System.Windows.Forms.Panel();
             this.panelCenterConfiguration = new System.Windows.Forms.Panel();
-            this.buttonConfigureTable = new System.Windows.Forms.Button();
+            this.textBoxDelimiter = new System.Windows.Forms.TextBox();
+            this.labelDelimiterType = new System.Windows.Forms.Label();
+            this.buttonViewTable = new System.Windows.Forms.Button();
             this.buttonFindOutputFolderPath = new System.Windows.Forms.Button();
             this.buttonFindInputFilePath = new System.Windows.Forms.Button();
             this.panelOutputFileType = new System.Windows.Forms.Panel();
@@ -69,8 +71,6 @@
             this.textBoxInputFilePath = new System.Windows.Forms.TextBox();
             this.panelButtonsConfiguration = new System.Windows.Forms.Panel();
             this.buttonBackConfiguration = new System.Windows.Forms.Button();
-            this.labelDelimiterType = new System.Windows.Forms.Label();
-            this.textBoxDelimiter = new System.Windows.Forms.TextBox();
             this.menu.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.panelMainButtons.SuspendLayout();
@@ -105,13 +105,14 @@
             // cargarToolStripMenuItem
             // 
             this.cargarToolStripMenuItem.Name = "cargarToolStripMenuItem";
-            this.cargarToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.cargarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cargarToolStripMenuItem.Text = "Cargar";
+            this.cargarToolStripMenuItem.Click += new System.EventHandler(this.cargarToolStripMenuItem_Click);
             // 
             // guardarToolStripMenuItem
             // 
             this.guardarToolStripMenuItem.Name = "guardarToolStripMenuItem";
-            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.guardarToolStripMenuItem.Text = "Guardar";
             // 
             // panelMain
@@ -324,7 +325,7 @@
             // 
             this.panelCenterConfiguration.Controls.Add(this.textBoxDelimiter);
             this.panelCenterConfiguration.Controls.Add(this.labelDelimiterType);
-            this.panelCenterConfiguration.Controls.Add(this.buttonConfigureTable);
+            this.panelCenterConfiguration.Controls.Add(this.buttonViewTable);
             this.panelCenterConfiguration.Controls.Add(this.buttonFindOutputFolderPath);
             this.panelCenterConfiguration.Controls.Add(this.buttonFindInputFilePath);
             this.panelCenterConfiguration.Controls.Add(this.panelOutputFileType);
@@ -341,15 +342,34 @@
             this.panelCenterConfiguration.Size = new System.Drawing.Size(709, 269);
             this.panelCenterConfiguration.TabIndex = 5;
             // 
-            // buttonConfigureTable
+            // textBoxDelimiter
             // 
-            this.buttonConfigureTable.Location = new System.Drawing.Point(19, 239);
-            this.buttonConfigureTable.Name = "buttonConfigureTable";
-            this.buttonConfigureTable.Size = new System.Drawing.Size(124, 23);
-            this.buttonConfigureTable.TabIndex = 10;
-            this.buttonConfigureTable.Text = "Configurar Tabla ✏";
-            this.buttonConfigureTable.UseVisualStyleBackColor = true;
-            this.buttonConfigureTable.Click += new System.EventHandler(this.buttonConfigureTable_Click);
+            this.textBoxDelimiter.Location = new System.Drawing.Point(630, 40);
+            this.textBoxDelimiter.Name = "textBoxDelimiter";
+            this.textBoxDelimiter.Size = new System.Drawing.Size(21, 20);
+            this.textBoxDelimiter.TabIndex = 12;
+            this.textBoxDelimiter.Text = ",";
+            this.textBoxDelimiter.Visible = false;
+            // 
+            // labelDelimiterType
+            // 
+            this.labelDelimiterType.AutoSize = true;
+            this.labelDelimiterType.Location = new System.Drawing.Point(565, 42);
+            this.labelDelimiterType.Name = "labelDelimiterType";
+            this.labelDelimiterType.Size = new System.Drawing.Size(59, 13);
+            this.labelDelimiterType.TabIndex = 11;
+            this.labelDelimiterType.Text = "Delimitador";
+            this.labelDelimiterType.Visible = false;
+            // 
+            // buttonViewTable
+            // 
+            this.buttonViewTable.Location = new System.Drawing.Point(19, 239);
+            this.buttonViewTable.Name = "buttonViewTable";
+            this.buttonViewTable.Size = new System.Drawing.Size(102, 23);
+            this.buttonViewTable.TabIndex = 10;
+            this.buttonViewTable.Text = "Ver tabla 👁";
+            this.buttonViewTable.UseVisualStyleBackColor = true;
+            this.buttonViewTable.Click += new System.EventHandler(this.buttonConfigureTable_Click);
             // 
             // buttonFindOutputFolderPath
             // 
@@ -495,25 +515,6 @@
             this.buttonBackConfiguration.UseVisualStyleBackColor = true;
             this.buttonBackConfiguration.Click += new System.EventHandler(this.buttonBackConfiguration_Click);
             // 
-            // labelDelimiterType
-            // 
-            this.labelDelimiterType.AutoSize = true;
-            this.labelDelimiterType.Location = new System.Drawing.Point(565, 42);
-            this.labelDelimiterType.Name = "labelDelimiterType";
-            this.labelDelimiterType.Size = new System.Drawing.Size(59, 13);
-            this.labelDelimiterType.TabIndex = 11;
-            this.labelDelimiterType.Text = "Delimitador";
-            this.labelDelimiterType.Visible = false;
-            // 
-            // textBoxDelimiter
-            // 
-            this.textBoxDelimiter.Location = new System.Drawing.Point(630, 40);
-            this.textBoxDelimiter.Name = "textBoxDelimiter";
-            this.textBoxDelimiter.Size = new System.Drawing.Size(21, 20);
-            this.textBoxDelimiter.TabIndex = 12;
-            this.textBoxDelimiter.Text = ",";
-            this.textBoxDelimiter.Visible = false;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -586,7 +587,7 @@
         private System.Windows.Forms.RadioButton radioButtonCpp;
         private System.Windows.Forms.Button buttonFindOutputFolderPath;
         private System.Windows.Forms.Button buttonFindInputFilePath;
-        private System.Windows.Forms.Button buttonConfigureTable;
+        private System.Windows.Forms.Button buttonViewTable;
         private System.Windows.Forms.Label labelDelimiterType;
         private System.Windows.Forms.TextBox textBoxDelimiter;
     }

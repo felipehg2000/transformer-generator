@@ -207,7 +207,7 @@ namespace transformer_generator.src.Utils.Parsing
                 return new QueryModelResult(true,
                     "Análisis correcto.",
                     "El lenguaje M se ha parseado correctamente.",
-                    new QueryModel(steps, output));
+                    new QueryModel(steps, string.Empty, output));
             }
             catch (Exception ex)
             {

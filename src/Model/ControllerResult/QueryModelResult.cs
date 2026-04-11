@@ -39,7 +39,9 @@
             }
             else
             {
-                QueryModelInfo = new QueryModel(param_query_model.Steps, param_query_model.Output);
+                QueryModelInfo = new QueryModel(param_query_model.Steps, 
+                    param_query_model.InputFile, 
+                    param_query_model.Output);
             }
         }
     }
