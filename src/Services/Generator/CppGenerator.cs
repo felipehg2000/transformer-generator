@@ -16,9 +16,8 @@ namespace transformer_generator.src.Utils.Generator
         /// Constructor, inicializa atributos.
         /// </summary>
         /// <param name="param_metadata">Metadatos para crear una salida controlada.</param>
-        /// <param name="param_query_model">Ordenes traducidas de lenguaje M.</param>
-        public CppGenerator(Metadata param_metadata, QueryModel param_query_model) : 
-            base(param_metadata, param_query_model)
+        public CppGenerator(Metadata param_metadata) : 
+            base(param_metadata, param_metadata.QueryModel)
         {
 
         }

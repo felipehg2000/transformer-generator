@@ -306,6 +306,32 @@ namespace transformer_generator.src.View
         }
 
         /// <summary>
+        /// Genera la salida y muestra un mensaje al usuario según el resultado obtenido.
+        /// </summary>
+        /// <param name="sender">Componente que lanza el evento.</param>
+        /// <param name="e">Argumentos asociados al evento.</param>
+        private void buttonGenerateOutput_Click(object sender, EventArgs e)
+        {
+            CodeGenerator generator = GeneratorFactory.CreateGenerator(_controller.Metadata);
+            Result result = generator.GenerateCode();
+
+            if (!result.Correct)
+            {
+                MessageBox.Show(result.UserText,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            else
+            {
+                MessageBox.Show("Código generado correctamente.",
+                    "Información",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+        }
+
+        /// <summary>
         /// Muestra u oculta el campo de texto para introducir el delimitador.
         /// </summary>
         /// <param name="sender">Componente que lanza el evento.</param>

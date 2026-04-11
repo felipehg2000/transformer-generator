@@ -71,6 +71,7 @@
             this.textBoxInputFilePath = new System.Windows.Forms.TextBox();
             this.panelButtonsConfiguration = new System.Windows.Forms.Panel();
             this.buttonBackConfiguration = new System.Windows.Forms.Button();
+            this.buttonGenerateOutput = new System.Windows.Forms.Button();
             this.menu.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.panelMainButtons.SuspendLayout();
@@ -105,14 +106,14 @@
             // cargarToolStripMenuItem
             // 
             this.cargarToolStripMenuItem.Name = "cargarToolStripMenuItem";
-            this.cargarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cargarToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.cargarToolStripMenuItem.Text = "Cargar";
             this.cargarToolStripMenuItem.Click += new System.EventHandler(this.cargarToolStripMenuItem_Click);
             // 
             // guardarToolStripMenuItem
             // 
             this.guardarToolStripMenuItem.Name = "guardarToolStripMenuItem";
-            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.guardarToolStripMenuItem.Text = "Guardar";
             this.guardarToolStripMenuItem.Click += new System.EventHandler(this.guardarToolStripMenuItem_Click);
             // 
@@ -499,6 +500,7 @@
             // 
             // panelButtonsConfiguration
             // 
+            this.panelButtonsConfiguration.Controls.Add(this.buttonGenerateOutput);
             this.panelButtonsConfiguration.Controls.Add(this.buttonBackConfiguration);
             this.panelButtonsConfiguration.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelButtonsConfiguration.Location = new System.Drawing.Point(0, 269);
@@ -515,6 +517,16 @@
             this.buttonBackConfiguration.Text = "⬅ Atrás";
             this.buttonBackConfiguration.UseVisualStyleBackColor = true;
             this.buttonBackConfiguration.Click += new System.EventHandler(this.buttonBackConfiguration_Click);
+            // 
+            // buttonGenerateOutput
+            // 
+            this.buttonGenerateOutput.Location = new System.Drawing.Point(622, 6);
+            this.buttonGenerateOutput.Name = "buttonGenerateOutput";
+            this.buttonGenerateOutput.Size = new System.Drawing.Size(75, 23);
+            this.buttonGenerateOutput.TabIndex = 1;
+            this.buttonGenerateOutput.Text = "Generar ✔";
+            this.buttonGenerateOutput.UseVisualStyleBackColor = true;
+            this.buttonGenerateOutput.Click += new System.EventHandler(this.buttonGenerateOutput_Click);
             // 
             // MainForm
             // 
@@ -591,5 +603,6 @@
         private System.Windows.Forms.Button buttonViewTable;
         private System.Windows.Forms.Label labelDelimiterType;
         private System.Windows.Forms.TextBox textBoxDelimiter;
+        private System.Windows.Forms.Button buttonGenerateOutput;
     }
 }
