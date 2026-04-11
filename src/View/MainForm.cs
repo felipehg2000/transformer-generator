@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using transformer_generator.src.Controller;
 using transformer_generator.src.Model;
@@ -163,13 +157,34 @@ namespace transformer_generator.src.View
         }
 
         /// <summary>
+        /// Muestra un formulario donde el usuario puede ver y configurar la tabla que ha leído del archivo de entrada.
+        /// </summary>
+        /// <param name="sender">Componente que lanza el evento.</param>
+        /// <param name="e">Argumentos asociados al evento.</param>
+        private void buttonConfigureTable_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBoxInputFilePath.Text))
+            {
+                MessageBox.Show("Debe seleccionar un archivo de entrada para configurar la tabla.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
+            TableInfoForm table_info_form = new TableInfoForm(_controller);
+            table_info_form.ShowDialog();
+        }
+
+        /// <summary>
         /// Obtiene la ruta a un fichero de tipo CSV, mostrando el explorador de archivos. Lee los datos del fichero.
         /// </summary>
         /// <param name="sender">Componente que lanza el evento.</param>
         /// <param name="e">Argumentos asociados al evento.</param>
         private void buttonFindInputFilePath_Click(object sender, EventArgs e)
         {
-            if (!radioButtonCSV.Checked)
+            DataSource.DataSourceType file_type = GetFileType();
+            if (file_type == DataSource.DataSourceType.None)
             {
                 MessageBox.Show("Debe seleccionar el formato del archivo de entrada para continuar.",
                     "Error",
@@ -178,15 +193,23 @@ namespace transformer_generator.src.View
                 return;
             }
 
-            string path = Files.GetFilePath("Seleccionar archivo CSV..",
-                "Archivos CSV (*.csv)|*.csv|Todos los archivos (*.*)|*.*");
-            if (string.IsNullOrEmpty(path))
+            string delimiter = null;
+            if (radioButtonCSV.Checked) 
+            {
+                delimiter = textBoxDelimiter.Text;
+            }
+
+            Result result = _controller.ReadInputFile(file_type, delimiter);
+            if (!result.Correct)
+            {
+                MessageBox.Show(result.UserText,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 return;
-
-            throw new NotImplementedException();
-            //_controller.ReadDocument(path);
-
-            textBoxInputFilePath.Text = path;
+            }
+            
+            textBoxInputFilePath.Text = _controller.Metadata.Source.Path;
         }
 
         /// <summary>
@@ -203,11 +226,42 @@ namespace transformer_generator.src.View
             textBoxOutputFolderPath.Text = path;
         }
 
+        /// <summary>
+        /// Muestra u oculta el campo de texto para introducir el delimitador.
+        /// </summary>
+        /// <param name="sender">Componente que lanza el evento.</param>
+        /// <param name="e">Argumentos asociados al evento.</param>
+        private void radioButtonCSV_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonCSV.Checked)
+            {
+                textBoxDelimiter.Visible = true;
+                labelDelimiterType.Visible = true;
+            }
+            else
+            {
+                textBoxDelimiter.Visible = false;
+                labelDelimiterType.Visible = false;
+            }
+        }
+
         #endregion "Event PanelConfiguration"
 
         #endregion"Events"
 
         #region "Private Methods"
+
+        /// <summary>
+        /// Según la opción seleccionada por el usuario devuelve un tipo de archivo.
+        /// </summary>
+        /// <returns>Tipo de archivo manejable por la aplicación.</returns>
+        DataSource.DataSourceType GetFileType()
+        {
+            if (radioButtonCSV.Checked)
+                return DataSource.DataSourceType.CSV;
+
+            return DataSource.DataSourceType.None;
+        }
 
         #endregion "Private Methods"
     }

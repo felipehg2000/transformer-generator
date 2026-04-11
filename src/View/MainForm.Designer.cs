@@ -53,6 +53,7 @@
             this.textBoxMPath = new System.Windows.Forms.TextBox();
             this.panelConfiguration = new System.Windows.Forms.Panel();
             this.panelCenterConfiguration = new System.Windows.Forms.Panel();
+            this.buttonConfigureTable = new System.Windows.Forms.Button();
             this.buttonFindOutputFolderPath = new System.Windows.Forms.Button();
             this.buttonFindInputFilePath = new System.Windows.Forms.Button();
             this.panelOutputFileType = new System.Windows.Forms.Panel();
@@ -68,6 +69,8 @@
             this.textBoxInputFilePath = new System.Windows.Forms.TextBox();
             this.panelButtonsConfiguration = new System.Windows.Forms.Panel();
             this.buttonBackConfiguration = new System.Windows.Forms.Button();
+            this.labelDelimiterType = new System.Windows.Forms.Label();
+            this.textBoxDelimiter = new System.Windows.Forms.TextBox();
             this.menu.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.panelMainButtons.SuspendLayout();
@@ -319,6 +322,9 @@
             // 
             // panelCenterConfiguration
             // 
+            this.panelCenterConfiguration.Controls.Add(this.textBoxDelimiter);
+            this.panelCenterConfiguration.Controls.Add(this.labelDelimiterType);
+            this.panelCenterConfiguration.Controls.Add(this.buttonConfigureTable);
             this.panelCenterConfiguration.Controls.Add(this.buttonFindOutputFolderPath);
             this.panelCenterConfiguration.Controls.Add(this.buttonFindInputFilePath);
             this.panelCenterConfiguration.Controls.Add(this.panelOutputFileType);
@@ -335,6 +341,16 @@
             this.panelCenterConfiguration.Size = new System.Drawing.Size(709, 269);
             this.panelCenterConfiguration.TabIndex = 5;
             // 
+            // buttonConfigureTable
+            // 
+            this.buttonConfigureTable.Location = new System.Drawing.Point(19, 239);
+            this.buttonConfigureTable.Name = "buttonConfigureTable";
+            this.buttonConfigureTable.Size = new System.Drawing.Size(124, 23);
+            this.buttonConfigureTable.TabIndex = 10;
+            this.buttonConfigureTable.Text = "Configurar Tabla ✏";
+            this.buttonConfigureTable.UseVisualStyleBackColor = true;
+            this.buttonConfigureTable.Click += new System.EventHandler(this.buttonConfigureTable_Click);
+            // 
             // buttonFindOutputFolderPath
             // 
             this.buttonFindOutputFolderPath.Location = new System.Drawing.Point(657, 146);
@@ -347,7 +363,7 @@
             // 
             // buttonFindInputFilePath
             // 
-            this.buttonFindInputFilePath.Location = new System.Drawing.Point(657, 32);
+            this.buttonFindInputFilePath.Location = new System.Drawing.Point(657, 100);
             this.buttonFindInputFilePath.Name = "buttonFindInputFilePath";
             this.buttonFindInputFilePath.Size = new System.Drawing.Size(25, 20);
             this.buttonFindInputFilePath.TabIndex = 8;
@@ -398,7 +414,7 @@
             // labelFileType
             // 
             this.labelFileType.AutoSize = true;
-            this.labelFileType.Location = new System.Drawing.Point(16, 69);
+            this.labelFileType.Location = new System.Drawing.Point(16, 21);
             this.labelFileType.Name = "labelFileType";
             this.labelFileType.Size = new System.Drawing.Size(105, 13);
             this.labelFileType.TabIndex = 5;
@@ -407,9 +423,9 @@
             // panelInputTypeFile
             // 
             this.panelInputTypeFile.Controls.Add(this.radioButtonCSV);
-            this.panelInputTypeFile.Location = new System.Drawing.Point(19, 85);
+            this.panelInputTypeFile.Location = new System.Drawing.Point(19, 37);
             this.panelInputTypeFile.Name = "panelInputTypeFile";
-            this.panelInputTypeFile.Size = new System.Drawing.Size(635, 25);
+            this.panelInputTypeFile.Size = new System.Drawing.Size(505, 25);
             this.panelInputTypeFile.TabIndex = 4;
             // 
             // radioButtonCSV
@@ -422,6 +438,7 @@
             this.radioButtonCSV.TabStop = true;
             this.radioButtonCSV.Text = "Fichero CSV";
             this.radioButtonCSV.UseVisualStyleBackColor = true;
+            this.radioButtonCSV.CheckedChanged += new System.EventHandler(this.radioButtonCSV_CheckedChanged);
             // 
             // textBoxOutputFolderPath
             // 
@@ -435,7 +452,7 @@
             // labelTablePath
             // 
             this.labelTablePath.AutoSize = true;
-            this.labelTablePath.Location = new System.Drawing.Point(16, 15);
+            this.labelTablePath.Location = new System.Drawing.Point(16, 83);
             this.labelTablePath.Name = "labelTablePath";
             this.labelTablePath.Size = new System.Drawing.Size(108, 13);
             this.labelTablePath.TabIndex = 0;
@@ -454,7 +471,7 @@
             // 
             this.textBoxInputFilePath.BackColor = System.Drawing.SystemColors.Info;
             this.textBoxInputFilePath.Enabled = false;
-            this.textBoxInputFilePath.Location = new System.Drawing.Point(16, 32);
+            this.textBoxInputFilePath.Location = new System.Drawing.Point(16, 100);
             this.textBoxInputFilePath.Name = "textBoxInputFilePath";
             this.textBoxInputFilePath.Size = new System.Drawing.Size(635, 20);
             this.textBoxInputFilePath.TabIndex = 2;
@@ -478,13 +495,32 @@
             this.buttonBackConfiguration.UseVisualStyleBackColor = true;
             this.buttonBackConfiguration.Click += new System.EventHandler(this.buttonBackConfiguration_Click);
             // 
+            // labelDelimiterType
+            // 
+            this.labelDelimiterType.AutoSize = true;
+            this.labelDelimiterType.Location = new System.Drawing.Point(565, 42);
+            this.labelDelimiterType.Name = "labelDelimiterType";
+            this.labelDelimiterType.Size = new System.Drawing.Size(59, 13);
+            this.labelDelimiterType.TabIndex = 11;
+            this.labelDelimiterType.Text = "Delimitador";
+            this.labelDelimiterType.Visible = false;
+            // 
+            // textBoxDelimiter
+            // 
+            this.textBoxDelimiter.Location = new System.Drawing.Point(630, 40);
+            this.textBoxDelimiter.Name = "textBoxDelimiter";
+            this.textBoxDelimiter.Size = new System.Drawing.Size(21, 20);
+            this.textBoxDelimiter.TabIndex = 12;
+            this.textBoxDelimiter.Text = ",";
+            this.textBoxDelimiter.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(709, 331);
-            this.Controls.Add(this.panelMain);
             this.Controls.Add(this.panelConfiguration);
+            this.Controls.Add(this.panelMain);
             this.Controls.Add(this.menu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MainMenuStrip = this.menu;
@@ -550,5 +586,8 @@
         private System.Windows.Forms.RadioButton radioButtonCpp;
         private System.Windows.Forms.Button buttonFindOutputFolderPath;
         private System.Windows.Forms.Button buttonFindInputFilePath;
+        private System.Windows.Forms.Button buttonConfigureTable;
+        private System.Windows.Forms.Label labelDelimiterType;
+        private System.Windows.Forms.TextBox textBoxDelimiter;
     }
 }

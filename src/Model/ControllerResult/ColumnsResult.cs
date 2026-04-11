@@ -10,7 +10,7 @@ namespace transformer_generator.src.Model.ControllerResult
         /// <summary>
         /// Vector a devolver con una lista de columnas que representan una tabla.
         /// </summary>
-        public List<Column> _columns { get; set; }
+        public List<Column> Columns { get; set; }
 
         /// <summary>
         /// Constructor vacío, inicializa atributos a vacío.
@@ -18,7 +18,7 @@ namespace transformer_generator.src.Model.ControllerResult
         public ColumnsResult() : 
             base()
         {
-            _columns = new List<Column>();
+            Columns = new List<Column>();
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace transformer_generator.src.Model.ControllerResult
                 param_user_text, 
                 param_developer_text)
         {
-            _columns = param_columns;
+            Columns = param_columns;
         }
     }
 }

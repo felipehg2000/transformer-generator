@@ -1,19 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using transformer_generator.src.Model;
 using transformer_generator.src.Model.ControllerResult;
+using transformer_generator.src.Services.ManageFileTypes;
+using transformer_generator.src.Utils.FileExplorer;
 using transformer_generator.src.Utils.Parsing;
 
 namespace transformer_generator.src.Controller
 {
-    internal class MainFormController
+    /// <summary>
+    /// Controlador asociado a la vista principal. Gestiona la lógica de negocio relacionada con esta vista.
+    /// </summary>
+    public class MainFormController
     {
         #region "Attributes"
+
+        /// <summary>
+        /// Datos del fichero en lenguaje M procesados.
+        /// </summary>
         public QueryModel QueryModel { get; set; }
 
+        /// <summary>
+        /// Datos adicionales para la generación de la salida.
+        /// </summary>
         public Metadata Metadata { get; set; }
 
         #endregion "Attributes"
@@ -57,6 +65,49 @@ namespace transformer_generator.src.Controller
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Busca la ruta de un fichero de entrada, lo lee y almacena la información de este.
+        /// </summary>
+        /// <param name="param_file_type">Tipo de archivo a leer.</param>
+        /// <param name="param_delimiter">Delimitador de campos en el archivo. Por defecto nulo porque solo se usa para CSV.</param>
+        /// <returns>Resultado de la operación de lectura del archivo.</returns>
+        public Result ReadInputFile(DataSource.DataSourceType param_file_type, string param_delimiter = null)
+        {
+            // Busca ruta del archivo
+            string path = Files.GetFilePath("Seleccionar archivo CSV..",
+                "Archivos CSV (*.csv)|*.csv|Todos los archivos (*.*)|*.*");
+            if (string.IsNullOrEmpty(path))
+            {
+                return new Result(false,
+                    "No se seleccionó ningún archivo.",
+                    "No se seleccionó ningún archivo.");
+            }
+            
+            // Lee el archivo y lo transforma a una lista de Columns
+            ColumnsResult ret_result = new ColumnsResult();
+            try
+            {
+                FileManagement fileManagment = FileManagmentFactory.CreateFileManagement(param_file_type, path, param_delimiter);
+                ret_result = fileManagment.ReadFile();
+            }
+            catch (Exception exception)
+            {
+                return new Result(false,
+                    "Error al leer el archivo de entrada.",
+                    exception.Message);
+            }
+
+            // Carga los datos del archivo en el atributo Metadata.
+            Metadata.Source = new DataSource(param_file_type,
+                System.IO.Path.GetFileName(path),
+                path,
+                true,
+                param_delimiter,
+                ret_result.Columns);
+
+            return ret_result;
         }
 
         #endregion "Public Methods"

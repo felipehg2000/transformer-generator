@@ -14,14 +14,27 @@ namespace transformer_generator.src.Services.ManageFileTypes
     /// </summary>
     internal class CSVFiles : FileManagement
     {
+        #region "Attributes"
+
+        /// <summary>
+        /// Delimitador de campos del fichero CSV.
+        /// </summary>
+        private string _delimiter;
+
+        #endregion "Attributes"
+
         #region "Constructors"
+
         /// <summary>
         /// Constructor de la clase, inicializa la ruta del fichero CSV a gestionar.
         /// </summary>
         /// <param name="param_file_path">Ruta del fichero CSV a gestionar.</param>
-        public CSVFiles(string param_file_path) : base(param_file_path)
+        /// <param name="param_delimiter">Delimitador de campos en el archivo. Por defecto nulo porque solo se usa para CSV.</param>
+        public CSVFiles(string param_file_path, string param_delimiter) : base(param_file_path)
         {
+            _delimiter = param_delimiter;
         }
+
         #endregion "Constructors"
 
         #region "Virtual methods"
@@ -70,6 +83,14 @@ namespace transformer_generator.src.Services.ManageFileTypes
         /// <returns>Listado de objetos de tipo column con la tabla que representa el CSV.</returns>
         public override ColumnsResult ReadFile()
         {
+            if (string.IsNullOrEmpty(_file_path) || string.IsNullOrEmpty(_delimiter))
+            {
+                return new ColumnsResult(false,
+                    "No se ha podido leer el fichero.",
+                    "Los datos de entrada (delimitador o ruta del archivo) son nulos o vacíos.",
+                    null);
+            }
+
             List<Column> columns = new List<Column>();
             try
             {
@@ -103,7 +124,7 @@ namespace transformer_generator.src.Services.ManageFileTypes
         private List<Column> ReadHeaders(string[] param_lines)
         {
             List<Column> ret_columns = new List<Column>();
-            string[] headers = param_lines[0].Split(';');
+            string[] headers = param_lines[0].Split(_delimiter.ToCharArray());
 
             foreach (string header in headers)
             {
@@ -136,7 +157,7 @@ namespace transformer_generator.src.Services.ManageFileTypes
 
             for (int row = 1; row < param_lines.Length; row++)
             {
-                string[] values = param_lines[row].Split(';');
+                string[] values = param_lines[row].Split(_delimiter.ToCharArray());
 
                 for (int column = 0; column < param_columns.Count; column++)
                 {

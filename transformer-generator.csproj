@@ -101,6 +101,12 @@
     <Compile Include="src\Services\ManageFileTypes\FileManagmentFactory.cs" />
     <Compile Include="src\Services\Metadata\MetadataDAO.cs" />
     <Compile Include="src\Services\Parsing\MParser.cs" />
+    <Compile Include="src\View\TableInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\View\TableInfoForm.Designer.cs">
+      <DependentUpon>TableInfoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +125,9 @@
     </Compile>
     <EmbeddedResource Include="src\View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\View\TableInfoForm.resx">
+      <DependentUpon>TableInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

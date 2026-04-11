@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text.Json.Serialization;
+using System.Xml.Linq;
 using transformer_generator.src.Utils.Generator;
+using static transformer_generator.src.Model.DataSource;
 
 namespace transformer_generator.src.Model
 {
@@ -17,7 +21,7 @@ namespace transformer_generator.src.Model
         /// <summary>
         /// Información sobre las fuentes de datos con las que el generador trabajará para crear los transformadores.
         /// </summary>
-        public List<DataSource> Sources { get; set; }
+        public DataSource Source { get; set; }
 
         /// <summary>
         /// Constructor, inicializa atributos a vacío.
@@ -25,7 +29,7 @@ namespace transformer_generator.src.Model
         [JsonConstructor]
         public Metadata()
         {
-            Sources = new List<DataSource>();
+            Source = new DataSource();
             Configuration = new MainConfiguration();
         }
 
@@ -33,11 +37,11 @@ namespace transformer_generator.src.Model
         /// Constructor, inicializa atributos.
         /// </summary>
         /// <param name="configuration">Configuración del generador.</param>
-        /// <param name="sources">Información de las fuentes de datos.</param>
-        public Metadata(MainConfiguration configuration, List<DataSource> sources)
+        /// <param name="param_source">Información de la fuente de datos.</param>
+        public Metadata(MainConfiguration configuration, DataSource param_source)
         {
             Configuration = configuration;
-            Sources = sources;
+            Source = param_source;
         }
     }
 }
