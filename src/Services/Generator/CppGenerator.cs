@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using transformer_generator.src.Model;
 using transformer_generator.Templates;
 
@@ -84,6 +87,7 @@ namespace transformer_generator.src.Utils.Generator
         {
             StringBuilder string_builder = new StringBuilder();
 
+            string_builder.AppendLine(GenerateReadTable(_query_model.Steps[0]));
             foreach (var step in _query_model.Steps)
             {
                 string_builder.AppendLine(GenerateStep(step));
@@ -115,6 +119,11 @@ namespace transformer_generator.src.Utils.Generator
             }
         }
 
+        private string GenerateReadTable(Step param_step)
+        {
+            return $"\tTableManagment::Table { param_step.Input } = TableManagment::ReadCSV(\"{ _metadata.Source.Path.Replace("\\", "\\\\") }\");";
+        }
+
         /// <summary>
         /// Genera el código en c++ para la orden de seleccionar filas.
         /// </summary>
@@ -125,9 +134,24 @@ namespace transformer_generator.src.Utils.Generator
             string condition = param_step.Arguments["condition"];
 
             condition = condition.Replace("each", "").Trim();
-            condition = TransformRowAccess(condition);
+            var match = Regex.Match(condition,
+                @"\[(.*?)\]\s*(=|<>|>=|<=|>|<)\s*(.+)");
 
-            return $"auto {param_step.Name} = TableManagment::SelectRow({param_step.Input}, [](const TableManagment::Row& row) {{ return {condition}; }});";
+            if (!match.Success)
+                throw new Exception("Condición no soportada: " + condition);
+
+            string column_name  = CheckColumnName(match.Groups[1].Value.Trim());
+            string comparator   = match.Groups[2].Value.Trim();
+            string value        = match.Groups[3].Value.Trim().TrimEnd(')');
+
+
+            return $"\tstd::string column_name = \"{column_name}\";\n" +
+                $"\tstd::string value = \"{value}\";\n" +
+                $"\tauto {param_step.Name} = TableManagment::SelectRow({param_step.Input}, \n" +
+                $"\t\t[column_name, value](const TableManagment::Row& row) \n" +
+                $"\t\t{{ \n" +
+                $"\t\t\treturn row.find(column_name) != row.end() && row.at(column_name) {comparator} value; \n" +
+                $"\t\t}});";
         }
 
         /// <summary>
@@ -137,9 +161,14 @@ namespace transformer_generator.src.Utils.Generator
         /// <returns>Orden de selección de columnas en c++.</returns>
         private string GenerateSelectColumns(Step param_step)
         {
-            string columns = param_step.Arguments["columns"];
+            string[] columns = param_step.Arguments["columns"].Split(", ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string[] checked_columns = new string[columns.Length];
+            foreach (string column in columns)
+            {
+                checked_columns[Array.IndexOf(columns, column)] = $"\"{CheckColumnName(column)}\"";
+            }
 
-            return $"auto {param_step.Name} = TableManagment::SelectColumns({param_step.Input}, {{{columns}}});";
+            return $"\tauto {param_step.Name} = TableManagment::SelectColumns({param_step.Input}, {{{string.Join(", ", checked_columns)}}});";
         }
 
         /// <summary>
@@ -149,9 +178,14 @@ namespace transformer_generator.src.Utils.Generator
         /// <returns>Orden de eliminación de columnas en c++.</returns>
         private string GenerateRemoveColumns(Step param_step)
         {
-            string columns = param_step.Arguments["columns"];
+            string[] columns = param_step.Arguments["columns"].Split(", ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string[] checked_columns = new string[columns.Length];
+            foreach (string column in columns)
+            {
+                checked_columns[Array.IndexOf(columns, column)] = $"\"{CheckColumnName(column)}\"";
+            }
 
-            return $"auto {param_step.Name} = TableManagment::RemoveColumns({param_step.Input}, {{{columns}}});";
+            return $"\tauto {param_step.Name} = TableManagment::RemoveColumns({param_step.Input}, {{{string.Join(", ", checked_columns)}}});";
         }
 
         /// <summary>
@@ -167,7 +201,12 @@ namespace transformer_generator.src.Utils.Generator
             expression = expression.Replace("each", "").Trim();
             expression = TransformRowAccess(expression);
 
-            return $"auto {param_step.Name} = TableManagment::AddColumn({param_step.Input}, \"{column_name}\", [](const TableManagment::Row& row) {{ return {expression}; }});";
+            return $"\tauto {param_step.Name} = TableManagment::AddColumn({param_step.Input}, \n" +
+                $"\t\t\"{column_name}\", \n" +
+                $"\t\t[](const TableManagment::Row& row) \n" +
+                $"\t\t{{ \n" +
+                $"\t\t\treturn \"{expression}\"; \n" +
+                $"\t\t}});\n";
         }
 
         /// <summary>
@@ -181,6 +220,23 @@ namespace transformer_generator.src.Utils.Generator
                 .Replace("[", "row.at(\"")
                 .Replace("]", "\")");
         }
+        
+        private string CheckColumnName(string param_column_name)
+        {
+            param_column_name = param_column_name.Replace("\"", "");
+            List<Column> table = _metadata.Source.Columns;
+
+            foreach (Column column in table)
+            {
+                if (param_column_name.ToLower().Trim() == column.Name.ToLower().Trim())
+                {
+                    return column.Name;
+                }
+            }
+
+            throw new Exception($"Nombre de columna no encontrado: {param_column_name}");
+        }
+
         #endregion "Private Methods"
     }
 }

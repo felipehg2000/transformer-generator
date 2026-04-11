@@ -23,7 +23,7 @@
  */
 int main()
 {
-    {Instrucciones}
+{Instrucciones}
     return 0;
 }
 ";
