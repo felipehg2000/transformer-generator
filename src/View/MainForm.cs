@@ -6,6 +6,7 @@ using transformer_generator.src.Model;
 using transformer_generator.src.Model.ControllerResult;
 using transformer_generator.src.Services.FileExplorer;
 using transformer_generator.src.Utils.FileExplorer;
+using transformer_generator.src.Utils.Generator;
 
 namespace transformer_generator.src.View
 {
@@ -89,9 +90,7 @@ namespace transformer_generator.src.View
             }
             
             textBoxMPath.Text = path;
-            listBoxSteps.Items.Clear();
-            foreach (Step step in _controller.Metadata.QueryModel.Steps)
-                listBoxSteps.Items.Add(step.GetOperationTypeText());
+            FillListBoxSteps(_controller.Metadata.QueryModel.Steps);
         }
 
         /// <summary>
@@ -117,6 +116,85 @@ namespace transformer_generator.src.View
             panelConfiguration.Visible = true;
             panelConfiguration.Enabled = true;
             panelConfiguration.BringToFront();
+        }
+
+        /// <summary>
+        /// Carga los Metadatos de un fichero JSON y rellena la vista con la información de estos.
+        /// </summary>
+        /// <param name="sender">Componente que lanza el evento.</param>
+        /// <param name="e">Argumentos asociados al evento.</param>
+        private void cargarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MetadataResult result = _controller.ReadMetadataFile();
+            if (!result.Correct)
+            {
+                MessageBox.Show(result.UserText,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
+            textBoxMPath.Text = _controller.Metadata.QueryModel.InputFile;
+            textBoxDelimiter.Text = _controller.Metadata.Source.Delimiter;
+            textBoxInputFilePath.Text = _controller.Metadata.Source.Path;
+            textBoxOutputFolderPath.Text = _controller.Metadata.Configuration.OutputPathCode;
+            FillListBoxSteps(_controller.Metadata.QueryModel.Steps);
+
+            if (_controller.Metadata.Source.Type == DataSource.DataSourceType.CSV)
+            {
+                radioButtonCSV.Checked = true;
+            }
+
+            if (_controller.Metadata.Configuration.Type == MainConfiguration.OutputType.CSharp)
+            {
+                radioButtonCSharp.Checked = true;
+            }
+            else if (_controller.Metadata.Configuration.Type == MainConfiguration.OutputType.Cpp)
+            {
+                radioButtonCpp.Checked = true;
+            }
+        }
+
+        /// <summary>
+        /// Guarda los metadatos en un fichero JSON, obteniendo la información de la vista. Muestra un mensaje al usuario según el resultado obtenido.
+        /// </summary>
+        /// <param name="sender">Componente que lanza el evento.</param>
+        /// <param name="e">Argumentos asociados al evento.</param>
+        private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _controller.Metadata.QueryModel.InputFile = textBoxMPath.Text;
+            _controller.Metadata.Source.Delimiter = textBoxDelimiter.Text;
+            _controller.Metadata.Source.Path = textBoxInputFilePath.Text;
+            _controller.Metadata.Configuration.OutputPathCode = textBoxOutputFolderPath.Text;
+            if (radioButtonCSV.Checked)
+            {
+                _controller.Metadata.Source.Type = DataSource.DataSourceType.CSV;
+            }
+
+            if (radioButtonCSharp.Checked)
+            {
+                _controller.Metadata.Configuration.Type = MainConfiguration.OutputType.CSharp;
+            }
+            else if (radioButtonCpp.Checked)
+            {
+                _controller.Metadata.Configuration.Type = MainConfiguration.OutputType.Cpp;
+            }
+
+            if (!_controller.WriteMetadataFile())
+            {
+                MessageBox.Show("Error al guardar el archivo de metadatos.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            else
+            {
+                MessageBox.Show("Archivo de metadatos guardado correctamente.",
+                    "Información",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
         }
 
         /// <summary>
@@ -256,7 +334,7 @@ namespace transformer_generator.src.View
         /// Según la opción seleccionada por el usuario devuelve un tipo de archivo.
         /// </summary>
         /// <returns>Tipo de archivo manejable por la aplicación.</returns>
-        DataSource.DataSourceType GetFileType()
+        private DataSource.DataSourceType GetFileType()
         {
             if (radioButtonCSV.Checked)
                 return DataSource.DataSourceType.CSV;
@@ -264,22 +342,20 @@ namespace transformer_generator.src.View
             return DataSource.DataSourceType.None;
         }
 
-        #endregion "Private Methods"
-
-        private void cargarToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Rellena el listBox de pasos con los datos obtenidos del archivo de entrada.
+        /// </summary>
+        /// <param name="param_steps">Lista de pasos a mostrar en el listBox.</param>
+        private void FillListBoxSteps(List<Step> param_steps)
         {
-            MetadataResult result = _controller.ReadMetadataFile();
+            listBoxSteps.Items.Clear();
 
-            if (!result.Correct)
+            foreach (Step step in param_steps)
             {
-                MessageBox.Show(result.UserText,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                return;
+                listBoxSteps.Items.Add(step.GetOperationTypeText());
             }
-
-
         }
+
+        #endregion "Private Methods"
     }
 }

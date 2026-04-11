@@ -1,6 +1,7 @@
 ﻿using System;
 using transformer_generator.src.Model;
 using transformer_generator.src.Model.ControllerResult;
+using transformer_generator.src.Services.FileExplorer;
 using transformer_generator.src.Services.ManageFileTypes;
 using transformer_generator.src.Utils.FileExplorer;
 using transformer_generator.src.Utils.MetadataDAO;
@@ -28,13 +29,36 @@ namespace transformer_generator.src.Controller
         /// Constructor de la clase, inicializa los atributos a vacío.
         /// </summary>
         public MainFormController()
-        { 
+        {
             Metadata = new Metadata();
         }
 
         #endregion "Constructor"
 
         #region "Public Methods"
+
+        /// <summary>
+        /// Crea un fichero de metadatos con el timestamp actual y lo almacena en la ruta seleccionada por el usuario.
+        /// </summary>
+        /// <returns>True si el proceso es correcto, false si no.</returns>
+        public bool WriteMetadataFile()
+        {
+            string path = Folder.GetFolderPath("Seleccionar carpeta para guardar el archivo de metadatos..");
+            if (string.IsNullOrEmpty(path))
+            {
+                return false;
+            }
+
+            try
+            {
+                MetadataDAO.SaveFile(path, Metadata);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         /// <summary>
         /// Llama al método encargado del análisis sintáctico, si es correcto almacena la información traducida.
@@ -48,7 +72,7 @@ namespace transformer_generator.src.Controller
             {
                 text = System.IO.File.ReadAllText(param_m_file_path);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 return new Result(false, "Error al leer el archivo de entrada.", exception.Message);
             }
@@ -80,7 +104,7 @@ namespace transformer_generator.src.Controller
                     "No se seleccionó ningún archivo.",
                     "No se seleccionó ningún archivo.");
             }
-            
+
             // Lee el archivo y lo transforma a una lista de Columns
             ColumnsResult ret_result = new ColumnsResult();
             try
@@ -106,6 +130,10 @@ namespace transformer_generator.src.Controller
             return ret_result;
         }
 
+        /// <summary>
+        /// Lee un fichero de metadatos seleccionado por el usuario. Lo procesa, almacena y muestra al usuairo el resultado del proceso.
+        /// </summary>
+        /// <returns>Objeto MetadataResult con el resultado del proceso.</returns>
         public MetadataResult ReadMetadataFile()
         {
             // Busca ruta del archivo
@@ -113,16 +141,16 @@ namespace transformer_generator.src.Controller
                 "Archivos JSON (*.json)|*.json|Todos los archivos (*.*)|*.*");
             if (string.IsNullOrEmpty(path))
             {
-                return new MetadataResult(true, 
+                return new MetadataResult(true,
                     "No se ha seleccionado ninguna ruta.",
                     "No se ha seleccionado ninguna ruta.",
                     null);
             }
 
-            Metadata metadata = null;
+            Metadata = null;
             try
             {
-                metadata = MetadataDAO.ReadFile(path);
+                Metadata = MetadataDAO.ReadFile(path);
             }
             catch (Exception exception)
             {
@@ -135,8 +163,9 @@ namespace transformer_generator.src.Controller
             return new MetadataResult(true,
                 "Archivo de metadatos leído correctamente.",
                 "Archivo de metadatos leído correctamente.",
-                metadata);
+                Metadata);
         }
+                
         #endregion "Public Methods"
     }
 }
