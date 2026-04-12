@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -8,6 +7,9 @@ using transformer_generator.Templates;
 
 namespace transformer_generator.src.Utils.Generator
 {
+    /// <summary>
+    /// Clase para generar un proyecto c# compilable con visual studio.
+    /// </summary>
     internal class CSharpGenerator : CodeGenerator
     {
         #region "Constructor"
@@ -79,6 +81,11 @@ namespace transformer_generator.src.Utils.Generator
 
         #region "Private Methods"
 
+        /// <summary>
+        /// Genera el código en c# para añadir una columna a una tabla.
+        /// </summary>
+        /// <param name="param_step">Información sobre la orden de agregación de columnas.</param>
+        /// <returns>Orden en c# para agregar una columna a una tabla.</returns>
         private string GenerateAddColumn(Step param_step)
         {
             string column_name = param_step.Arguments["columnName"];
@@ -92,6 +99,10 @@ namespace transformer_generator.src.Utils.Generator
                 $"\t\trow => \"{expression}\");\n";
         }
 
+        /// <summary>
+        /// Método para generar las instrucciones c# leídas del fichero M
+        /// </summary>
+        /// <returns>Texto con las instrucciones en c#</returns>
         private string GenerateInstructions()
         {
             StringBuilder instructions = new StringBuilder();
@@ -105,6 +116,11 @@ namespace transformer_generator.src.Utils.Generator
             return instructions.ToString();
         }
 
+        /// <summary>
+        /// Genera la instrucción para leer los metadatos.
+        /// </summary>
+        /// <param name="param_step">Paso posterior a la lectura de la tabla.</param>
+        /// <returns>Orden de lectura de metadatos.</returns>
         private string GenerateReadMetadata(Step param_step)
         {
             return $"Console.WriteLine(\"Introduzca la ruta del archivo de metadatos (enter para continuar):\"); \n" +
@@ -113,6 +129,11 @@ namespace transformer_generator.src.Utils.Generator
                 $"List<Column> {param_step.Input} = metadata.Source.Columns;\n";
         }
 
+        /// <summary>
+        /// Genera la instrucción para borrar una columna de una tabla.
+        /// </summary>
+        /// <param name="param_step">Información sobre la orden de eliminación de columnas.</param>
+        /// <returns>Orden en c# para eliminar una columna de una tabla</returns>
         private string GenerateRemoveColumns(Step param_step)
         {
             string[] columns = param_step.Arguments["columns"].Split(", ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -126,6 +147,11 @@ namespace transformer_generator.src.Utils.Generator
                 $"\tnew List<string> {{ {string.Join(", ", checked_columns)} }});\n";
         }
 
+        /// <summary>
+        /// Genera la instrucción para seleccionar columnas de una tabla
+        /// </summary>
+        /// <param name="param_step">Información sobre la orden de selección de columnas</param>
+        /// <returns>Orden en c# para seleccionar columnas de una tabla.</returns>
         private string GenerateSelectColumns(Step param_step)
         {
             string[] columns = param_step.Arguments["columns"].Split(", ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -139,6 +165,12 @@ namespace transformer_generator.src.Utils.Generator
                 $"\tnew List<string> {{ {string.Join(", ", checked_columns)} }});\n";
         }
 
+        /// <summary>
+        /// Genera la instrucción para seleccionar filas de una tabla.
+        /// </summary>
+        /// <param name="param_step">Información sobre la orden de selección de filas.</param>
+        /// <returns>Orden en c# para seleccionar filas de una tabla.</returns>
+        /// <exception cref="Exception">No se encuentran filtros para la selección de filas.</exception>
         private string GenerateSelectRows(Step param_step)
         {
             string condition = param_step.Arguments["condition"];
@@ -158,6 +190,12 @@ namespace transformer_generator.src.Utils.Generator
                 $"row => row.ContainsKey(\"{column_name}\") && row[\"{column_name}\"].CompareTo({value}) {comparator} 0);\n";
         }
                 
+        /// <summary>
+        /// Fabrica de generación de ordenes. Selecciona el tipo de orden a crear según Step.OperationType
+        /// </summary>
+        /// <param name="param_step">Información de la orden a generar.</param>
+        /// <returns>Orden generada en código c#</returns>
+        /// <exception cref="Exception">Operación no soportada por la solución.</exception>
         private string GenerateStep(Step param_step)
         {
             switch (param_step.Operation)
@@ -176,33 +214,5 @@ namespace transformer_generator.src.Utils.Generator
         }
 
         #endregion "Private Methods"
-
-        /// <summary>
-        /// Transforma una expresión de tipo string almacenada en el objeto QueryModel a su equivalente en c++ para el código generado.
-        /// </summary>
-        /// <param name="param_expression">Expresión traducida del lenguaje M.</param>
-        /// <returns>Texto traducido a código legible por c++.</returns>
-        private string TransformRowAccess(string param_expression)
-        {
-            return param_expression
-                .Replace("[", "row.at(\"")
-                .Replace("]", "\")");
-        }
-
-        private string CheckColumnName(string param_column_name)
-        {
-            param_column_name = param_column_name.Replace("\"", "");
-            List<Column> table = _metadata.Source.Columns;
-
-            foreach (Column column in table)
-            {
-                if (param_column_name.ToLower().Trim() == column.Name.ToLower().Trim())
-                {
-                    return column.Name;
-                }
-            }
-
-            throw new Exception($"Nombre de columna no encontrado: {param_column_name}");
-        }
     }
 }

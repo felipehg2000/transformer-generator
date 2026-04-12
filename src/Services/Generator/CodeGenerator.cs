@@ -1,4 +1,6 @@
-﻿using transformer_generator.src.Model;
+﻿using System;
+using System.Collections.Generic;
+using transformer_generator.src.Model;
 
 namespace transformer_generator.src.Utils.Generator
 {
@@ -34,5 +36,45 @@ namespace transformer_generator.src.Utils.Generator
         /// </summary>
         /// <returns>Resultado con información del proceso.</returns>
         public abstract Result GenerateCode();
+
+        #region "Protected methods"
+        /// <summary>
+        /// Transforma una expresión de tipo string almacenada en el objeto QueryModel a su equivalente en c++ para el código generado.
+        /// </summary>
+        /// <param name="param_expression">Expresión traducida del lenguaje M.</param>
+        /// <returns>Texto traducido a código legible por c++.</returns>
+        protected string TransformRowAccess(string param_expression)
+        {
+            return param_expression
+                .Replace("[", "row.at(\"")
+                .Replace("]", "\")");
+        }
+
+        /// <summary>
+        /// Busca igualdades entre los nombres de los parámetros y la tabla y devuelve el nombre de la tabla para que funcione correctamente.
+        /// </summary>
+        /// <remarks>
+        /// Las ordenes diferencian entre mayúsculas y minúsculas. Se crea este método para que esté escrito de la misma manera.
+        /// </remarks>
+        /// <param name="param_column_name">Nombre de la columna que se está procesando.</param>
+        /// <returns>Nombre de la columna tal y como está escrito en la tabla.</returns>
+        /// <exception cref="Exception">Nombre de columna no encontrado</exception>
+        protected string CheckColumnName(string param_column_name)
+        {
+            param_column_name = param_column_name.Replace("\"", "");
+            List<Column> table = _metadata.Source.Columns;
+
+            foreach (Column column in table)
+            {
+                if (param_column_name.ToLower().Trim() == column.Name.ToLower().Trim())
+                {
+                    return column.Name;
+                }
+            }
+
+            throw new Exception($"Nombre de columna no encontrado: {param_column_name}");
+        }
+
+        #endregion "Protected methods"
     }
 }

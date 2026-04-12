@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using transformer_generator.src.Model;
@@ -79,21 +77,117 @@ namespace transformer_generator.src.Utils.Generator
         #endregion "Virtual Methods"
 
         #region "Private Methods"
+
+        /// <summary>
+        /// Genera el código en c++ para la orden de agregación de columnas.
+        /// </summary>
+        /// <param name="param_step">Objeto de tipo Step con toda la información para generar una orden en c++.</param>
+        /// <returns>Orden de agregación de columnas en c++</returns>
+        private string GenerateAddColumn(Step param_step)
+        {
+            string column_name = param_step.Arguments["columnName"];
+            string expression = param_step.Arguments["expression"];
+
+            expression = expression.Replace("each", "").Trim();
+            expression = TransformRowAccess(expression);
+
+            return $"\tTableManagment::Table {param_step.Name} = TableManagment::AddColumn({param_step.Input}, \n" +
+                $"\t\t\"{column_name}\", \n" +
+                $"\t\t[](const TableManagment::Row& row) \n" +
+                $"\t\t{{ \n" +
+                $"\t\t\treturn \"{expression}\"; \n" +
+                $"\t\t}});\n";
+        }
+
         /// <summary>
         /// Genera las instrucciones en C++ a partir de las órdenes traducidas del lenguaje M.
         /// </summary>
         /// <returns>Código c++ con las instrucciones que se han configurado en lenguaje M.</returns>
         private string GenerateInstructions()
         {
-            StringBuilder string_builder = new StringBuilder();
+            StringBuilder instructions = new StringBuilder();
 
-            string_builder.AppendLine(GenerateReadTable(_query_model.Steps[0]));
+            instructions.AppendLine(GenerateReadTable(_query_model.Steps[0]));
             foreach (var step in _query_model.Steps)
             {
-                string_builder.AppendLine(GenerateStep(step));
+                instructions.AppendLine(GenerateStep(step));
             }
 
-            return string_builder.ToString();
+            return instructions.ToString();
+        }
+
+        /// <summary>
+        /// Orden para leer un fichero CSV con c++
+        /// </summary>
+        /// <param name="param_step">Orden del objeto QueryModel con la información a traducid a C++</param>
+        /// <returns></returns>
+        private string GenerateReadTable(Step param_step)
+        {
+            return $"\tTableManagment::Table {param_step.Input} = TableManagment::ReadCSV(\"{_metadata.Source.Path.Replace("\\", "\\\\")}\");";
+        }
+
+        /// <summary>
+        /// Genera el código en c++ para la orden de eliminación de columnas.
+        /// </summary>
+        /// <param name="param_step">Objeto de tipo Step con toda la información para generar una orden en c++.</param>
+        /// <returns>Orden de eliminación de columnas en c++.</returns>
+        private string GenerateRemoveColumns(Step param_step)
+        {
+            string[] columns = param_step.Arguments["columns"].Split(", ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string[] checked_columns = new string[columns.Length];
+            foreach (string column in columns)
+            {
+                checked_columns[Array.IndexOf(columns, column)] = $"\"{CheckColumnName(column)}\"";
+            }
+
+            return $"\tTableManagment::Table {param_step.Name} = TableManagment::RemoveColumns({param_step.Input}, {{{string.Join(", ", checked_columns)}}});";
+        }
+
+        /// <summary>
+        /// Genera el código en c++ para la orden de seleccionar columnas.
+        /// </summary>
+        /// <param name="param_step">Objeto de tipo Step con toda la información para generar una orden en c++.</param>
+        /// <returns>Orden de selección de columnas en c++.</returns>
+        private string GenerateSelectColumns(Step param_step)
+        {
+            string[] columns = param_step.Arguments["columns"].Split(", ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string[] checked_columns = new string[columns.Length];
+            foreach (string column in columns)
+            {
+                checked_columns[Array.IndexOf(columns, column)] = $"\"{CheckColumnName(column)}\"";
+            }
+
+            return $"\tTableManagment::Table {param_step.Name} = TableManagment::SelectColumns({param_step.Input}, {{{string.Join(", ", checked_columns)}}});";
+        }
+
+        /// <summary>
+        /// Genera el código en c++ para la orden de seleccionar filas.
+        /// </summary>
+        /// <param name="param_step">Objeto de tipo Step con toda la información para generar una orden en c++.</param>
+        /// <returns>Orden de selección de filas en c++.</returns>
+        private string GenerateSelectRows(Step param_step)
+        {
+            string condition = param_step.Arguments["condition"];
+
+            condition = condition.Replace("each", "").Trim();
+            var match = Regex.Match(condition,
+                @"\[(.*?)\]\s*(=|<>|>=|<=|>|<)\s*(.+)");
+
+            if (!match.Success)
+                throw new Exception("Condición no soportada: " + condition);
+
+            string column_name = CheckColumnName(match.Groups[1].Value.Trim());
+            string comparator = match.Groups[2].Value.Trim();
+            string value = match.Groups[3].Value.Trim().TrimEnd(')');
+
+
+            return $"\tstd::string column_name = \"{column_name}\";\n" +
+                $"\tstd::string value = \"{value}\";\n" +
+                $"\tTableManagment::Table {param_step.Name} = TableManagment::SelectRow({param_step.Input}, \n" +
+                $"\t\t[column_name, value](const TableManagment::Row& row) \n" +
+                $"\t\t{{ \n" +
+                $"\t\t\treturn row.find(column_name) != row.end() && row.at(column_name) {comparator} value; \n" +
+                $"\t\t}});";
         }
 
         /// <summary>
@@ -118,125 +212,7 @@ namespace transformer_generator.src.Utils.Generator
                     throw new Exception($"Operación no soportada por el generador de código: {param_step.Operation}");
             }
         }
-
-        private string GenerateReadTable(Step param_step)
-        {
-            return $"\tTableManagment::Table { param_step.Input } = TableManagment::ReadCSV(\"{ _metadata.Source.Path.Replace("\\", "\\\\") }\");";
-        }
-
-        /// <summary>
-        /// Genera el código en c++ para la orden de seleccionar filas.
-        /// </summary>
-        /// <param name="param_step">Objeto de tipo Step con toda la información para generar una orden en c++.</param>
-        /// <returns>Orden de selección de filas en c++.</returns>
-        private string GenerateSelectRows(Step param_step)
-        {
-            string condition = param_step.Arguments["condition"];
-
-            condition = condition.Replace("each", "").Trim();
-            var match = Regex.Match(condition,
-                @"\[(.*?)\]\s*(=|<>|>=|<=|>|<)\s*(.+)");
-
-            if (!match.Success)
-                throw new Exception("Condición no soportada: " + condition);
-
-            string column_name  = CheckColumnName(match.Groups[1].Value.Trim());
-            string comparator   = match.Groups[2].Value.Trim();
-            string value        = match.Groups[3].Value.Trim().TrimEnd(')');
-
-
-            return $"\tstd::string column_name = \"{column_name}\";\n" +
-                $"\tstd::string value = \"{value}\";\n" +
-                $"\tauto {param_step.Name} = TableManagment::SelectRow({param_step.Input}, \n" +
-                $"\t\t[column_name, value](const TableManagment::Row& row) \n" +
-                $"\t\t{{ \n" +
-                $"\t\t\treturn row.find(column_name) != row.end() && row.at(column_name) {comparator} value; \n" +
-                $"\t\t}});";
-        }
-
-        /// <summary>
-        /// Genera el código en c++ para la orden de seleccionar columnas.
-        /// </summary>
-        /// <param name="param_step">Objeto de tipo Step con toda la información para generar una orden en c++.</param>
-        /// <returns>Orden de selección de columnas en c++.</returns>
-        private string GenerateSelectColumns(Step param_step)
-        {
-            string[] columns = param_step.Arguments["columns"].Split(", ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            string[] checked_columns = new string[columns.Length];
-            foreach (string column in columns)
-            {
-                checked_columns[Array.IndexOf(columns, column)] = $"\"{CheckColumnName(column)}\"";
-            }
-
-            return $"\tauto {param_step.Name} = TableManagment::SelectColumns({param_step.Input}, {{{string.Join(", ", checked_columns)}}});";
-        }
-
-        /// <summary>
-        /// Genera el código en c++ para la orden de eliminación de columnas.
-        /// </summary>
-        /// <param name="param_step">Objeto de tipo Step con toda la información para generar una orden en c++.</param>
-        /// <returns>Orden de eliminación de columnas en c++.</returns>
-        private string GenerateRemoveColumns(Step param_step)
-        {
-            string[] columns = param_step.Arguments["columns"].Split(", ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            string[] checked_columns = new string[columns.Length];
-            foreach (string column in columns)
-            {
-                checked_columns[Array.IndexOf(columns, column)] = $"\"{CheckColumnName(column)}\"";
-            }
-
-            return $"\tauto {param_step.Name} = TableManagment::RemoveColumns({param_step.Input}, {{{string.Join(", ", checked_columns)}}});";
-        }
-
-        /// <summary>
-        /// Genera el código en c++ para la orden de agregación de columnas.
-        /// </summary>
-        /// <param name="param_step">Objeto de tipo Step con toda la información para generar una orden en c++.</param>
-        /// <returns>Orden de agregación de columnas en c++</returns>
-        private string GenerateAddColumn(Step param_step)
-        {
-            string column_name = param_step.Arguments["columnName"];
-            string expression = param_step.Arguments["expression"];
-
-            expression = expression.Replace("each", "").Trim();
-            expression = TransformRowAccess(expression);
-
-            return $"\tauto {param_step.Name} = TableManagment::AddColumn({param_step.Input}, \n" +
-                $"\t\t\"{column_name}\", \n" +
-                $"\t\t[](const TableManagment::Row& row) \n" +
-                $"\t\t{{ \n" +
-                $"\t\t\treturn \"{expression}\"; \n" +
-                $"\t\t}});\n";
-        }
-
-        /// <summary>
-        /// Transforma una expresión de tipo string almacenada en el objeto QueryModel a su equivalente en c++ para el código generado.
-        /// </summary>
-        /// <param name="param_expression">Expresión traducida del lenguaje M.</param>
-        /// <returns>Texto traducido a código legible por c++.</returns>
-        private string TransformRowAccess(string param_expression)
-        {
-            return param_expression
-                .Replace("[", "row.at(\"")
-                .Replace("]", "\")");
-        }
         
-        private string CheckColumnName(string param_column_name)
-        {
-            param_column_name = param_column_name.Replace("\"", "");
-            List<Column> table = _metadata.Source.Columns;
-
-            foreach (Column column in table)
-            {
-                if (param_column_name.ToLower().Trim() == column.Name.ToLower().Trim())
-                {
-                    return column.Name;
-                }
-            }
-
-            throw new Exception($"Nombre de columna no encontrado: {param_column_name}");
-        }
-
         #endregion "Private Methods"
     }
 }
