@@ -13,8 +13,9 @@ namespace transformer_generator.src.Model
         /// </summary>
         public enum DataSourceType
         {
-            None = 0,           ///<summary>Valor por defecto, sin tipo definido</summary>
-            CSV = 1,            ///<summary>Archivo CSV, con delimitador definido</summary>
+            None = 0,           ///<summary>Valor por defecto, sin tipo definido.</summary>
+            CSV = 1,            ///<summary>Archivo CSV, con delimitador definido.</summary>
+            XLSX = 2,           ///<summary>Archivo XLSX.</summary>
         }
 
         ///<summary>

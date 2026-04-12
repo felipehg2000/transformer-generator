@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using transformer_generator.src.Utils.Generator;
 
 namespace transformer_generator.src.Model
@@ -17,7 +16,12 @@ namespace transformer_generator.src.Model
         /// <summary>
         /// Información sobre las fuentes de datos con las que el generador trabajará para crear los transformadores.
         /// </summary>
-        public List<DataSource> Sources { get; set; }
+        public DataSource Source { get; set; }
+
+        /// <summary>
+        /// Datos sobre el fichero de lenguaje M de entrada y las ordenes que contiene.
+        /// </summary>
+        public QueryModel QueryModel { get; set; }
 
         /// <summary>
         /// Constructor, inicializa atributos a vacío.
@@ -25,19 +29,24 @@ namespace transformer_generator.src.Model
         [JsonConstructor]
         public Metadata()
         {
-            Sources = new List<DataSource>();
+            Source = new DataSource();
             Configuration = new MainConfiguration();
+            QueryModel = new QueryModel();
         }
 
         /// <summary>
         /// Constructor, inicializa atributos.
         /// </summary>
         /// <param name="configuration">Configuración del generador.</param>
-        /// <param name="sources">Información de las fuentes de datos.</param>
-        public Metadata(MainConfiguration configuration, List<DataSource> sources)
+        /// <param name="param_source">Información de la fuente de datos.</param>
+        /// <param name="param_query_model">Datos sobre el fichero de lenguaje M de entrada y las ordenes que contiene.</param>
+        public Metadata(MainConfiguration configuration, 
+            DataSource param_source,
+            QueryModel param_query_model)
         {
             Configuration = configuration;
-            Sources = sources;
+            Source = param_source;
+            QueryModel = param_query_model;
         }
     }
 }

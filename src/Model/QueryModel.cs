@@ -14,6 +14,11 @@ namespace transformer_generator.src.Model
         public List<Step> Steps { get; set; }
 
         /// <summary>
+        /// Ruta del fichero de lenguaje M de entrada que se procesó.
+        /// </summary>
+        public string InputFile { get; set; }
+
+        /// <summary>
         /// Variable final del bloque 'in' del lenguaje M
         /// </summary>
         public string Output { get; set; }
@@ -25,6 +30,7 @@ namespace transformer_generator.src.Model
         public QueryModel()
         {
             Steps = new List<Step>();
+            InputFile = string.Empty;
             Output = string.Empty;
         }
 
@@ -32,11 +38,14 @@ namespace transformer_generator.src.Model
         /// Constructor, inicializa atributos.
         /// </summary>
         /// <param name="param_steps">Lista de pasos.</param>
+        /// <param name="param_input_file">Ruta del fichero de lenguaje M de entrada que se procesó.</param>
         /// <param name="param_output">Variable final del bloque 'in' del lenguaje M.</param>
         public QueryModel(List<Step> param_steps, 
+            string param_input_file,
             string param_output)
         {
             Steps = param_steps;
+            InputFile = param_input_file;
             Output = param_output;
         }
     }

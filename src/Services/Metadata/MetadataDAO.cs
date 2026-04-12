@@ -43,10 +43,28 @@ namespace transformer_generator.src.Utils.MetadataDAO
         /// </summary>
         /// <param name="param_directory_path">Ruta del directorio en el que almacenar el fichero de metadatos.</param>
         /// <param name="param_metadata">Atributo a con los datos a almacenar en el fichero de destino.</param>
-        static public void SaveFile(string param_directory_path, Metadata param_metadata)
+        /// <param name="param_file_name">Nombre del fichero, por defecto a vacío para que el método lo genere.</param>
+        static public void SaveFile(string param_directory_path, Metadata param_metadata, string param_file_name = null)
         {
+            string file_name = string.Empty;
+            if (string.IsNullOrEmpty(param_file_name))
+            {
+                file_name = DateTime.Now.ToString("yyyyMMddHHmmss") + ".json";
+            }
+            else
+            {
+                if (Path.GetExtension(param_file_name) != ".json")
+                {
+                    file_name = param_file_name + ".json";
+                }
+                else
+                {
+                    file_name = param_file_name;
+                }
+            }
+
             // Agregar nombre de fichero
-            param_directory_path = Path.Combine(param_directory_path, DateTime.Now.ToString("yyyyMMddHHmmss") + ".json");
+            param_directory_path = Path.Combine(param_directory_path, file_name);
             
             // Serializar el objeto a formato JSON
             var opciones = new JsonSerializerOptions
