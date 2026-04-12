@@ -88,8 +88,8 @@ namespace transformer_generator.src.Utils.Generator
             expression = TransformRowAccess(expression);
 
             return $"List<Column> {param_step.Name} = TableManagment.AddColumn({param_step.Input}, \n" +
-                $"\t\t{column_name}, \n" +
-                $"\t\trow => {expression});";
+                $"\t\t\"{column_name}\", \n" +
+                $"\t\trow => \"{expression}\");\n";
         }
 
         private string GenerateInstructions()
@@ -108,9 +108,9 @@ namespace transformer_generator.src.Utils.Generator
         private string GenerateReadMetadata(Step param_step)
         {
             return $"Console.WriteLine(\"Introduzca la ruta del archivo de metadatos (enter para continuar):\"); \n" +
-                $"string {param_step.Input} = Console.ReadLine() ?? string.Empty;\n" +
-                $"Metadata metadata = MetadataDAO.ReadFile({param_step.Input});\n" +
-                $"List<Column> table = metadata.Source.Columns;";
+                $"string path = Console.ReadLine() ?? string.Empty;\n" +
+                $"Metadata metadata = MetadataDAO.ReadFile(path);\n" +
+                $"List<Column> {param_step.Input} = metadata.Source.Columns;\n";
         }
 
         private string GenerateRemoveColumns(Step param_step)
@@ -122,7 +122,8 @@ namespace transformer_generator.src.Utils.Generator
                 checked_columns[Array.IndexOf(columns, column)] = $"\"{CheckColumnName(column)}\"";
             }
 
-            return $"List<Column> {param_step.Name} = TableManagment.RemoveColumns({param_step.Input}, new List<string> {{ {string.Join(", ", checked_columns)} }});";
+            return $"List<Column> {param_step.Name} = TableManagment.RemoveColumns({param_step.Input},\n" +
+                $"\tnew List<string> {{ {string.Join(", ", checked_columns)} }});\n";
         }
 
         private string GenerateSelectColumns(Step param_step)
@@ -134,7 +135,8 @@ namespace transformer_generator.src.Utils.Generator
                 checked_columns[Array.IndexOf(columns, column)] = $"\"{CheckColumnName(column)}\"";
             }
 
-            return $"List<Column> {param_step.Name} = TableManagment.SelectColumns({param_step.Input}, new List<string> {{ {string.Join(", ", checked_columns)} }});";
+            return $"List<Column> {param_step.Name} = TableManagment.SelectColumns({param_step.Input},\n" +
+                $"\tnew List<string> {{ {string.Join(", ", checked_columns)} }});\n";
         }
 
         private string GenerateSelectRows(Step param_step)
@@ -152,8 +154,8 @@ namespace transformer_generator.src.Utils.Generator
             string comparator = match.Groups[2].Value.Trim();
             string value = match.Groups[3].Value.Trim().TrimEnd(')');
 
-            return $"List<Column> {param_step.Name} = TableManagment.SelectRows({param_step.Input}," +
-                $"row => row.ContainsKey({column_name}) && row[column_name].CompareTo({value} {comparator} 0))";
+            return $"List<Column> {param_step.Name} = TableManagment.SelectRows({param_step.Input}, \n" +
+                $"row => row.ContainsKey(\"{column_name}\") && row[\"{column_name}\"].CompareTo({value}) {comparator} 0);\n";
         }
                 
         private string GenerateStep(Step param_step)

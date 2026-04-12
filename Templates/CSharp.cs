@@ -669,7 +669,9 @@ namespace test_proyect_c_sharp.src.Services.TableManagment
         /// Programa principal, ejecuta las instrucciones iniciales.
         /// </summary>
         static readonly public string Program =
-@"using test_proyect_c_sharp.src.Services.TableManagment;
+@"using transformer_generator.src.Model;
+using transformer_generator.src.Utils.MetadataDAO;
+using test_proyect_c_sharp.src.Services.TableManagment;
 
 {Instructions}";
 

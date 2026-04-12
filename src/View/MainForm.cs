@@ -163,24 +163,7 @@ namespace transformer_generator.src.View
         /// <param name="e">Argumentos asociados al evento.</param>
         private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _controller.Metadata.QueryModel.InputFile = textBoxMPath.Text;
-            _controller.Metadata.Source.Delimiter = textBoxDelimiter.Text;
-            _controller.Metadata.Source.Path = textBoxInputFilePath.Text;
-            _controller.Metadata.Configuration.OutputPathCode = textBoxOutputFolderPath.Text;
-            if (radioButtonCSV.Checked)
-            {
-                _controller.Metadata.Source.Type = DataSource.DataSourceType.CSV;
-            }
-
-            if (radioButtonCSharp.Checked)
-            {
-                _controller.Metadata.Configuration.Type = MainConfiguration.OutputType.CSharp;
-            }
-            else if (radioButtonCpp.Checked)
-            {
-                _controller.Metadata.Configuration.Type = MainConfiguration.OutputType.Cpp;
-            }
-
+            FillModelWithViewData();
             if (!_controller.WriteMetadataFile())
             {
                 MessageBox.Show("Error al guardar el archivo de metadatos.",
@@ -312,6 +295,7 @@ namespace transformer_generator.src.View
         /// <param name="e">Argumentos asociados al evento.</param>
         private void buttonGenerateOutput_Click(object sender, EventArgs e)
         {
+            FillModelWithViewData();
             CodeGenerator generator = GeneratorFactory.CreateGenerator(_controller.Metadata);
             Result result = generator.GenerateCode();
 
@@ -379,6 +363,30 @@ namespace transformer_generator.src.View
             foreach (Step step in param_steps)
             {
                 listBoxSteps.Items.Add(step.GetOperationTypeText());
+            }
+        }
+
+        /// <summary>
+        /// Rellena los modelos de metadatos con los datos configurables por el usuario en la vista.
+        /// </summary>
+        private void FillModelWithViewData()
+        {
+            _controller.Metadata.QueryModel.InputFile = textBoxMPath.Text;
+            _controller.Metadata.Source.Delimiter = textBoxDelimiter.Text;
+            _controller.Metadata.Source.Path = textBoxInputFilePath.Text;
+            _controller.Metadata.Configuration.OutputPathCode = textBoxOutputFolderPath.Text;
+            if (radioButtonCSV.Checked)
+            {
+                _controller.Metadata.Source.Type = DataSource.DataSourceType.CSV;
+            }
+
+            if (radioButtonCSharp.Checked)
+            {
+                _controller.Metadata.Configuration.Type = MainConfiguration.OutputType.CSharp;
+            }
+            else if (radioButtonCpp.Checked)
+            {
+                _controller.Metadata.Configuration.Type = MainConfiguration.OutputType.Cpp;
             }
         }
 
