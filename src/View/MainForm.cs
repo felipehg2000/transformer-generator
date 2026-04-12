@@ -265,7 +265,7 @@ namespace transformer_generator.src.View
             Result result = _controller.ReadInputFile(file_type, delimiter);
             if (!result.Correct)
             {
-                MessageBox.Show(result.UserText,
+                MessageBox.Show(result.DeveloperText,
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -348,6 +348,8 @@ namespace transformer_generator.src.View
         {
             if (radioButtonCSV.Checked)
                 return DataSource.DataSourceType.CSV;
+            if (radioButtonXLSX.Checked)
+                return DataSource.DataSourceType.XLSX;
 
             return DataSource.DataSourceType.None;
         }
@@ -379,6 +381,10 @@ namespace transformer_generator.src.View
             if (radioButtonCSV.Checked)
             {
                 _controller.Metadata.Source.Type = DataSource.DataSourceType.CSV;
+            }
+            else if (radioButtonXLSX.Checked)
+            {
+                _controller.Metadata.Source.Type = DataSource.DataSourceType.XLSX;
             }
 
             if (radioButtonCSharp.Checked)

@@ -24,6 +24,9 @@ namespace transformer_generator.src.Services.ManageFileTypes
                 case DataSource.DataSourceType.CSV:
                     file_management = new CSVFiles(param_file_path, param_delimiter);
                     break;
+                case DataSource.DataSourceType.XLSX:
+                    file_management = new XLSXFiles(param_file_path);
+                    break;
                 default:
                     throw new ArgumentException("Invalid file type.");
             }

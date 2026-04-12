@@ -70,8 +70,9 @@
             this.labelEndFolder = new System.Windows.Forms.Label();
             this.textBoxInputFilePath = new System.Windows.Forms.TextBox();
             this.panelButtonsConfiguration = new System.Windows.Forms.Panel();
-            this.buttonBackConfiguration = new System.Windows.Forms.Button();
             this.buttonGenerateOutput = new System.Windows.Forms.Button();
+            this.buttonBackConfiguration = new System.Windows.Forms.Button();
+            this.radioButtonXLSX = new System.Windows.Forms.RadioButton();
             this.menu.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.panelMainButtons.SuspendLayout();
@@ -444,6 +445,7 @@
             // 
             // panelInputTypeFile
             // 
+            this.panelInputTypeFile.Controls.Add(this.radioButtonXLSX);
             this.panelInputTypeFile.Controls.Add(this.radioButtonCSV);
             this.panelInputTypeFile.Location = new System.Drawing.Point(19, 37);
             this.panelInputTypeFile.Name = "panelInputTypeFile";
@@ -508,6 +510,16 @@
             this.panelButtonsConfiguration.Size = new System.Drawing.Size(709, 38);
             this.panelButtonsConfiguration.TabIndex = 4;
             // 
+            // buttonGenerateOutput
+            // 
+            this.buttonGenerateOutput.Location = new System.Drawing.Point(622, 6);
+            this.buttonGenerateOutput.Name = "buttonGenerateOutput";
+            this.buttonGenerateOutput.Size = new System.Drawing.Size(75, 23);
+            this.buttonGenerateOutput.TabIndex = 1;
+            this.buttonGenerateOutput.Text = "Generar ✔";
+            this.buttonGenerateOutput.UseVisualStyleBackColor = true;
+            this.buttonGenerateOutput.Click += new System.EventHandler(this.buttonGenerateOutput_Click);
+            // 
             // buttonBackConfiguration
             // 
             this.buttonBackConfiguration.Location = new System.Drawing.Point(16, 6);
@@ -518,15 +530,16 @@
             this.buttonBackConfiguration.UseVisualStyleBackColor = true;
             this.buttonBackConfiguration.Click += new System.EventHandler(this.buttonBackConfiguration_Click);
             // 
-            // buttonGenerateOutput
+            // radioButtonXLSX
             // 
-            this.buttonGenerateOutput.Location = new System.Drawing.Point(622, 6);
-            this.buttonGenerateOutput.Name = "buttonGenerateOutput";
-            this.buttonGenerateOutput.Size = new System.Drawing.Size(75, 23);
-            this.buttonGenerateOutput.TabIndex = 1;
-            this.buttonGenerateOutput.Text = "Generar ✔";
-            this.buttonGenerateOutput.UseVisualStyleBackColor = true;
-            this.buttonGenerateOutput.Click += new System.EventHandler(this.buttonGenerateOutput_Click);
+            this.radioButtonXLSX.AutoSize = true;
+            this.radioButtonXLSX.Location = new System.Drawing.Point(133, 3);
+            this.radioButtonXLSX.Name = "radioButtonXLSX";
+            this.radioButtonXLSX.Size = new System.Drawing.Size(90, 17);
+            this.radioButtonXLSX.TabIndex = 1;
+            this.radioButtonXLSX.TabStop = true;
+            this.radioButtonXLSX.Text = "Fichero XLSX";
+            this.radioButtonXLSX.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -604,5 +617,6 @@
         private System.Windows.Forms.Label labelDelimiterType;
         private System.Windows.Forms.TextBox textBoxDelimiter;
         private System.Windows.Forms.Button buttonGenerateOutput;
+        private System.Windows.Forms.RadioButton radioButtonXLSX;
     }
 }

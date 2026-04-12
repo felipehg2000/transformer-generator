@@ -1,8 +1,5 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
-using System.IO;
 using transformer_generator.src.Model;
 using transformer_generator.src.Model.ControllerResult;
 using transformer_generator.src.Utils.FileExplorer;
@@ -10,7 +7,7 @@ using transformer_generator.src.Utils.FileExplorer;
 namespace transformer_generator.src.Services.ManageFileTypes
 {
     /// <summary>
-    /// Gestiona la lectura y escritura de ficheros CSV. Utiliza listad de objetos Column.
+    /// Gestiona la lectura y escritura de ficheros CSV. Utiliza listas de objetos Column.
     /// </summary>
     internal class CSVFiles : FileManagement
     {
@@ -104,6 +101,11 @@ namespace transformer_generator.src.Services.ManageFileTypes
                     "No se ha podido leer el fichero CSV.",
                     exception.Message,
                     null);
+            }
+
+            foreach (Column column in columns)
+            {
+                column.Type = InferDataType(column.Values);
             }
 
             return new ColumnsResult(true, 
