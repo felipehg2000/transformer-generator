@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.IO;
+using System.Text.Json.Serialization;
 
 namespace transformer_generator.src.Utils.Generator
 {
@@ -23,9 +25,9 @@ namespace transformer_generator.src.Utils.Generator
         public OutputType Type { get; set; }
 
         /// <summary>
-        /// Ruta del directorio donde se almacenará el archivo de salida.
+        /// Ruta del directorio donde se almacenará el archivo de metadatos.
         /// </summary>
-        public string OutputPathFile { get; set; }
+        public string OutputPathMetadata { get; set; }
 
         /// <summary>
         /// Ruta del directorio donde se almacenará el código generado.
@@ -39,7 +41,7 @@ namespace transformer_generator.src.Utils.Generator
         public MainConfiguration()
         {
             Type = OutputType.None;
-            OutputPathFile = string.Empty;
+            OutputPathMetadata = string.Empty;
             OutputPathCode = string.Empty;
         }
 
@@ -47,16 +49,14 @@ namespace transformer_generator.src.Utils.Generator
         /// Constructor, inicializa atributos.
         /// </summary>
         /// <param name="param_type">Tipo de salida que se va a generar.</param>
-        /// <param name="param_output_path_file">Ruta del archivo de salida.</param>
         /// <param name="param_output_path_code">Ruta del código de salida.</param>
         /// <param name="param_input_m_lenguage_path">Ruta del archivo de lenguaje de entrada.</param>
         public MainConfiguration(OutputType param_type,
-            string param_output_path_file,
             string param_output_path_code,
             string param_input_m_lenguage_path)
         {
             Type = param_type;
-            OutputPathFile = param_output_path_file;
+            OutputPathMetadata = Path.Combine(param_output_path_code, DateTime.Now.ToString("yyyyMMddHHmmss") + ".json");
             OutputPathCode = param_output_path_code;
         }
     }

@@ -546,7 +546,7 @@ namespace test_proyect_c_sharp.src.Services.TableManagment
         {
             List<Column> ret_table = Clone(param_table);
 
-            Column new_column = new Column(param_column_name, new List<string>());
+            Column new_column = new Column(param_column_name, Column.DataType.None, new List<string>());
 
             int row_count = param_table.FirstOrDefault()?.Values.Count ?? 0;
             for (int row_index = 0; row_index < row_count; row_index++)
@@ -569,8 +569,8 @@ namespace test_proyect_c_sharp.src.Services.TableManagment
             List<string> param_columns_to_remove)
         {
             return param_table
-                .Where(c => !param_columns_to_remove.Contains(c.Name))
-                .Select(c => new Column(c.Name, new List<string>(c.Values)))
+                .Where(column => !param_columns_to_remove.Contains(column.Name))
+                .Select(column => new Column(column.Name, Column.DataType.None, new List<string>(column.Values)))
                 .ToList();
         }
 
@@ -584,8 +584,8 @@ namespace test_proyect_c_sharp.src.Services.TableManagment
             List<string> param_columns_to_select)
         {
             return param_table
-                .Where(c => param_columns_to_select.Contains(c.Name))
-                .Select(c => new Column(c.Name, new List<string>(c.Values)))
+                .Where(column => param_columns_to_select.Contains(column.Name))
+                .Select(column => new Column(column.Name, Column.DataType.None, new List<string>(column.Values)))
                 .ToList();
         }
         
@@ -646,7 +646,7 @@ namespace test_proyect_c_sharp.src.Services.TableManagment
         private static List<Column> Clone(List<Column> param_table)
         {
             return param_table
-                .Select(column => new Column(column.Name, new List<string>(column.Values)))
+                .Select(column => new Column(column.Name, Column.DataType.None, new List<string>(column.Values)))
                 .ToList();
         }
 
@@ -658,6 +658,7 @@ namespace test_proyect_c_sharp.src.Services.TableManagment
         private static List<Column> CloneStructure(List<Column> param_table)
         {
             return param_table.Select(column => new Column(column.Name,
+                    Column.DataType.None,
                     new List<string>())).ToList();
         }
         
@@ -675,6 +676,9 @@ using test_proyect_c_sharp.src.Services.TableManagment;
 
 {Instructions}";
 
+        /// <summary>
+        /// Código de proyecto para visual studio
+        /// </summary>
         static readonly public string Csproj =
 @"<Project Sdk=""Microsoft.NET.Sdk"">
 
@@ -694,6 +698,9 @@ using test_proyect_c_sharp.src.Services.TableManagment;
 </Project>
 ";
 
+        /// <summary>
+        /// Código de proyecto para visual studio
+        /// </summary>
         static readonly public string Slnx =
 @"<Solution>
   <Project Path=""test-proyect-c-sharp.csproj"" />

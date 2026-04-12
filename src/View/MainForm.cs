@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using transformer_generator.src.Controller;
 using transformer_generator.src.Model;
@@ -296,12 +297,11 @@ namespace transformer_generator.src.View
         private void buttonGenerateOutput_Click(object sender, EventArgs e)
         {
             FillModelWithViewData();
-            CodeGenerator generator = GeneratorFactory.CreateGenerator(_controller.Metadata);
-            Result result = generator.GenerateCode();
-
+            Result result = _controller.GenerateOutput();
+            
             if (!result.Correct)
             {
-                MessageBox.Show(result.UserText,
+                MessageBox.Show(result.DeveloperText,
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -375,6 +375,7 @@ namespace transformer_generator.src.View
             _controller.Metadata.Source.Delimiter = textBoxDelimiter.Text;
             _controller.Metadata.Source.Path = textBoxInputFilePath.Text;
             _controller.Metadata.Configuration.OutputPathCode = textBoxOutputFolderPath.Text;
+            _controller.Metadata.Configuration.OutputPathMetadata = Path.Combine(textBoxOutputFolderPath.Text, DateTime.Now.ToString("yyyyMMddHHmmss") + ".json"); 
             if (radioButtonCSV.Checked)
             {
                 _controller.Metadata.Source.Type = DataSource.DataSourceType.CSV;

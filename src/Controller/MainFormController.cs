@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using transformer_generator.src.Model;
 using transformer_generator.src.Model.ControllerResult;
 using transformer_generator.src.Services.FileExplorer;
 using transformer_generator.src.Services.ManageFileTypes;
 using transformer_generator.src.Utils.FileExplorer;
+using transformer_generator.src.Utils.Generator;
 using transformer_generator.src.Utils.MetadataDAO;
 using transformer_generator.src.Utils.Parsing;
 
@@ -166,6 +168,33 @@ namespace transformer_generator.src.Controller
                 Metadata);
         }
                 
+        /// <summary>
+        /// Crea el archivo de metadatos por si es necesario para el proceso y genera la salida.
+        /// </summary>
+        /// <returns>Objeto resultado con información del proceso.</returns>
+        public Result GenerateOutput()
+        {
+            Result ret_result = new Result();
+            try
+            {
+                string ruta = Metadata.Configuration.OutputPathMetadata;
+                string file_name = Path.GetFileName(Metadata.Configuration.OutputPathMetadata);
+                string folder_name = Path.GetDirectoryName(Metadata.Configuration.OutputPathMetadata);
+
+                MetadataDAO.SaveFile(folder_name, Metadata, file_name);
+                CodeGenerator generator = GeneratorFactory.CreateGenerator(Metadata);
+                ret_result = generator.GenerateCode();
+            }
+            catch (Exception exception)
+            {
+                ret_result = new Result(false,
+                    "No se ha podido generar la salida",
+                    exception.Message);
+            }
+
+            return ret_result;
+        }
+
         #endregion "Public Methods"
     }
 }

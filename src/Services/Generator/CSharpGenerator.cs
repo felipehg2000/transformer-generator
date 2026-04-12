@@ -123,9 +123,7 @@ namespace transformer_generator.src.Utils.Generator
         /// <returns>Orden de lectura de metadatos.</returns>
         private string GenerateReadMetadata(Step param_step)
         {
-            return $"Console.WriteLine(\"Introduzca la ruta del archivo de metadatos (enter para continuar):\"); \n" +
-                $"string path = Console.ReadLine() ?? string.Empty;\n" +
-                $"Metadata metadata = MetadataDAO.ReadFile(path);\n" +
+            return $"Metadata metadata = MetadataDAO.ReadFile(\"{_metadata.Configuration.OutputPathMetadata.Replace("\\", "\\\\")}\");\n" +
                 $"List<Column> {param_step.Input} = metadata.Source.Columns;\n";
         }
 
@@ -187,7 +185,7 @@ namespace transformer_generator.src.Utils.Generator
             string value = match.Groups[3].Value.Trim().TrimEnd(')');
 
             return $"List<Column> {param_step.Name} = TableManagment.SelectRows({param_step.Input}, \n" +
-                $"row => row.ContainsKey(\"{column_name}\") && row[\"{column_name}\"].CompareTo({value}) {comparator} 0);\n";
+                $"row => row.ContainsKey(\"{column_name}\") && row[\"{column_name}\"].CompareTo(\"{value}\") {comparator} 0);\n";
         }
                 
         /// <summary>
