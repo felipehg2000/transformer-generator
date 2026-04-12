@@ -177,11 +177,6 @@ namespace transformer_generator.src.Controller
             Result ret_result = new Result();
             try
             {
-                string ruta = Metadata.Configuration.OutputPathMetadata;
-                string file_name = Path.GetFileName(Metadata.Configuration.OutputPathMetadata);
-                string folder_name = Path.GetDirectoryName(Metadata.Configuration.OutputPathMetadata);
-
-                MetadataDAO.SaveFile(folder_name, Metadata, file_name);
                 CodeGenerator generator = GeneratorFactory.CreateGenerator(Metadata);
                 ret_result = generator.GenerateCode();
             }

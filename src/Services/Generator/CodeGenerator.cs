@@ -55,6 +55,7 @@ namespace transformer_generator.src.Utils.Generator
         /// </summary>
         /// <remarks>
         /// Las ordenes diferencian entre mayúsculas y minúsculas. Se crea este método para que esté escrito de la misma manera.
+        /// Si dos columnas tienen la misma cabecera el algoritmo cogerá el primero.
         /// </remarks>
         /// <param name="param_column_name">Nombre de la columna que se está procesando.</param>
         /// <returns>Nombre de la columna tal y como está escrito en la tabla.</returns>
@@ -69,6 +70,31 @@ namespace transformer_generator.src.Utils.Generator
                 if (param_column_name.ToLower().Trim() == column.Name.ToLower().Trim())
                 {
                     return column.Name;
+                }
+            }
+
+            throw new Exception($"Nombre de columna no encontrado: {param_column_name}");
+        }
+
+        /// <summary>
+        /// Busca una columna por su nombre y devuelve el tipo de datos que muestra esa columna.
+        /// </summary>
+        /// <remarks>
+        /// Si dos columnas tienen la misma cabecera el algoritmo cogerá el primero.
+        /// </remarks>
+        /// <param name="param_expression">Expresión traducida del lenguaje M.</param>
+        /// <returns>Texto traducido a código legible por c++.</returns>
+        /// <exception cref="Exception">Nombre de la columna no encontrado.</exception>
+        protected Column.DataType GetDataType(string param_column_name)
+        {
+            param_column_name = param_column_name.Replace("\"", "");
+            List<Column> table = _metadata.Source.Columns;
+
+            foreach (Column column in table)
+            {
+                if (param_column_name.ToLower().Trim() == column.Name.ToLower().Trim())
+                {
+                    return column.Type;
                 }
             }
 

@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using transformer_generator.src.Model;
+using transformer_generator.src.Services.ManageFileTypes;
 using transformer_generator.Templates;
 
 namespace transformer_generator.src.Utils.Generator
@@ -33,6 +34,11 @@ namespace transformer_generator.src.Utils.Generator
         {
             try
             {
+                // Inicializa atributos y rellena configuración
+                string base_path = _metadata.Configuration.OutputPathCode;
+                string src_path = Path.Combine(base_path, "src");
+                _metadata.Configuration.OutputPathMetadata = Path.Combine(base_path, DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv");
+
                 // Traducir instrucciones del objeto QueryModel al código C++
                 string instructions = GenerateInstructions();
 
@@ -51,17 +57,18 @@ namespace transformer_generator.src.Utils.Generator
                 string cmake_lists_txt = Cpp.CMakeLists;
 
                 // Crear estructura de directorios
-                string basePath = _metadata.Configuration.OutputPathCode;
-                string srcPath = Path.Combine(basePath, "src");
-
-                Directory.CreateDirectory(basePath);
-                Directory.CreateDirectory(srcPath);
+                Directory.CreateDirectory(base_path);
+                Directory.CreateDirectory(src_path);
 
                 // Generar ficheros
-                File.WriteAllText(Path.Combine(basePath, "main.cpp"), main);
-                File.WriteAllText(Path.Combine(srcPath, "TableManagment.h"), table_managment_h);
-                File.WriteAllText(Path.Combine(srcPath, "TableManagment.cpp"), table_managment_cpp);
-                File.WriteAllText(Path.Combine(basePath, "CMakeLists.txt"), cmake_lists_txt);
+                File.WriteAllText(Path.Combine(base_path, "main.cpp"), main);
+                File.WriteAllText(Path.Combine(base_path, "CMakeLists.txt"), cmake_lists_txt);
+                File.WriteAllText(Path.Combine(src_path, "TableManagment.h"), table_managment_h);
+                File.WriteAllText(Path.Combine(src_path, "TableManagment.cpp"), table_managment_cpp);
+
+                // Genera fichero CSV que leerá el código creado
+                CSVFiles csv_file = new CSVFiles(_metadata.Configuration.OutputPathMetadata, ",");
+                csv_file.WriteFile(_metadata.Source.Columns);
 
                 return new Result(true,
                     "Código C++ generado correctamente.",
@@ -123,7 +130,7 @@ namespace transformer_generator.src.Utils.Generator
         /// <returns></returns>
         private string GenerateReadTable(Step param_step)
         {
-            return $"\tTableManagment::Table {param_step.Input} = TableManagment::ReadCSV(\"{_metadata.Source.Path.Replace("\\", "\\\\")}\");";
+            return $"\tTableManagment::Table {param_step.Input} = TableManagment::ReadCSV(\"{_metadata.Configuration.OutputPathMetadata.Replace("\\", "\\\\")}\");";
         }
 
         /// <summary>

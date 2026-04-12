@@ -292,8 +292,6 @@ target_include_directories(TableManagerApp PRIVATE
 # Instrucciones para compilar y ejecutar
 # ====================================================
 
-# mkdir build
-# cd build
 # cmake -S . -B build
 # cmake --build build  (Crea solo la carpeta de debug, para ejecutar cd debug y ./TableManagerApp)
 # cmake --build build --config Release (Crea solo la carpeta de release, para ejecutar cd release y ./TableManagerApp)";

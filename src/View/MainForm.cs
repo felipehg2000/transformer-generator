@@ -377,7 +377,6 @@ namespace transformer_generator.src.View
             _controller.Metadata.Source.Delimiter = textBoxDelimiter.Text;
             _controller.Metadata.Source.Path = textBoxInputFilePath.Text;
             _controller.Metadata.Configuration.OutputPathCode = textBoxOutputFolderPath.Text;
-            _controller.Metadata.Configuration.OutputPathMetadata = Path.Combine(textBoxOutputFolderPath.Text, DateTime.Now.ToString("yyyyMMddHHmmss") + ".json"); 
             if (radioButtonCSV.Checked)
             {
                 _controller.Metadata.Source.Type = DataSource.DataSourceType.CSV;

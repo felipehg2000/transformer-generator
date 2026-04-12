@@ -34,12 +34,15 @@ namespace transformer_generator.src.Utils.Generator
         {
             try
             {
-                // Genera las instrucciones. Se hace aquí para que, si da excepción no se creen directorios ni ficheros,.
+                // Inicializa variables y rellena atributos.
+                string base_path = _metadata.Configuration.OutputPathCode;
+                _metadata.Configuration.OutputPathMetadata = Path.Combine(base_path, DateTime.Now.ToString("yyyyMMddHHmmss") + ".json");
+
+                // Genera las instrucciones. Se hace aquí para que, si da excepción no se creen directorios ni ficheros.
                 string instructions = GenerateInstructions();
                 string program = CSharp.Program.Replace("{Instructions}", instructions);
 
                 // Crea la estructura de carpetas para el proyecto.
-                string base_path = _metadata.Configuration.OutputPathCode;
                 Directory.CreateDirectory(base_path);
                 Directory.CreateDirectory(Path.Combine(base_path, "src"));
                 Directory.CreateDirectory(Path.Combine(base_path, "src", "Model"));
@@ -64,6 +67,9 @@ namespace transformer_generator.src.Utils.Generator
                 File.WriteAllText(Path.Combine(base_path, "Program.cs"), program);
                 File.WriteAllText(Path.Combine(base_path, "test-proyect-c-sharp.csproj"), CSharp.Csproj);
                 File.WriteAllText(Path.Combine(base_path, "test-proyect-c-sharp.slnx"), CSharp.Slnx);
+
+                // Crea el fichero de metadatos
+                MetadataDAO.MetadataDAO.SaveFile(base_path, _metadata);
             }
             catch (Exception exception)
             {
@@ -174,6 +180,7 @@ namespace transformer_generator.src.Utils.Generator
             string condition = param_step.Arguments["condition"];
 
             condition = condition.Replace("each", "").Trim();
+
             var match = Regex.Match(condition,
                 @"\[(.*?)\]\s*(=|<>|>=|<=|>|<)\s*(.+)");
 
@@ -184,10 +191,45 @@ namespace transformer_generator.src.Utils.Generator
             string comparator = match.Groups[2].Value.Trim();
             string value = match.Groups[3].Value.Trim().TrimEnd(')');
 
-            return $"List<Column> {param_step.Name} = TableManagment.SelectRows({param_step.Input}, \n" +
-                $"row => row.ContainsKey(\"{column_name}\") && row[\"{column_name}\"].CompareTo(\"{value}\") {comparator} 0);\n";
+            // Mapea operador de M a C#
+            string cs_operator = string.Empty;
+            switch (comparator)
+            {
+                case "=":
+                    cs_operator = "==";
+                    break;
+                case "<>":
+                    cs_operator = "!=";
+                    break;
+                default:
+                    cs_operator = comparator;
+                    break;
+            }
+
+            string comparator_operator = string.Empty;
+            switch (GetDataType(match.Groups[1].Value.Trim()))
+            {
+                case Column.DataType.Boolean:
+                    comparator_operator = $"bool.Parse(row[\"{column_name}\"]) {cs_operator} bool.Parse(\"{value}\")";
+                    break;
+                case Column.DataType.Date:
+                    comparator_operator = $"DateTime.Parse(row[\"{column_name}\"]) {cs_operator} DateTime.Parse(\"{value}\")";
+                    break;
+                case Column.DataType.Double:
+                    comparator_operator = $"double.Parse(row[\"{column_name}\"]) {cs_operator} double.Parse(\"{value}\")";
+                    break;
+                case Column.DataType.Number:
+                    comparator_operator = $"int.Parse(row[\"{column_name}\"]) {cs_operator} int.Parse(\"{value}\")";
+                    break;
+                default:
+                    comparator_operator = $"row[\"{column_name}\"].CompareTo(\"{value}\") {cs_operator} 0";
+                    break;
+            }
+
+            return $"List<Column> {param_step.Name} = TableManagment.SelectRows({param_step.Input},\n" +
+                $"\trow => row.ContainsKey(\"{column_name}\") && {comparator_operator});\n";
         }
-                
+
         /// <summary>
         /// Fabrica de generación de ordenes. Selecciona el tipo de orden a crear según Step.OperationType
         /// </summary>

@@ -51,7 +51,7 @@ namespace transformer_generator.src.Services.ManageFileTypes
             try
             {
                 List<string> lines = new List<string>();
-                string header_line = string.Join(";", param_columns.ConvertAll(column => column.Name));
+                string header_line = string.Join(_delimiter, param_columns.ConvertAll(column => column.Name));
                 lines.Add(header_line);
                 for (int row = 0; row < param_columns[0].Values.Count; row++)
                 {
@@ -61,7 +61,7 @@ namespace transformer_generator.src.Services.ManageFileTypes
                         string value = row < column.Values.Count ? column.Values[row] : string.Empty;
                         values.Add(value);
                     }
-                    string line = string.Join(";", values);
+                    string line = string.Join(_delimiter, values);
                     lines.Add(line);
                 }
                 Files.WriteFileLines(_file_path, lines.ToArray());
