@@ -36,6 +36,7 @@
             this.dataGridViewTableInfo = new System.Windows.Forms.DataGridView();
             this.panelButton = new System.Windows.Forms.Panel();
             this.buttonClose = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.panelMain = new System.Windows.Forms.Panel();
             this.panelTop.SuspendLayout();
             this.panelCenter.SuspendLayout();
@@ -107,6 +108,7 @@
             // 
             this.panelButton.BackColor = System.Drawing.Color.White;
             this.panelButton.Controls.Add(this.buttonClose);
+            this.panelButton.Controls.Add(this.buttonSave);
             this.panelButton.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelButton.Location = new System.Drawing.Point(0, 410);
             this.panelButton.Name = "panelButton";
@@ -115,13 +117,23 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(701, 5);
+            this.buttonClose.Location = new System.Drawing.Point(610, 5);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(75, 23);
             this.buttonClose.TabIndex = 1;
             this.buttonClose.Text = "Cerrar ❌";
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(701, 5);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(75, 23);
+            this.buttonSave.TabIndex = 0;
+            this.buttonSave.Text = "Grabar ✔";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // panelMain
             // 
@@ -161,6 +173,7 @@
         private System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.Button buttonClose;
+        private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.DataGridView dataGridViewTableInfo;
     }
 }

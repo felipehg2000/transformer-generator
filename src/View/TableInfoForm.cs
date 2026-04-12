@@ -10,7 +10,7 @@ using transformer_generator.src.Model;
 namespace transformer_generator.src.View
 {
     /// <summary>
-    /// Clase para consultar la tabla a modificar con el lenguaje M.
+    /// Clase para consultar la tabla a modificar con el lenguaje M. Permite tipar las columnas.
     /// </summary>
     public partial class TableInfoForm : Form
     {
@@ -25,16 +25,26 @@ namespace transformer_generator.src.View
         private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         #endregion "Move Form Info"
 
+        #region "Attributes"
+
+        /// <summary>
+        /// Controlador del formulario main, se utiliza para acceder a la información de las columnas y gestionar la persistencia de manera centralizada.
+        /// </summary>
+        private MainFormController _controller;
+
+        #endregion "Attributes"
+
         #region "Constructor"
 
         /// <summary>
         /// Constructor de la clase, inicializa el formulario y rellena el DataGridView.
         /// </summary>
-        /// <param name="param_columns">Tabla a mostrar.</param>
-        public TableInfoForm(List<Column> param_columns)
+        /// <param name="param_controller"></param>
+        public TableInfoForm(MainFormController param_controller)
         {
             InitializeComponent();
-            FillTableInfo(param_columns);
+            _controller = param_controller;
+            FillTableInfo(_controller.Metadata.Source.Columns);
         }
 
         #endregion "Constructor"
@@ -48,6 +58,23 @@ namespace transformer_generator.src.View
         /// <param name="e">Argumentos asociados al evento.</param>
         private void buttonClose_Click(object sender, EventArgs e)
         {
+            Close();
+        }
+
+        /// <summary>
+        /// Guarda los tipos de columnas seleccionados por el usuario y cierra el formulario.
+        /// </summary>
+        /// <param name="sender">Componente que lanza el evento.</param>
+        /// <param name="e">Argumentos asociados al evento.</param>
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            UpdateColumnTypes(_controller.Metadata.Source.Columns);
+
+            MessageBox.Show("Los tipos de las columnas se han actualizado correctamente.",
+                "Success",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
             Close();
         }
 
@@ -101,8 +128,21 @@ namespace transformer_generator.src.View
             }
 
             // Agrega las filas al DataGridView
-            int maxRowCount = param_columns.Max(column => column.Values.Count);
+            int maxRowCount = param_columns.Max(column => column.Values.Count) + 1;
             grid.Rows.Add(maxRowCount);
+
+            // Agrega ComboBox de tipos de datos en la primera fila
+            foreach (DataGridViewColumn grid_column in grid.Columns)
+            {
+                DataGridViewComboBoxCell combo = new DataGridViewComboBoxCell();
+                combo.Items.AddRange(Enum.GetNames(typeof(Column.DataType)));
+
+                var column = param_columns[grid_column.Index];
+                combo.Value = column.Type.ToString();
+
+                grid.Rows[0].Cells[grid_column.Index] = combo;
+            }
+            grid.Rows[0].DefaultCellStyle.BackColor = Color.LightGray;
 
             // Agrega los valores de cada columna a la fila correspondiente
             for (int column_index = 0; column_index < param_columns.Count; column_index++)
@@ -110,10 +150,27 @@ namespace transformer_generator.src.View
                 var column = param_columns[column_index];
                 for (int row_index = 0; row_index < column.Values.Count; row_index++)
                 {
-                    grid.Rows[row_index].Cells[column_index].Value = column.Values[row_index];
+                    grid.Rows[row_index + 1].Cells[column_index].Value = column.Values[row_index];
                 }
             }
         }
+
+        /// <summary>
+        /// Actualiza el tipo de dato de cada columna.
+        /// </summary>
+        /// <param name="param_columns"></param>
+        private void UpdateColumnTypes(List<Column> param_columns)
+        {
+            for (int column = 0; column < param_columns.Count; column++)
+            {
+                DataGridViewComboBoxCell cell = dataGridViewTableInfo.Rows[0].Cells[column] as DataGridViewComboBoxCell;
+                if (cell?.Value != null)
+                {
+                    param_columns[column].Type = (Column.DataType)Enum.Parse(typeof(Column.DataType), cell.Value.ToString());
+                }
+            }
+        }
+
         #endregion "Private Methods"
     }
 }

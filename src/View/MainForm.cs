@@ -251,7 +251,7 @@ namespace transformer_generator.src.View
                 return;
             }
 
-            TableInfoForm table_info_form = new TableInfoForm(_controller.Metadata.Source.Columns);
+            TableInfoForm table_info_form = new TableInfoForm(_controller);
             table_info_form.ShowDialog();
         }
 

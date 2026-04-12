@@ -8,10 +8,28 @@ namespace transformer_generator.src.Model
     /// </summary>
     public class Column
     {
+        /// <summary>
+        /// Enumeración con los posibles tipos de datos que gestiona el generador de código.
+        /// </summary>
+        public enum DataType
+        {
+            None = 0,            ///<summary>Valor por defecto, sin tipo definido</summary>
+            Text = 1,           ///<summary>Tipo de dato texto</summary>
+            Number = 2,         ///<summary>Tipo de dato numérico</summary>
+            Double = 3,         ///<summary>Tipo de dato numérico con decimales</summary>
+            Date = 4,           ///<summary>Tipo de dato fecha</summary>
+            Boolean = 5,        ///<summary>Tipo de dato booleano</summary>
+        }
+
         ///<summary>
         ///Nombre de la columna en lenguaje M
         ///</summary>
         public string Name { get; set; }
+
+        ///<summary>
+        ///Tipo de dato en lenguaje M (Text, Number, Date...)
+        ///</summary>
+        public DataType Type { get; set; } 
         
         /// <summary>
         /// Valores que tiene la columna.
@@ -25,6 +43,7 @@ namespace transformer_generator.src.Model
         public Column()
         {
             Name = string.Empty;
+            Type = DataType.None;
             Values = new List<string>();
         }
 
@@ -32,11 +51,14 @@ namespace transformer_generator.src.Model
         /// Constlructor, inicializa atributos.
         /// </summary>
         /// <param name="param_name">Nombre de la columna.</param>
+        /// <param name="param_type">Tipo de dato de la columna.</param>
         /// <param name="param_values">Valores que tiene la columna.</param>
         public Column(string param_name, 
+            DataType param_type,
             List<string> param_values)
         {
             Name = param_name;
+            Type = param_type;
             Values = param_values;
         }
     }
