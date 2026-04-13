@@ -98,7 +98,8 @@ namespace transformer_generator.src.Utils.Generator
             expression = expression.Replace("each", "").Trim();
             expression = TransformRowAccess(expression);
 
-            return $"\tTableManagment::Table {param_step.Name} = TableManagment::AddColumn({param_step.Input}, \n" +
+            return $"\t// AddColumn Order\n" +
+                $"\tTableManagment::Table {param_step.Name} = TableManagment::AddColumn({param_step.Input}, \n" +
                 $"\t\t\"{column_name}\", \n" +
                 $"\t\t[](const TableManagment::Row& row) \n" +
                 $"\t\t{{ \n" +
@@ -130,7 +131,8 @@ namespace transformer_generator.src.Utils.Generator
         /// <returns></returns>
         private string GenerateReadTable(Step param_step)
         {
-            return $"\tTableManagment::Table {param_step.Input} = TableManagment::ReadCSV(\"{_metadata.Configuration.OutputPathMetadata.Replace("\\", "\\\\")}\");";
+            return $"\t// ReadTable order\n" +
+                $"\tTableManagment::Table {param_step.Input} = TableManagment::ReadCSV(\"{_metadata.Configuration.OutputPathMetadata.Replace("\\", "\\\\")}\");\n";
         }
 
         /// <summary>
@@ -147,7 +149,9 @@ namespace transformer_generator.src.Utils.Generator
                 checked_columns[Array.IndexOf(columns, column)] = $"\"{CheckColumnName(column)}\"";
             }
 
-            return $"\tTableManagment::Table {param_step.Name} = TableManagment::RemoveColumns({param_step.Input}, {{{string.Join(", ", checked_columns)}}});";
+            return $"\t// RemoveColumns order\n" +
+                $"\tTableManagment::Table {param_step.Name} = TableManagment::RemoveColumns({param_step.Input}, \n" +
+                $"\t\t{{{string.Join(", ", checked_columns)}}});\n";
         }
 
         /// <summary>
@@ -164,7 +168,9 @@ namespace transformer_generator.src.Utils.Generator
                 checked_columns[Array.IndexOf(columns, column)] = $"\"{CheckColumnName(column)}\"";
             }
 
-            return $"\tTableManagment::Table {param_step.Name} = TableManagment::SelectColumns({param_step.Input}, {{{string.Join(", ", checked_columns)}}});";
+            return $"\t// SelectColumns order\n" +
+                $"\tTableManagment::Table {param_step.Name} = TableManagment::SelectColumns({param_step.Input}, \n" +
+                $"\t\t{{{string.Join(", ", checked_columns)}}});\n";
         }
 
         /// <summary>
@@ -187,14 +193,14 @@ namespace transformer_generator.src.Utils.Generator
             string comparator = match.Groups[2].Value.Trim();
             string value = match.Groups[3].Value.Trim().TrimEnd(')');
 
-
-            return $"\tstd::string column_name = \"{column_name}\";\n" +
+            return $"\t// SelectRows order\n" +
+                $"\tstd::string column_name = \"{column_name}\";\n" +
                 $"\tstd::string value = \"{value}\";\n" +
                 $"\tTableManagment::Table {param_step.Name} = TableManagment::SelectRow({param_step.Input}, \n" +
                 $"\t\t[column_name, value](const TableManagment::Row& row) \n" +
                 $"\t\t{{ \n" +
                 $"\t\t\treturn row.find(column_name) != row.end() && row.at(column_name) {comparator} value; \n" +
-                $"\t\t}});";
+                $"\t\t}});\n";
         }
 
         /// <summary>
