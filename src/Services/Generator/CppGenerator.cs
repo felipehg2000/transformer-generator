@@ -121,7 +121,21 @@ namespace transformer_generator.src.Utils.Generator
                 instructions.AppendLine(GenerateStep(step));
             }
 
+            int step_index = _query_model.Steps.Count - 1;
+            instructions.AppendLine(GeneratePrintTable(_query_model.Steps[step_index].Name));
+
             return instructions.ToString();
+        }
+
+        /// <summary>
+        /// Genera la instrucción en C++ para mostrar la tabla resultante.
+        /// </summary>
+        /// <param name="param_table">Nombre de la variable donde se almacena la tabla.</param>
+        /// <returns>Orden para imprimir la tabla por consola.</returns>
+        private string GeneratePrintTable(string param_table)
+        {
+            return $"\t// PrintTable order\n" +
+                $"\tPrintTable({param_table});\n";
         }
 
         /// <summary>

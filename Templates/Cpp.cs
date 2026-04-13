@@ -15,6 +15,38 @@
 #include ""TableManagment.h""
 
 /**
+ * @brief   Imprime los datos de una tabla para poder visualizarla por pantalla
+ * @param   param_table tabla rellena a imprimir por pantalla
+ * @since   {Fecha}
+ * @author  Generado automáticamente
+ */
+void PrintTable(const TableManagment::Table &param_table)
+{
+    if (param_table.empty())
+    {
+        std::cout << ""(Tabla limpia)\n"";
+        return;
+    }
+
+    // Imprimir cabeceras 
+    for (const auto& [key, value] : param_table[0])
+    {
+        std::cout << key << ""\t"";
+    }
+    std::cout << ""\n----------------------------------\n"";
+
+    // Imprimir filas
+    for (const auto& row : param_table)
+    {
+        for (const auto& [key, value] : row)
+        {
+            std::cout << value << ""\t"";
+        }
+        std::cout << ""\n"";
+    }
+}
+
+/**
  * @brief   Función principal del programa, primera y última en ejecutarse
  * @details Clona los pasos leidos del lenguaje M
  * @return  int siempre devuelve 0 
