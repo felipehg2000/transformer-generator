@@ -12,7 +12,7 @@
 @"using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace transformer_generator.src.Model
+namespace m_transformer.src.Model
 {
     /// <summary>
     /// Define la estructura de una columna, con su nombre y tipo de dato.
@@ -83,7 +83,7 @@ namespace transformer_generator.src.Model
 @"using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace transformer_generator.src.Model
+namespace m_transformer.src.Model
 {
     /// <summary>
     /// Define la información necesaria para leer y entender una fuente de datos.
@@ -176,7 +176,7 @@ namespace transformer_generator.src.Model
         static readonly public string MainConfiguration =
 @"using System.Text.Json.Serialization;
 
-namespace transformer_generator.src.Utils.Generator
+namespace m_transformer.src.Model
 {
     /// <summary>
     /// Almacena los datos que puede configurar el usuario en la herramienta.
@@ -244,9 +244,8 @@ namespace transformer_generator.src.Utils.Generator
         /// </summary>
         static readonly public string Metadata =
 @"using System.Text.Json.Serialization;
-using transformer_generator.src.Utils.Generator;
 
-namespace transformer_generator.src.Model
+namespace m_transformer.src.Model
 {
     /// <summary>
     /// Clase que almacena la información sobre la configuración del generador y las fuentes de datos con las que el generador trabajará para crear los transformadores.
@@ -304,7 +303,7 @@ namespace transformer_generator.src.Model
  @"using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace transformer_generator.src.Model
+namespace m_transformer.src.Model
 {
     /// <summary>
     /// Clase que almacena todos los pasos a seguir para generar una salida.
@@ -362,7 +361,7 @@ namespace transformer_generator.src.Model
 @"using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace transformer_generator.src.Model
+namespace m_transformer.src.Model
 {
     /// <summary>
     /// Clase que almacena la información sobre cada paso definido en el lenguaje M.
@@ -457,9 +456,9 @@ namespace transformer_generator.src.Model
         /// </summary>
         static readonly public string MetadataDAO =
 @"using System.Text.Json;
-using transformer_generator.src.Model;
+using m_transformer.src.Model;
 
-namespace transformer_generator.src.Utils.MetadataDAO
+namespace m_transformer.src.Utils.MetadataDAO
 {
     /// <summary>
     /// Clase encargada de la persistencia de los metadatos.
@@ -523,9 +522,9 @@ namespace transformer_generator.src.Utils.MetadataDAO
         /// Servicio de gestión de tablas, con la implementación de los métodos que clonan el comportamiento de las instrucciones del lenguaje M.
         /// </summary>
         static readonly public string TableManagment =
-@"using transformer_generator.src.Model;
+@"using m_transformer.src.Model;
 
-namespace test_proyect_c_sharp.src.Services.TableManagment
+namespace m_transformer.src.Services.TableManagment
 {
     /// <summary>
     /// Clase encargada de gestionar las operaciones sobre tablas.
@@ -670,9 +669,9 @@ namespace test_proyect_c_sharp.src.Services.TableManagment
         /// Programa principal, ejecuta las instrucciones iniciales.
         /// </summary>
         static readonly public string Program =
-@"using transformer_generator.src.Model;
-using transformer_generator.src.Utils.MetadataDAO;
-using test_proyect_c_sharp.src.Services.TableManagment;
+@"using m_transformer.src.Model;
+using m_transformer.src.Utils.MetadataDAO;
+using m_transformer.src.Services.TableManagment;
 
 {Instructions}";
 
@@ -685,7 +684,7 @@ using test_proyect_c_sharp.src.Services.TableManagment;
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
-    <RootNamespace>test_proyect_c_sharp</RootNamespace>
+    <RootNamespace>m_transformer</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -703,7 +702,7 @@ using test_proyect_c_sharp.src.Services.TableManagment;
         /// </summary>
         static readonly public string Slnx =
 @"<Solution>
-  <Project Path=""test-proyect-c-sharp.csproj"" />
+  <Project Path=""m-transformer.csproj"" />
 </Solution>
 ";
     }
