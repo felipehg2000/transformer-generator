@@ -65,8 +65,8 @@ namespace transformer_generator.src.Utils.Generator
 
                 // Crea el programa principal del proyecto y los ficheros de proyecto.
                 File.WriteAllText(Path.Combine(base_path, "Program.cs"), program);
-                File.WriteAllText(Path.Combine(base_path, "test-proyect-c-sharp.csproj"), CSharp.Csproj);
-                File.WriteAllText(Path.Combine(base_path, "test-proyect-c-sharp.slnx"), CSharp.Slnx);
+                File.WriteAllText(Path.Combine(base_path, "m-transformer.csproj"), CSharp.Csproj);
+                File.WriteAllText(Path.Combine(base_path, "m-transformer.slnx"), CSharp.Slnx);
 
                 // Crea el fichero de metadatos
                 MetadataDAO.MetadataDAO.SaveFile(base_path, _metadata);
