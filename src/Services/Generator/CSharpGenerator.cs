@@ -100,7 +100,8 @@ namespace transformer_generator.src.Utils.Generator
             expression = expression.Replace("each", "").Trim();
             expression = TransformRowAccess(expression);
 
-            return $"List<Column> {param_step.Name} = TableManagment.AddColumn({param_step.Input}, \n" +
+            return $"// AddColumn order \n" +
+                $"List<Column> {param_step.Name} = TableManagment.AddColumn({param_step.Input}, \n" +
                 $"\t\t\"{column_name}\", \n" +
                 $"\t\trow => \"{expression}\");\n";
         }
@@ -129,7 +130,8 @@ namespace transformer_generator.src.Utils.Generator
         /// <returns>Orden de lectura de metadatos.</returns>
         private string GenerateReadMetadata(Step param_step)
         {
-            return $"Metadata metadata = MetadataDAO.ReadFile(\"{_metadata.Configuration.OutputPathMetadata.Replace("\\", "\\\\")}\");\n" +
+            return $"// ReadMetadata order \n" +
+                $"Metadata metadata = MetadataDAO.ReadFile(\"{_metadata.Configuration.OutputPathMetadata.Replace("\\", "\\\\")}\");\n" +
                 $"List<Column> {param_step.Input} = metadata.Source.Columns;\n";
         }
 
@@ -147,7 +149,8 @@ namespace transformer_generator.src.Utils.Generator
                 checked_columns[Array.IndexOf(columns, column)] = $"\"{CheckColumnName(column)}\"";
             }
 
-            return $"List<Column> {param_step.Name} = TableManagment.RemoveColumns({param_step.Input},\n" +
+            return $"// RemoveColumns order \n" +
+                $"List<Column> {param_step.Name} = TableManagment.RemoveColumns({param_step.Input},\n" +
                 $"\tnew List<string> {{ {string.Join(", ", checked_columns)} }});\n";
         }
 
@@ -165,7 +168,8 @@ namespace transformer_generator.src.Utils.Generator
                 checked_columns[Array.IndexOf(columns, column)] = $"\"{CheckColumnName(column)}\"";
             }
 
-            return $"List<Column> {param_step.Name} = TableManagment.SelectColumns({param_step.Input},\n" +
+            return $"// SelectColumns order \n" +
+                $"List<Column> {param_step.Name} = TableManagment.SelectColumns({param_step.Input},\n" +
                 $"\tnew List<string> {{ {string.Join(", ", checked_columns)} }});\n";
         }
 
@@ -226,7 +230,8 @@ namespace transformer_generator.src.Utils.Generator
                     break;
             }
 
-            return $"List<Column> {param_step.Name} = TableManagment.SelectRows({param_step.Input},\n" +
+            return $"// SelectRow order \n" +
+                $"List<Column> {param_step.Name} = TableManagment.SelectRows({param_step.Input},\n" +
                 $"\trow => row.ContainsKey(\"{column_name}\") && {comparator_operator});\n";
         }
 
