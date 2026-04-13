@@ -673,7 +673,36 @@ namespace m_transformer.src.Services.TableManagment
 using m_transformer.src.Utils.MetadataDAO;
 using m_transformer.src.Services.TableManagment;
 
-{Instructions}";
+{Instructions}
+// PrintTable order
+if ({TableName} == null || {TableName}.Count == 0)
+{
+    Console.WriteLine(""(Tabla vacía)"");
+    return;
+}
+
+int row_count = {TableName}[0].Values.Count;
+
+// Cabeceras
+foreach (Column column in {TableName})
+{
+    Console.Write(column.Name + ""\t"");
+}
+
+Console.WriteLine();
+Console.WriteLine(""----------------------------------"");
+
+// Filas
+for (int i = 0; i < row_count; i++)
+{
+    foreach (Column column in {TableName})
+    {
+        Console.Write(column.Values[i] + ""\t"");
+    }
+    Console.WriteLine();
+}
+        
+";
 
         /// <summary>
         /// Código de proyecto para visual studio

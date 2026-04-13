@@ -41,6 +41,9 @@ namespace transformer_generator.src.Utils.Generator
                 // Genera las instrucciones. Se hace aquí para que, si da excepción no se creen directorios ni ficheros.
                 string instructions = GenerateInstructions();
                 string program = CSharp.Program.Replace("{Instructions}", instructions);
+                
+                string table_name = _query_model.Steps[_query_model.Steps.Count - 1].Name;
+                program = program.Replace("{TableName}", table_name);
 
                 // Crea la estructura de carpetas para el proyecto.
                 Directory.CreateDirectory(base_path);
