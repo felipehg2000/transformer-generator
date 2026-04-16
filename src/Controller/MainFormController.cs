@@ -98,11 +98,21 @@ namespace transformer_generator.src.Controller
         public Result ReadInputFile(DataSource.DataSourceType param_file_type, string param_delimiter = null)
         {
             // Busca ruta del archivo
-            string path = Files.GetFilePath("Seleccionar archivo CSV..",
-                "Archivos CSV (*.csv)|*.csv|Todos los archivos (*.*)|*.*");
+            string path = string.Empty;
+            if (param_file_type == DataSource.DataSourceType.CSV)
+            {
+                path = Files.GetFilePath("Seleccionar archivo CSV..",
+                    "Archivos CSV (*.csv)|*.csv|Todos los archivos (*.*)|*.*");
+            }
+            else if (param_file_type == DataSource.DataSourceType.XLSX)
+            {
+                path = Files.GetFilePath("Seleccionar archivo XLSX...",
+                    "Archivos XLSX (*.xlsx)|*.xlsx|Todos los archivos (*.*)|*.*");
+            }
+
             if (string.IsNullOrEmpty(path))
             {
-                return new Result(false,
+                return new Result(true,
                     "No se seleccionó ningún archivo.",
                     "No se seleccionó ningún archivo.");
             }

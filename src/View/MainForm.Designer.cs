@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menu = new System.Windows.Forms.MenuStrip();
             this.configuraciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cargarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +64,7 @@
             this.labelOutputType = new System.Windows.Forms.Label();
             this.labelFileType = new System.Windows.Forms.Label();
             this.panelInputTypeFile = new System.Windows.Forms.Panel();
+            this.radioButtonXLSX = new System.Windows.Forms.RadioButton();
             this.radioButtonCSV = new System.Windows.Forms.RadioButton();
             this.textBoxOutputFolderPath = new System.Windows.Forms.TextBox();
             this.labelTablePath = new System.Windows.Forms.Label();
@@ -72,7 +73,6 @@
             this.panelButtonsConfiguration = new System.Windows.Forms.Panel();
             this.buttonGenerateOutput = new System.Windows.Forms.Button();
             this.buttonBackConfiguration = new System.Windows.Forms.Button();
-            this.radioButtonXLSX = new System.Windows.Forms.RadioButton();
             this.menu.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.panelMainButtons.SuspendLayout();
@@ -123,9 +123,9 @@
             this.panelMain.Controls.Add(this.panelMainButtons);
             this.panelMain.Controls.Add(this.panelMPath);
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelMain.Location = new System.Drawing.Point(0, 24);
+            this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(709, 307);
+            this.panelMain.Size = new System.Drawing.Size(709, 331);
             this.panelMain.TabIndex = 1;
             // 
             // panelMainButtons
@@ -133,7 +133,7 @@
             this.panelMainButtons.BackColor = System.Drawing.Color.White;
             this.panelMainButtons.Controls.Add(this.buttonNext);
             this.panelMainButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelMainButtons.Location = new System.Drawing.Point(0, 269);
+            this.panelMainButtons.Location = new System.Drawing.Point(0, 293);
             this.panelMainButtons.Name = "panelMainButtons";
             this.panelMainButtons.Size = new System.Drawing.Size(709, 38);
             this.panelMainButtons.TabIndex = 0;
@@ -165,7 +165,7 @@
             this.panelMPath.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMPath.Location = new System.Drawing.Point(0, 0);
             this.panelMPath.Name = "panelMPath";
-            this.panelMPath.Size = new System.Drawing.Size(709, 307);
+            this.panelMPath.Size = new System.Drawing.Size(709, 331);
             this.panelMPath.TabIndex = 1;
             // 
             // labelPathMFile
@@ -194,26 +194,26 @@
             this.dataGridViewArgument.AllowUserToResizeRows = false;
             this.dataGridViewArgument.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewArgument.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Navy;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Navy;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewArgument.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Navy;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.Navy;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewArgument.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewArgument.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewArgument.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnArgumentName,
             this.ColumnArgumentInfo});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewArgument.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewArgument.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewArgument.Enabled = false;
             this.dataGridViewArgument.EnableHeadersVisualStyles = false;
             this.dataGridViewArgument.GridColor = System.Drawing.SystemColors.WindowFrame;
@@ -452,6 +452,17 @@
             this.panelInputTypeFile.Size = new System.Drawing.Size(505, 25);
             this.panelInputTypeFile.TabIndex = 4;
             // 
+            // radioButtonXLSX
+            // 
+            this.radioButtonXLSX.AutoSize = true;
+            this.radioButtonXLSX.Location = new System.Drawing.Point(133, 3);
+            this.radioButtonXLSX.Name = "radioButtonXLSX";
+            this.radioButtonXLSX.Size = new System.Drawing.Size(90, 17);
+            this.radioButtonXLSX.TabIndex = 1;
+            this.radioButtonXLSX.TabStop = true;
+            this.radioButtonXLSX.Text = "Fichero XLSX";
+            this.radioButtonXLSX.UseVisualStyleBackColor = true;
+            // 
             // radioButtonCSV
             // 
             this.radioButtonCSV.AutoSize = true;
@@ -530,25 +541,14 @@
             this.buttonBackConfiguration.UseVisualStyleBackColor = true;
             this.buttonBackConfiguration.Click += new System.EventHandler(this.buttonBackConfiguration_Click);
             // 
-            // radioButtonXLSX
-            // 
-            this.radioButtonXLSX.AutoSize = true;
-            this.radioButtonXLSX.Location = new System.Drawing.Point(133, 3);
-            this.radioButtonXLSX.Name = "radioButtonXLSX";
-            this.radioButtonXLSX.Size = new System.Drawing.Size(90, 17);
-            this.radioButtonXLSX.TabIndex = 1;
-            this.radioButtonXLSX.TabStop = true;
-            this.radioButtonXLSX.Text = "Fichero XLSX";
-            this.radioButtonXLSX.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(709, 331);
             this.Controls.Add(this.panelConfiguration);
-            this.Controls.Add(this.panelMain);
             this.Controls.Add(this.menu);
+            this.Controls.Add(this.panelMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MainMenuStrip = this.menu;
             this.Name = "MainForm";

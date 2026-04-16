@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows.Forms;
 using transformer_generator.src.Controller;
 using transformer_generator.src.Model;
@@ -83,7 +82,7 @@ namespace transformer_generator.src.View
             Result result = _controller.ParserDocument(path);
             if (!result.Correct)
             {
-                MessageBox.Show(result.DeveloperText, 
+                MessageBox.Show(result.UserText, 
                     "Error", 
                     MessageBoxButtons.OK, 
                     MessageBoxIcon.Error);
@@ -265,7 +264,7 @@ namespace transformer_generator.src.View
             Result result = _controller.ReadInputFile(file_type, delimiter);
             if (!result.Correct)
             {
-                MessageBox.Show(result.DeveloperText,
+                MessageBox.Show(result.UserText,
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -301,7 +300,7 @@ namespace transformer_generator.src.View
             
             if (!result.Correct)
             {
-                MessageBox.Show(result.DeveloperText,
+                MessageBox.Show(result.UserText,
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
