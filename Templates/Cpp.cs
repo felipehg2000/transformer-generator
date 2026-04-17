@@ -375,6 +375,9 @@ void TableOutput::PrintTable(const TableManagment::Table& param_table)
 }
 ";
 
+        /// <summary>
+        /// Solución legible por visual studio
+        /// </summary>
         static readonly public string MTransformerSlnx =
 @"<Solution>
   <Configurations>
@@ -385,6 +388,9 @@ void TableOutput::PrintTable(const TableManagment::Table& param_table)
 </Solution>
 ";
 
+        /// <summary>
+        /// Fichero de proyecto para visual studio
+        /// </summary>
         static readonly public string MTransformerVcxproj =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
@@ -528,6 +534,9 @@ void TableOutput::PrintTable(const TableManagment::Table& param_table)
   </ImportGroup>
 </Project>";
 
+        /// <summary>
+        /// Filtros que usa visual studio para mostrarlo al usuario.
+        /// </summary>
         static readonly public string MTransformerFilters =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""4.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
@@ -566,6 +575,9 @@ void TableOutput::PrintTable(const TableManagment::Table& param_table)
   </ItemGroup>
 </Project>";
 
+        /// <summary>
+        /// Carpetas que muestra visual studio para que el usuario vea los archivos ordenados.
+        /// </summary>
         static readonly public string MTransformerUser =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""Current"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
