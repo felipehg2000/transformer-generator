@@ -135,7 +135,6 @@ namespace transformer_generator.src.Controller
             Metadata.Source = new DataSource(param_file_type,
                 System.IO.Path.GetFileName(path),
                 path,
-                true,
                 param_delimiter,
                 ret_result.Columns);
 

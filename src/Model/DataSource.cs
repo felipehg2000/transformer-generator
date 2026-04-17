@@ -19,11 +19,6 @@ namespace transformer_generator.src.Model
         }
 
         ///<summary>
-        ///Indica si el archivo CSV tiene encabezado
-        ///</summary>
-        public bool HasHeader { get; set; }
-
-        ///<summary>
         ///Tipo de dato en lenguaje M (CSV, JSON, DB...)
         ///</summary>
         public DataSourceType Type { get; set; }
@@ -54,7 +49,6 @@ namespace transformer_generator.src.Model
         [JsonConstructor]
         public DataSource()
         {
-            HasHeader = false;
             Type = DataSourceType.None;
             Name = string.Empty;
             Path = string.Empty;
@@ -68,19 +62,16 @@ namespace transformer_generator.src.Model
         /// <param name="type">Tipo de fichero que se va a leer.</param>
         /// <param name="name">Nombre del fichero donde están los datos a leer.</param>
         /// <param name="path">Ruta del origen de los datos.</param>
-        /// <param name="hasHeader">True si el fichero de origen tiene encabezados o no.</param>
         /// <param name="delimiter">Delimitador por el que se separan los datos en los textos planos.</param>
         public DataSource(DataSourceType param_type, 
             string param_name, 
             string param_path, 
-            bool param_hasHeader, 
             string param_delimiter,
             List<Column> param_columns)
         {
             Type = param_type;
             Name = param_name;
             Path = param_path;
-            HasHeader = param_hasHeader;
             Delimiter = param_delimiter;
             Columns = param_columns;
         }
