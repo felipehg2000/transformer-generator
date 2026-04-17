@@ -98,11 +98,21 @@ namespace transformer_generator.src.Controller
         public Result ReadInputFile(DataSource.DataSourceType param_file_type, string param_delimiter = null)
         {
             // Busca ruta del archivo
-            string path = Files.GetFilePath("Seleccionar archivo CSV..",
-                "Archivos CSV (*.csv)|*.csv|Todos los archivos (*.*)|*.*");
+            string path = string.Empty;
+            if (param_file_type == DataSource.DataSourceType.CSV)
+            {
+                path = Files.GetFilePath("Seleccionar archivo CSV..",
+                    "Archivos CSV (*.csv)|*.csv|Todos los archivos (*.*)|*.*");
+            }
+            else if (param_file_type == DataSource.DataSourceType.XLSX)
+            {
+                path = Files.GetFilePath("Seleccionar archivo XLSX...",
+                    "Archivos XLSX (*.xlsx)|*.xlsx|Todos los archivos (*.*)|*.*");
+            }
+
             if (string.IsNullOrEmpty(path))
             {
-                return new Result(false,
+                return new Result(true,
                     "No se seleccionó ningún archivo.",
                     "No se seleccionó ningún archivo.");
             }
@@ -125,7 +135,6 @@ namespace transformer_generator.src.Controller
             Metadata.Source = new DataSource(param_file_type,
                 System.IO.Path.GetFileName(path),
                 path,
-                true,
                 param_delimiter,
                 ret_result.Columns);
 
@@ -143,10 +152,10 @@ namespace transformer_generator.src.Controller
                 "Archivos JSON (*.json)|*.json|Todos los archivos (*.*)|*.*");
             if (string.IsNullOrEmpty(path))
             {
-                return new MetadataResult(true,
+                return new MetadataResult(false,
                     "No se ha seleccionado ninguna ruta.",
                     "No se ha seleccionado ninguna ruta.",
-                    null);
+                    new Metadata());
             }
 
             Metadata = null;

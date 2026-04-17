@@ -40,16 +40,16 @@ namespace transformer_generator.src.Services.ManageFileTypes
         /// <summary>
         /// Detecta el tipo de dato según los valores leidos de la tabla.
         /// </summary>
-        /// <param name="values">Valores de una columna</param>
+        /// <param name="param_values">Valores de una columna</param>
         /// <returns>tipo de dato que muestra la columna</returns>
-        protected Column.DataType InferDataType(List<string> values)
+        protected Column.DataType InferDataType(List<string> param_values)
         {
             bool is_int     = true;
             bool is_double  = true;
             bool is_date    = true;
             bool is_bool    = true;
 
-            foreach (string value in values)
+            foreach (string value in param_values)
             {
                 if (string.IsNullOrWhiteSpace(value))
                     continue;

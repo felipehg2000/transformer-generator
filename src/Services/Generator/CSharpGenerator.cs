@@ -36,11 +36,17 @@ namespace transformer_generator.src.Utils.Generator
             {
                 // Inicializa variables y rellena atributos.
                 string base_path = _metadata.Configuration.OutputPathCode;
-                _metadata.Configuration.OutputPathMetadata = Path.Combine(base_path, DateTime.Now.ToString("yyyyMMddHHmmss") + ".json");
+                _metadata.Configuration.OutputPathMetadata = Path.Combine(base_path, "metadata" + ".json");
 
                 // Genera las instrucciones. Se hace aquí para que, si da excepción no se creen directorios ni ficheros.
                 string instructions = GenerateInstructions();
                 string program = CSharp.Program.Replace("{Instructions}", instructions);
+                
+                string table_name = _query_model.Steps[_query_model.Steps.Count - 1].Name;
+                program = program.Replace("{TableName}", table_name);
+
+                string csv_path = _metadata.Configuration.OutputCSVPath.Replace("\\", "\\\\") + "\\\\output.csv";
+                string show_table = CSharp.ShowTable.Replace("{Path}", csv_path);
 
                 // Crea la estructura de carpetas para el proyecto.
                 Directory.CreateDirectory(base_path);
@@ -62,6 +68,7 @@ namespace transformer_generator.src.Utils.Generator
                 // Crea los ficheros de servicios del proyecto.
                 File.WriteAllText(Path.Combine(base_path, "src", "Services", "Metadata"         , "MetadataDAO.cs"   ), CSharp.MetadataDAO); 
                 File.WriteAllText(Path.Combine(base_path, "src", "Services", "TableManagment"   , "TableManagment.cs"), CSharp.TableManagment);
+                File.WriteAllText(Path.Combine(base_path, "src", "Services", "TableManagment"   , "ShowTable.cs"     ), show_table);
 
                 // Crea el programa principal del proyecto y los ficheros de proyecto.
                 File.WriteAllText(Path.Combine(base_path, "Program.cs"), program);
@@ -69,7 +76,7 @@ namespace transformer_generator.src.Utils.Generator
                 File.WriteAllText(Path.Combine(base_path, "m-transformer.slnx"), CSharp.Slnx);
 
                 // Crea el fichero de metadatos
-                MetadataDAO.MetadataDAO.SaveFile(base_path, _metadata);
+                MetadataDAO.MetadataDAO.SaveFile(base_path, _metadata, "metadata.json");
             }
             catch (Exception exception)
             {
@@ -120,7 +127,27 @@ namespace transformer_generator.src.Utils.Generator
                 instructions.AppendLine(GenerateStep(step));
             }
 
+            if (_metadata.Configuration.OutputCSVPath == string.Empty)
+            {
+                instructions.AppendLine(GeneratePrintTable(_query_model.Steps[_query_model.Steps.Count - 1].Name));
+            }
+            else
+            {
+                instructions.AppendLine(GenerateTableOutputFile(_query_model.Steps[_query_model.Steps.Count - 1].Name));
+            }
+
             return instructions.ToString();
+        }
+
+        /// <summary>
+        /// Genera la instrucción en C# para mostrar la tabla resultante.
+        /// </summary>
+        /// <param name="param_table">Nombre de la variable donde se almacena la tabla.</param>
+        /// <returns>Orden para imprimir la tabla por consola.</returns>
+        private string GeneratePrintTable(string param_table)
+        {
+            return $"// Export table\n" +
+                $"ShowTable.PrintTable({param_table});\n";
         }
 
         /// <summary>
@@ -258,6 +285,18 @@ namespace transformer_generator.src.Utils.Generator
             }
         }
 
+        /// <summary>
+        /// Función para generar la operación de impresión de tabla por consola.
+        /// </summary>
+        /// <param name="param_table">Tabla a imprimir por pantalla.</param>
+        /// <returns>Orden para imprimir una tabla por pantalla.</returns>
+        private string GenerateTableOutputFile(string param_table)
+        {
+            return $"// PrintTable order\n" +
+                $"ShowTable.CreateCSV({param_table});\n" +
+                $"Console.Write(\"Tabla exportada en la ruta {_metadata.Configuration.OutputCSVPath.Replace("\\", "\\\\")}\\\\output.csv\");\n";
+        }
+        
         #endregion "Private Methods"
     }
 }

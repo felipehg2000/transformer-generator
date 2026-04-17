@@ -37,7 +37,7 @@ namespace transformer_generator.src.Utils.Generator
                 // Inicializa atributos y rellena configuración
                 string base_path = _metadata.Configuration.OutputPathCode;
                 string src_path = Path.Combine(base_path, "src");
-                _metadata.Configuration.OutputPathMetadata = Path.Combine(base_path, DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv");
+                _metadata.Configuration.OutputPathMetadata = Path.Combine(base_path, "metadata" + ".csv");
 
                 // Traducir instrucciones del objeto QueryModel al código C++
                 string instructions = GenerateInstructions();
@@ -47,24 +47,30 @@ namespace transformer_generator.src.Utils.Generator
                     .Replace("{Instrucciones}", instructions)
                     .Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
 
-                // Generar TableManagment
-                string table_managment_h = Cpp.TableManagmentH
-                    .Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
-                string table_managment_cpp = Cpp.TableManagmentCpp
-                    .Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
-
-                // Generar CMakeLists
-                string cmake_lists_txt = Cpp.CMakeLists;
+                // Generar ficheros src
+                string table_managment_h = Cpp.TableManagmentH.Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
+                string table_managment_cpp = Cpp.TableManagmentCpp.Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
+                string table_output_h = Cpp.TableOutputH.Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
+                string table_output_cpp = Cpp.TableOutputCpp.Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
+                string csv_path = _metadata.Configuration.OutputCSVPath.Replace("\\", "\\\\") + "\\\\output.csv";
+                table_output_cpp = table_output_cpp.Replace("{Path}", csv_path);
 
                 // Crear estructura de directorios
                 Directory.CreateDirectory(base_path);
                 Directory.CreateDirectory(src_path);
 
                 // Generar ficheros
-                File.WriteAllText(Path.Combine(base_path, "main.cpp"), main);
-                File.WriteAllText(Path.Combine(base_path, "CMakeLists.txt"), cmake_lists_txt);
+                File.WriteAllText(Path.Combine(base_path, "m-transformer.cpp"), main);
                 File.WriteAllText(Path.Combine(src_path, "TableManagment.h"), table_managment_h);
                 File.WriteAllText(Path.Combine(src_path, "TableManagment.cpp"), table_managment_cpp);
+                File.WriteAllText(Path.Combine(src_path, "TableOutput.h"), table_output_h);
+                File.WriteAllText(Path.Combine(src_path, "TableOutput.cpp"), table_output_cpp);
+
+                // Generar ficheros de proyecto
+                File.WriteAllText(Path.Combine(base_path, "m-transformer.slnx"), Cpp.MTransformerSlnx);
+                File.WriteAllText(Path.Combine(base_path, "m-transformer.vcxproj"), Cpp.MTransformerVcxproj);
+                File.WriteAllText(Path.Combine(base_path, "m-transformer.vcxproj.filters"), Cpp.MTransformerFilters);
+                File.WriteAllText(Path.Combine(base_path, "m-transformer.vcxproj.user"), Cpp.MTransformerUser);
 
                 // Genera fichero CSV que leerá el código creado
                 CSVFiles csv_file = new CSVFiles(_metadata.Configuration.OutputPathMetadata, ",");
@@ -121,7 +127,29 @@ namespace transformer_generator.src.Utils.Generator
                 instructions.AppendLine(GenerateStep(step));
             }
 
+            int step_index = _query_model.Steps.Count - 1;
+
+            if (string.IsNullOrEmpty(_metadata.Configuration.OutputCSVPath))
+            {
+                instructions.AppendLine(GeneratePrintTable(_query_model.Steps[step_index].Name));
+            }
+            else
+            {
+                instructions.AppendLine(this.GenerateTableOutputFile(_query_model.Steps[step_index].Name));
+            }
+
             return instructions.ToString();
+        }
+
+        /// <summary>
+        /// Genera la instrucción en C++ para mostrar la tabla resultante.
+        /// </summary>
+        /// <param name="param_table">Nombre de la variable donde se almacena la tabla.</param>
+        /// <returns>Orden para imprimir la tabla por consola.</returns>
+        private string GeneratePrintTable(string param_table)
+        {
+            return $"\t// PrintTable order\n" +
+                $"\tTableOutput::PrintTable({param_table});\n";
         }
 
         /// <summary>
@@ -225,7 +253,19 @@ namespace transformer_generator.src.Utils.Generator
                     throw new Exception($"Operación no soportada por el generador de código: {param_step.Operation}");
             }
         }
-        
+
+        /// <summary>
+        /// Función para generar la operación de impresión de tabla por consola.
+        /// </summary>
+        /// <param name="param_table">Tabla a imprimir por pantalla.</param>
+        /// <returns>Orden para imprimir una tabla por pantalla.</returns>
+        private string GenerateTableOutputFile(string param_table)
+        {
+            return $"\t// PrintTable order\n" +
+                $"\tTableOutput::ExportTableToCSV({param_table});\n" +
+                $"\tstd::cout << \"Tabla exportada a la ruta: {_metadata.Configuration.OutputCSVPath.Replace("\\", "\\\\")}\\\\output.csv\";";
+        }
+
         #endregion "Private Methods"
     }
 }

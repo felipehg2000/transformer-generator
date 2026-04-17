@@ -12,7 +12,8 @@
 @"#include <iostream>
 #include <string>
 
-#include ""TableManagment.h""
+#include ""src/TableManagment.h""
+#include ""src/TableOutput.h""
 
 /**
  * @brief   Función principal del programa, primera y última en ejecutarse
@@ -255,45 +256,321 @@ TableManagment::Table TableManagment::AddColumn(const TableManagment::Table &par
 ";
 
         /// <summary>
-        /// Plantilla para el make file del proyecto, con instrucciones para compilar y ejecutar el script.
+        /// Parte de encabezados de la clase encargada de imprimir tablas.
         /// </summary>
-        static readonly public string CMakeLists =
-@"# Versión mínima de CMake
-cmake_minimum_required(VERSION 3.15)
+        static readonly public string TableOutputH =
+@"#ifndef TableOutputH
+#define TableOutputH
 
-# Nombre del proyecto
-project(TableManagerApp LANGUAGES CXX)
+#include ""TableManagment.h""
 
-# Información del compilador (opcional pero útil)
-message(STATUS ""Compilador C++: ${CMAKE_CXX_COMPILER}"")
-message(STATUS ""ID del compilador: ${CMAKE_CXX_COMPILER_ID}"")
-message(STATUS ""Version del compilador: ${CMAKE_CXX_COMPILER_VERSION}"")
+/**
+ * @brief   Clase encargada de mostrar tablas. Método para mostrarla por consola y método para exportarla a CSV.
+ * @since   {Fecha}
+ * @author  Generado automáticamente
+ */
+class TableOutput
+{
+	public:
+		static void ExportTableToCSV(const TableManagment::Table& param_table);
+		static void PrintTable(const TableManagment::Table& param_table);
+};
+#endif
+";
 
-# Estándar de C++
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+        /// <summary>
+        /// Parte de implementación de la clase encargada de imprimir tablas.
+        /// </summary>
+        static readonly public string TableOutputCpp =
+@"#include <fstream>
+#include <iostream>
 
-# ============================
-# EJECUTABLE PRINCIPAL
-# ============================
+#include ""TableOutput.h""
 
-add_executable(TableManagerApp
-    main.cpp
-    src/TableManagment.cpp
-)
+/**
+ * @brief   Genera un fichero CSV y lo rellena con los datos de la tabla pasada por parámetros.
+ * @param   param_table tabla rellena a exportar.
+ * @since   {Fecha}
+ * @author  Generado automáticamente
+ */
+void TableOutput::ExportTableToCSV(const TableManagment::Table& param_table)
+{
+    // Comprobar variable
+    if (param_table.empty())
+    {
+        return;
+    }
 
-# Incluir directorios de headers
-target_include_directories(TableManagerApp PRIVATE
-    ${CMAKE_SOURCE_DIR}/src
-)
+    // Abrir fichero
+    std::ofstream file(""{Path}"");
+    if (!file.is_open())
+    {
+        return;
+    }
 
-# ====================================================
-# Instrucciones para compilar y ejecutar
-# ====================================================
+    // Cabeceras
+    std::string csv_table = """";
+    std::string line = """";
+    for (const auto& [key, value] : param_table[0])
+    {
+        if (line != """")
+        {
+            line += "","";
+        }
+        line += key;
+    }
+    csv_table = line;
 
-# cmake -S . -B build
-# cmake --build build  (Crea solo la carpeta de debug, para ejecutar cd debug y ./TableManagerApp)
-# cmake --build build --config Release (Crea solo la carpeta de release, para ejecutar cd release y ./TableManagerApp)";
+    // Valores
+    for (const auto& row : param_table)
+    {
+        line = """";
+        for (const auto& [key, value] : row)
+        {
+            if (line != """")
+            {
+                line += "","";
+            }
+            line += value;
+        }
+        csv_table += ""\n"" + line;
+    }
+
+
+    // Cargar y cerrar fichero
+    file << csv_table;
+    file.close();
+}
+
+/**
+ * @brief   Imprime los datos de una tabla para poder visualizarla por consola
+ * @param   param_table tabla rellena a imprimir por pantalla
+ * @since   {Fecha}
+ * @author  Generado automáticamente
+ */
+void TableOutput::PrintTable(const TableManagment::Table& param_table)
+{
+    if (param_table.empty())
+    {
+        std::cout << ""(Tabla limpia)\n"";
+        return;
+    }
+
+    // Imprimir cabeceras 
+    for (const auto& [key, value] : param_table[0])
+    {
+        std::cout << key << ""\t"";
+    }
+    std::cout << ""\n----------------------------------\n"";
+
+    // Imprimir filas
+    for (const auto& row : param_table)
+    {
+        for (const auto& [key, value] : row)
+        {
+            std::cout << value << ""\t"";
+        }
+        std::cout << ""\n"";
+    }
+}
+";
+
+        static readonly public string MTransformerSlnx =
+@"<Solution>
+  <Configurations>
+    <Platform Name=""x64"" />
+    <Platform Name=""x86"" />
+  </Configurations>
+  <Project Path=""m-transformer.vcxproj"" Id=""27438b77-83c4-41bf-9152-f86202c90463"" />
+</Solution>
+";
+
+        static readonly public string MTransformerVcxproj =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Project DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <ItemGroup Label=""ProjectConfigurations"">
+    <ProjectConfiguration Include=""Debug|Win32"">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include=""Release|Win32"">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include=""Debug|x64"">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include=""Release|x64"">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label=""Globals"">
+    <VCProjectVersion>18.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{27438b77-83c4-41bf-9152-f86202c90463}</ProjectGuid>
+    <RootNamespace>testproyectcpp</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project=""$(VCTargetsPath)\Microsoft.Cpp.Default.props"" />
+  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='Debug|Win32'"" Label=""Configuration"">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='Release|Win32'"" Label=""Configuration"">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='Debug|x64'"" Label=""Configuration"">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='Release|x64'"" Label=""Configuration"">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project=""$(VCTargetsPath)\Microsoft.Cpp.props"" />
+  <ImportGroup Label=""ExtensionSettings"">
+  </ImportGroup>
+  <ImportGroup Label=""Shared"">
+  </ImportGroup>
+  <ImportGroup Label=""PropertySheets"" Condition=""'$(Configuration)|$(Platform)'=='Debug|Win32'"">
+    <Import Project=""$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"" Condition=""exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"" Label=""LocalAppDataPlatform"" />
+  </ImportGroup>
+  <ImportGroup Label=""PropertySheets"" Condition=""'$(Configuration)|$(Platform)'=='Release|Win32'"">
+    <Import Project=""$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"" Condition=""exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"" Label=""LocalAppDataPlatform"" />
+  </ImportGroup>
+  <ImportGroup Label=""PropertySheets"" Condition=""'$(Configuration)|$(Platform)'=='Debug|x64'"">
+    <Import Project=""$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"" Condition=""exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"" Label=""LocalAppDataPlatform"" />
+  </ImportGroup>
+  <ImportGroup Label=""PropertySheets"" Condition=""'$(Configuration)|$(Platform)'=='Release|x64'"">
+    <Import Project=""$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"" Condition=""exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"" Label=""LocalAppDataPlatform"" />
+  </ImportGroup>
+  <PropertyGroup Label=""UserMacros"" />
+  <ItemDefinitionGroup Condition=""'$(Configuration)|$(Platform)'=='Debug|Win32'"">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=""'$(Configuration)|$(Platform)'=='Release|Win32'"">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=""'$(Configuration)|$(Platform)'=='Debug|x64'"">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=""'$(Configuration)|$(Platform)'=='Release|x64'"">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include=""src\TableManagment.cpp"" />
+    <ClCompile Include=""src\TableOutput.cpp"" />
+    <ClCompile Include=""m-transformer.cpp"" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include=""src\TableManagment.h"" />
+    <ClInclude Include=""src\TableOutput.h"" />
+  </ItemGroup>
+  <Import Project=""$(VCTargetsPath)\Microsoft.Cpp.targets"" />
+  <ImportGroup Label=""ExtensionTargets"">
+  </ImportGroup>
+</Project>";
+
+        static readonly public string MTransformerFilters =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Project ToolsVersion=""4.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <ItemGroup>
+    <Filter Include=""Archivos de origen"">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include=""Archivos de encabezado"">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include=""Archivos de recursos"">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include=""m-transformer.cpp"">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include=""src\TableManagment.cpp"">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include=""src\TableOutput.cpp"">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include=""src\TableManagment.h"">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include=""src\TableOutput.h"">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>";
+
+        static readonly public string MTransformerUser =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Project ToolsVersion=""Current"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <PropertyGroup />
+</Project>";
+
     }
 }
