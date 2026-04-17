@@ -711,7 +711,7 @@ namespace m_transformer.src.Services.TableManagment
             }
 
             // Generación del fichero
-            File.WriteAllText(""C:\\Users\\FELIPE\\Desktop\\output.csv"", text);
+            File.WriteAllText(""{Path}"", text);
         }
 
         /// <summary>

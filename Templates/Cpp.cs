@@ -302,7 +302,7 @@ void TableOutput::ExportTableToCSV(const TableManagment::Table& param_table)
     }
 
     // Abrir fichero
-    std::ofstream file(""C:\\Users\\FELIPE\\Desktop\\nuevacarpeta\\output.csv"");
+    std::ofstream file(""{Path}"");
     if (!file.is_open())
     {
         return;
