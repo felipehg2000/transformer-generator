@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.IO;
+using System.Text.Json.Serialization;
 
 namespace transformer_generator.src.Utils.Generator
 {
@@ -23,14 +25,19 @@ namespace transformer_generator.src.Utils.Generator
         public OutputType Type { get; set; }
 
         /// <summary>
-        /// Ruta del directorio donde se almacenará la información de salida.
+        /// Ruta del directorio donde se almacenará el archivo de metadatos.
         /// </summary>
-        public string OutputPath { get; set; }
+        public string OutputPathMetadata { get; set; }
 
         /// <summary>
-        /// Nombre del fichero donde se almacenará la información de salida.
+        /// Ruta del directorio donde se almacenará el código generado.
         /// </summary>
-        public string OutputFileName { get; set; }
+        public string OutputPathCode { get; set; }
+
+        /// <summary>
+        /// Ruta donde se almacenará el CSV que generá el código generado automáticamente.
+        /// </summary>
+        public string OutputCSVPath {  get; set; }
 
         /// <summary>
         /// Constructor, inicializa los atributos a vacío.
@@ -39,23 +46,26 @@ namespace transformer_generator.src.Utils.Generator
         public MainConfiguration()
         {
             Type = OutputType.None;
-            OutputPath = string.Empty;
-            OutputFileName = string.Empty;
+            OutputPathMetadata = string.Empty;
+            OutputPathCode = string.Empty;
+            OutputCSVPath = string.Empty;
         }
 
         /// <summary>
         /// Constructor, inicializa atributos.
         /// </summary>
-        /// <param name="param_type">Tipo de salida.</param>
-        /// <param name="param_output_path">Ruta del directorio de salida.</param>
-        /// <param name="param_output_file_name">Nombre del archivo de salida.</param>
+        /// <param name="param_type">Tipo de salida que se va a generar.</param>
+        /// <param name="param_output_path_code">Ruta del código de salida.</param>
+        /// <param name="param_input_m_lenguage_path">Ruta del archivo de lenguaje de entrada.</param>
         public MainConfiguration(OutputType param_type,
-            string param_output_path, 
-            string param_output_file_name)
+            string param_output_path_code,
+            string param_input_m_lenguage_path,
+            string param_output_csv_path)
         {
             Type = param_type;
-            OutputPath = param_output_path;
-            OutputFileName = param_output_file_name;
+            OutputPathMetadata = Path.Combine(param_output_path_code, DateTime.Now.ToString("yyyyMMddHHmmss") + ".json");
+            OutputPathCode = param_output_path_code;
+            OutputCSVPath = param_output_csv_path;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace transformer_generator.src.Model
 {
@@ -28,7 +29,12 @@ namespace transformer_generator.src.Model
         ///<summary>
         ///Tipo de dato en lenguaje M (Text, Number, Date...)
         ///</summary>
-        public DataType Type { get; set; }    
+        public DataType Type { get; set; } 
+        
+        /// <summary>
+        /// Valores que tiene la columna.
+        /// </summary>
+        public List<string> Values { get; set; }
 
         /// <summary>
         /// Constructor, inicializa atributos a vacío.
@@ -38,6 +44,7 @@ namespace transformer_generator.src.Model
         {
             Name = string.Empty;
             Type = DataType.None;
+            Values = new List<string>();
         }
 
         /// <summary>
@@ -45,11 +52,14 @@ namespace transformer_generator.src.Model
         /// </summary>
         /// <param name="param_name">Nombre de la columna.</param>
         /// <param name="param_type">Tipo de dato de la columna.</param>
+        /// <param name="param_values">Valores que tiene la columna.</param>
         public Column(string param_name, 
-            DataType param_type)
+            DataType param_type,
+            List<string> param_values)
         {
             Name = param_name;
             Type = param_type;
+            Values = param_values;
         }
     }
 }

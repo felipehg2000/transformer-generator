@@ -10,11 +10,11 @@ namespace transformer_generator.src.Model
     {
         public enum OperationType
         {
-            None = 0,       ///<summary>Ninguna operación asignada.</summary>
-            SelectRows,
-            AddColumn,
-            RemoveColumns,
-            SelectColumns
+            None = 0,           ///<summary>Ninguna operación asignada.</summary>
+            SelectRows,         ///<symmary>Operación de selección de fila.</symmary>
+            AddColumn,          ///<summary>Operación de adición de columna.</summary>
+            RemoveColumns,      ///<summary>Operación de eliminación de columnas.</summary>
+            SelectColumns       ///<summary>Operación de selección de columnas.</summary>
         }
 
         /// <summary>
@@ -65,6 +65,27 @@ namespace transformer_generator.src.Model
             Input = param_input;
             Operation = param_operation;
             Arguments = param_arguments;
+        }
+
+        /// <summary>
+        /// Traduce el tipo de operación a un texto descriptivo en español.
+        /// </summary>
+        /// <returns>Texto descriptivo en español que define el tipo de operación.</returns>
+        public string GetOperationTypeText()
+        {
+            switch (Operation)
+            {
+                case OperationType.SelectRows:
+                    return "Seleccionar fila.";
+                case OperationType.AddColumn:
+                    return "Añadir columna.";
+                case OperationType.RemoveColumns:
+                    return "Eliminar columna.";
+                case OperationType.SelectColumns:
+                    return "Seleccionar columna.";
+                default:
+                    return "None";
+            }
         }
     }
 }

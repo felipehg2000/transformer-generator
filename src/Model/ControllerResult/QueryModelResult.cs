@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace transformer_generator.src.Model.ControllerResult
+﻿namespace transformer_generator.src.Model.ControllerResult
 {
     /// <summary>
     /// Respuesta que retornan los métodos que deben devolver un objeto de tipo QueryModel. Para añadir información adicional.
@@ -45,7 +39,9 @@ namespace transformer_generator.src.Model.ControllerResult
             }
             else
             {
-                QueryModelInfo = new QueryModel(param_query_model.Steps, param_query_model.Output);
+                QueryModelInfo = new QueryModel(param_query_model.Steps, 
+                    param_query_model.InputFile, 
+                    param_query_model.Output);
             }
         }
     }
