@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menu = new System.Windows.Forms.MenuStrip();
             this.configuraciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cargarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +53,9 @@
             this.textBoxMPath = new System.Windows.Forms.TextBox();
             this.panelConfiguration = new System.Windows.Forms.Panel();
             this.panelCenterConfiguration = new System.Windows.Forms.Panel();
+            this.buttonPathExportEndTable = new System.Windows.Forms.Button();
+            this.textBoxOutputEndTablePath = new System.Windows.Forms.TextBox();
+            this.checkBoxExportEndTable = new System.Windows.Forms.CheckBox();
             this.textBoxDelimiter = new System.Windows.Forms.TextBox();
             this.labelDelimiterType = new System.Windows.Forms.Label();
             this.buttonViewTable = new System.Windows.Forms.Button();
@@ -73,9 +76,6 @@
             this.panelButtonsConfiguration = new System.Windows.Forms.Panel();
             this.buttonGenerateOutput = new System.Windows.Forms.Button();
             this.buttonBackConfiguration = new System.Windows.Forms.Button();
-            this.checkBoxExportEndTable = new System.Windows.Forms.CheckBox();
-            this.textBoxOutputEndTablePath = new System.Windows.Forms.TextBox();
-            this.buttonPathExportEndTable = new System.Windows.Forms.Button();
             this.menu.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.panelMainButtons.SuspendLayout();
@@ -197,26 +197,26 @@
             this.dataGridViewArgument.AllowUserToResizeRows = false;
             this.dataGridViewArgument.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewArgument.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Navy;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.Navy;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewArgument.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Navy;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.Navy;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewArgument.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewArgument.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewArgument.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnArgumentName,
             this.ColumnArgumentInfo});
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewArgument.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewArgument.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewArgument.Enabled = false;
             this.dataGridViewArgument.EnableHeadersVisualStyles = false;
             this.dataGridViewArgument.GridColor = System.Drawing.SystemColors.WindowFrame;
@@ -350,6 +350,38 @@
             this.panelCenterConfiguration.Name = "panelCenterConfiguration";
             this.panelCenterConfiguration.Size = new System.Drawing.Size(709, 269);
             this.panelCenterConfiguration.TabIndex = 5;
+            // 
+            // buttonPathExportEndTable
+            // 
+            this.buttonPathExportEndTable.Enabled = false;
+            this.buttonPathExportEndTable.Location = new System.Drawing.Point(657, 168);
+            this.buttonPathExportEndTable.Name = "buttonPathExportEndTable";
+            this.buttonPathExportEndTable.Size = new System.Drawing.Size(25, 20);
+            this.buttonPathExportEndTable.TabIndex = 15;
+            this.buttonPathExportEndTable.Text = "🔎";
+            this.buttonPathExportEndTable.UseVisualStyleBackColor = true;
+            this.buttonPathExportEndTable.Click += new System.EventHandler(this.buttonPathExportEndTable_Click);
+            // 
+            // textBoxOutputEndTablePath
+            // 
+            this.textBoxOutputEndTablePath.BackColor = System.Drawing.SystemColors.Info;
+            this.textBoxOutputEndTablePath.Enabled = false;
+            this.textBoxOutputEndTablePath.Location = new System.Drawing.Point(16, 168);
+            this.textBoxOutputEndTablePath.Name = "textBoxOutputEndTablePath";
+            this.textBoxOutputEndTablePath.ReadOnly = true;
+            this.textBoxOutputEndTablePath.Size = new System.Drawing.Size(635, 20);
+            this.textBoxOutputEndTablePath.TabIndex = 14;
+            // 
+            // checkBoxExportEndTable
+            // 
+            this.checkBoxExportEndTable.AutoSize = true;
+            this.checkBoxExportEndTable.Location = new System.Drawing.Point(16, 145);
+            this.checkBoxExportEndTable.Name = "checkBoxExportEndTable";
+            this.checkBoxExportEndTable.Size = new System.Drawing.Size(140, 17);
+            this.checkBoxExportEndTable.TabIndex = 13;
+            this.checkBoxExportEndTable.Text = "Exportar tabla resultante";
+            this.checkBoxExportEndTable.UseVisualStyleBackColor = true;
+            this.checkBoxExportEndTable.CheckStateChanged += new System.EventHandler(this.checkBoxExportEndTable_CheckStateChanged);
             // 
             // textBoxDelimiter
             // 
@@ -546,38 +578,6 @@
             this.buttonBackConfiguration.Text = "⬅ Atrás";
             this.buttonBackConfiguration.UseVisualStyleBackColor = true;
             this.buttonBackConfiguration.Click += new System.EventHandler(this.buttonBackConfiguration_Click);
-            // 
-            // checkBoxExportEndTable
-            // 
-            this.checkBoxExportEndTable.AutoSize = true;
-            this.checkBoxExportEndTable.Location = new System.Drawing.Point(16, 145);
-            this.checkBoxExportEndTable.Name = "checkBoxExportEndTable";
-            this.checkBoxExportEndTable.Size = new System.Drawing.Size(140, 17);
-            this.checkBoxExportEndTable.TabIndex = 13;
-            this.checkBoxExportEndTable.Text = "Exportar tabla resultante";
-            this.checkBoxExportEndTable.UseVisualStyleBackColor = true;
-            this.checkBoxExportEndTable.CheckStateChanged += new System.EventHandler(this.checkBoxExportEndTable_CheckStateChanged);
-            // 
-            // textBoxOutputEndTablePath
-            // 
-            this.textBoxOutputEndTablePath.BackColor = System.Drawing.SystemColors.Info;
-            this.textBoxOutputEndTablePath.Enabled = false;
-            this.textBoxOutputEndTablePath.Location = new System.Drawing.Point(16, 168);
-            this.textBoxOutputEndTablePath.Name = "textBoxOutputEndTablePath";
-            this.textBoxOutputEndTablePath.ReadOnly = true;
-            this.textBoxOutputEndTablePath.Size = new System.Drawing.Size(635, 20);
-            this.textBoxOutputEndTablePath.TabIndex = 14;
-            // 
-            // buttonPathExportEndTable
-            // 
-            this.buttonPathExportEndTable.Enabled = false;
-            this.buttonPathExportEndTable.Location = new System.Drawing.Point(657, 168);
-            this.buttonPathExportEndTable.Name = "buttonPathExportEndTable";
-            this.buttonPathExportEndTable.Size = new System.Drawing.Size(25, 20);
-            this.buttonPathExportEndTable.TabIndex = 15;
-            this.buttonPathExportEndTable.Text = "🔎";
-            this.buttonPathExportEndTable.UseVisualStyleBackColor = true;
-            this.buttonPathExportEndTable.Click += new System.EventHandler(this.buttonPathExportEndTable_Click);
             // 
             // MainForm
             // 

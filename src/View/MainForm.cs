@@ -100,7 +100,7 @@ namespace transformer_generator.src.View
         /// <param name="e">Argumentos asociados al evento.</param>
         private void buttonNext_Click(object sender, EventArgs e)
         {
-            if (_controller.Metadata.QueryModel == null)
+            if (string.IsNullOrEmpty(textBoxMPath.Text))
             {
                 MessageBox.Show("Debe seleccionar un archivo de entrada para continuar.",
                     "Error",
@@ -128,10 +128,6 @@ namespace transformer_generator.src.View
             MetadataResult result = _controller.ReadMetadataFile();
             if (!result.Correct)
             {
-                MessageBox.Show(result.UserText,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
                 return;
             }
 
@@ -198,7 +194,7 @@ namespace transformer_generator.src.View
         private void listBoxSteps_SelectedIndexChanged(object sender, EventArgs e)
         {
             textBoxName.Text = _controller.Metadata.QueryModel.Steps[listBoxSteps.SelectedIndex].Name.ToString();
-            textBoxInput.Text = _controller.Metadata.QueryModel.Steps[listBoxSteps.SelectedIndex].ToString();
+            textBoxInput.Text = _controller.Metadata.QueryModel.Steps[listBoxSteps.SelectedIndex].Input.ToString();
 
             dataGridViewArgument.Rows.Clear();
             Dictionary<string, string> tmp = _controller.Metadata.QueryModel.Steps[listBoxSteps.SelectedIndex].Arguments;
@@ -305,6 +301,47 @@ namespace transformer_generator.src.View
         /// <param name="e">Argumentos asociados al evento.</param>
         private void buttonGenerateOutput_Click(object sender, EventArgs e)
         {
+            if (!radioButtonCSV.Checked && !radioButtonXLSX.Checked)
+            {
+                MessageBox.Show("Debe seleccionar un tipo de fichero de entrada.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+            else if (radioButtonCSV.Checked && string.IsNullOrEmpty(textBoxDelimiter.Text))
+            {
+                MessageBox.Show("Si selecciona fichero CSV debe rellenar el caracter de delimitación.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+            else if (string.IsNullOrEmpty(textBoxInputFilePath.Text) || string.IsNullOrEmpty(textBoxOutputFolderPath.Text))
+            {
+                MessageBox.Show("Hay rutas no seleccionadas.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+            else if (!radioButtonCpp.Checked || !radioButtonCSharp.Checked)
+            {
+                MessageBox.Show("Debe seleccionar un tipo de lenguaje de salida",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+            else if (checkBoxExportEndTable.Checked && string.IsNullOrEmpty(textBoxOutputEndTablePath.Text))
+            {
+                MessageBox.Show("Si selecciona la opción de exportar la tabla resultante debe seleccionar el directorio donde generar el fichero",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
             FillModelWithViewData();
             Result result = _controller.GenerateOutput();
             

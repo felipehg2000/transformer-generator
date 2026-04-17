@@ -152,10 +152,10 @@ namespace transformer_generator.src.Controller
                 "Archivos JSON (*.json)|*.json|Todos los archivos (*.*)|*.*");
             if (string.IsNullOrEmpty(path))
             {
-                return new MetadataResult(true,
+                return new MetadataResult(false,
                     "No se ha seleccionado ninguna ruta.",
                     "No se ha seleccionado ninguna ruta.",
-                    null);
+                    new Metadata());
             }
 
             Metadata = null;
