@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menu = new System.Windows.Forms.MenuStrip();
             this.configuraciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cargarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,6 +73,9 @@
             this.panelButtonsConfiguration = new System.Windows.Forms.Panel();
             this.buttonGenerateOutput = new System.Windows.Forms.Button();
             this.buttonBackConfiguration = new System.Windows.Forms.Button();
+            this.checkBoxExportEndTable = new System.Windows.Forms.CheckBox();
+            this.textBoxOutputEndTablePath = new System.Windows.Forms.TextBox();
+            this.buttonPathExportEndTable = new System.Windows.Forms.Button();
             this.menu.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.panelMainButtons.SuspendLayout();
@@ -194,26 +197,26 @@
             this.dataGridViewArgument.AllowUserToResizeRows = false;
             this.dataGridViewArgument.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewArgument.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Navy;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.Navy;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewArgument.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Navy;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.Navy;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewArgument.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridViewArgument.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewArgument.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnArgumentName,
             this.ColumnArgumentInfo});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewArgument.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewArgument.DefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridViewArgument.Enabled = false;
             this.dataGridViewArgument.EnableHeadersVisualStyles = false;
             this.dataGridViewArgument.GridColor = System.Drawing.SystemColors.WindowFrame;
@@ -326,6 +329,9 @@
             // 
             // panelCenterConfiguration
             // 
+            this.panelCenterConfiguration.Controls.Add(this.buttonPathExportEndTable);
+            this.panelCenterConfiguration.Controls.Add(this.textBoxOutputEndTablePath);
+            this.panelCenterConfiguration.Controls.Add(this.checkBoxExportEndTable);
             this.panelCenterConfiguration.Controls.Add(this.textBoxDelimiter);
             this.panelCenterConfiguration.Controls.Add(this.labelDelimiterType);
             this.panelCenterConfiguration.Controls.Add(this.buttonViewTable);
@@ -347,7 +353,7 @@
             // 
             // textBoxDelimiter
             // 
-            this.textBoxDelimiter.Location = new System.Drawing.Point(630, 40);
+            this.textBoxDelimiter.Location = new System.Drawing.Point(627, 29);
             this.textBoxDelimiter.Name = "textBoxDelimiter";
             this.textBoxDelimiter.Size = new System.Drawing.Size(21, 20);
             this.textBoxDelimiter.TabIndex = 12;
@@ -357,7 +363,7 @@
             // labelDelimiterType
             // 
             this.labelDelimiterType.AutoSize = true;
-            this.labelDelimiterType.Location = new System.Drawing.Point(565, 42);
+            this.labelDelimiterType.Location = new System.Drawing.Point(562, 31);
             this.labelDelimiterType.Name = "labelDelimiterType";
             this.labelDelimiterType.Size = new System.Drawing.Size(59, 13);
             this.labelDelimiterType.TabIndex = 11;
@@ -376,7 +382,7 @@
             // 
             // buttonFindOutputFolderPath
             // 
-            this.buttonFindOutputFolderPath.Location = new System.Drawing.Point(657, 146);
+            this.buttonFindOutputFolderPath.Location = new System.Drawing.Point(657, 119);
             this.buttonFindOutputFolderPath.Name = "buttonFindOutputFolderPath";
             this.buttonFindOutputFolderPath.Size = new System.Drawing.Size(25, 20);
             this.buttonFindOutputFolderPath.TabIndex = 9;
@@ -386,7 +392,7 @@
             // 
             // buttonFindInputFilePath
             // 
-            this.buttonFindInputFilePath.Location = new System.Drawing.Point(657, 100);
+            this.buttonFindInputFilePath.Location = new System.Drawing.Point(657, 73);
             this.buttonFindInputFilePath.Name = "buttonFindInputFilePath";
             this.buttonFindInputFilePath.Size = new System.Drawing.Size(25, 20);
             this.buttonFindInputFilePath.TabIndex = 8;
@@ -398,7 +404,7 @@
             // 
             this.panelOutputFileType.Controls.Add(this.radioButtonCSharp);
             this.panelOutputFileType.Controls.Add(this.radioButtonCpp);
-            this.panelOutputFileType.Location = new System.Drawing.Point(16, 199);
+            this.panelOutputFileType.Location = new System.Drawing.Point(16, 207);
             this.panelOutputFileType.Name = "panelOutputFileType";
             this.panelOutputFileType.Size = new System.Drawing.Size(635, 26);
             this.panelOutputFileType.TabIndex = 7;
@@ -428,7 +434,7 @@
             // labelOutputType
             // 
             this.labelOutputType.AutoSize = true;
-            this.labelOutputType.Location = new System.Drawing.Point(16, 183);
+            this.labelOutputType.Location = new System.Drawing.Point(16, 191);
             this.labelOutputType.Name = "labelOutputType";
             this.labelOutputType.Size = new System.Drawing.Size(96, 13);
             this.labelOutputType.TabIndex = 6;
@@ -437,7 +443,7 @@
             // labelFileType
             // 
             this.labelFileType.AutoSize = true;
-            this.labelFileType.Location = new System.Drawing.Point(16, 21);
+            this.labelFileType.Location = new System.Drawing.Point(13, 10);
             this.labelFileType.Name = "labelFileType";
             this.labelFileType.Size = new System.Drawing.Size(105, 13);
             this.labelFileType.TabIndex = 5;
@@ -447,7 +453,7 @@
             // 
             this.panelInputTypeFile.Controls.Add(this.radioButtonXLSX);
             this.panelInputTypeFile.Controls.Add(this.radioButtonCSV);
-            this.panelInputTypeFile.Location = new System.Drawing.Point(19, 37);
+            this.panelInputTypeFile.Location = new System.Drawing.Point(16, 26);
             this.panelInputTypeFile.Name = "panelInputTypeFile";
             this.panelInputTypeFile.Size = new System.Drawing.Size(505, 25);
             this.panelInputTypeFile.TabIndex = 4;
@@ -479,7 +485,7 @@
             // 
             this.textBoxOutputFolderPath.BackColor = System.Drawing.SystemColors.Info;
             this.textBoxOutputFolderPath.Enabled = false;
-            this.textBoxOutputFolderPath.Location = new System.Drawing.Point(16, 146);
+            this.textBoxOutputFolderPath.Location = new System.Drawing.Point(16, 119);
             this.textBoxOutputFolderPath.Name = "textBoxOutputFolderPath";
             this.textBoxOutputFolderPath.Size = new System.Drawing.Size(635, 20);
             this.textBoxOutputFolderPath.TabIndex = 3;
@@ -487,7 +493,7 @@
             // labelTablePath
             // 
             this.labelTablePath.AutoSize = true;
-            this.labelTablePath.Location = new System.Drawing.Point(16, 83);
+            this.labelTablePath.Location = new System.Drawing.Point(16, 56);
             this.labelTablePath.Name = "labelTablePath";
             this.labelTablePath.Size = new System.Drawing.Size(108, 13);
             this.labelTablePath.TabIndex = 0;
@@ -496,7 +502,7 @@
             // labelEndFolder
             // 
             this.labelEndFolder.AutoSize = true;
-            this.labelEndFolder.Location = new System.Drawing.Point(16, 130);
+            this.labelEndFolder.Location = new System.Drawing.Point(16, 103);
             this.labelEndFolder.Name = "labelEndFolder";
             this.labelEndFolder.Size = new System.Drawing.Size(104, 13);
             this.labelEndFolder.TabIndex = 1;
@@ -506,7 +512,7 @@
             // 
             this.textBoxInputFilePath.BackColor = System.Drawing.SystemColors.Info;
             this.textBoxInputFilePath.Enabled = false;
-            this.textBoxInputFilePath.Location = new System.Drawing.Point(16, 100);
+            this.textBoxInputFilePath.Location = new System.Drawing.Point(16, 73);
             this.textBoxInputFilePath.Name = "textBoxInputFilePath";
             this.textBoxInputFilePath.Size = new System.Drawing.Size(635, 20);
             this.textBoxInputFilePath.TabIndex = 2;
@@ -540,6 +546,38 @@
             this.buttonBackConfiguration.Text = "⬅ Atrás";
             this.buttonBackConfiguration.UseVisualStyleBackColor = true;
             this.buttonBackConfiguration.Click += new System.EventHandler(this.buttonBackConfiguration_Click);
+            // 
+            // checkBoxExportEndTable
+            // 
+            this.checkBoxExportEndTable.AutoSize = true;
+            this.checkBoxExportEndTable.Location = new System.Drawing.Point(16, 145);
+            this.checkBoxExportEndTable.Name = "checkBoxExportEndTable";
+            this.checkBoxExportEndTable.Size = new System.Drawing.Size(140, 17);
+            this.checkBoxExportEndTable.TabIndex = 13;
+            this.checkBoxExportEndTable.Text = "Exportar tabla resultante";
+            this.checkBoxExportEndTable.UseVisualStyleBackColor = true;
+            this.checkBoxExportEndTable.CheckStateChanged += new System.EventHandler(this.checkBoxExportEndTable_CheckStateChanged);
+            // 
+            // textBoxOutputEndTablePath
+            // 
+            this.textBoxOutputEndTablePath.BackColor = System.Drawing.SystemColors.Info;
+            this.textBoxOutputEndTablePath.Enabled = false;
+            this.textBoxOutputEndTablePath.Location = new System.Drawing.Point(16, 168);
+            this.textBoxOutputEndTablePath.Name = "textBoxOutputEndTablePath";
+            this.textBoxOutputEndTablePath.ReadOnly = true;
+            this.textBoxOutputEndTablePath.Size = new System.Drawing.Size(635, 20);
+            this.textBoxOutputEndTablePath.TabIndex = 14;
+            // 
+            // buttonPathExportEndTable
+            // 
+            this.buttonPathExportEndTable.Enabled = false;
+            this.buttonPathExportEndTable.Location = new System.Drawing.Point(657, 168);
+            this.buttonPathExportEndTable.Name = "buttonPathExportEndTable";
+            this.buttonPathExportEndTable.Size = new System.Drawing.Size(25, 20);
+            this.buttonPathExportEndTable.TabIndex = 15;
+            this.buttonPathExportEndTable.Text = "🔎";
+            this.buttonPathExportEndTable.UseVisualStyleBackColor = true;
+            this.buttonPathExportEndTable.Click += new System.EventHandler(this.buttonPathExportEndTable_Click);
             // 
             // MainForm
             // 
@@ -618,5 +656,8 @@
         private System.Windows.Forms.TextBox textBoxDelimiter;
         private System.Windows.Forms.Button buttonGenerateOutput;
         private System.Windows.Forms.RadioButton radioButtonXLSX;
+        private System.Windows.Forms.Button buttonPathExportEndTable;
+        private System.Windows.Forms.TextBox textBoxOutputEndTablePath;
+        private System.Windows.Forms.CheckBox checkBoxExportEndTable;
     }
 }

@@ -315,6 +315,38 @@ namespace transformer_generator.src.View
         }
 
         /// <summary>
+        /// Busca el directorio en el que almacenar el fichero CSV de salida.
+        /// </summary>
+        /// <param name="sender">Componente que lanza el evento.</param>
+        /// <param name="e">Argumentos asociados al evento.</param>
+        private void buttonPathExportEndTable_Click(object sender, EventArgs e)
+        {
+            string path = Folder.GetFolderPath("Destino del CSV resultante de la operación...");
+            if (!string.IsNullOrEmpty(path))
+            {
+                textBoxOutputEndTablePath.Text = path;
+            }
+        }
+
+        /// <summary>
+        /// Gestiona si está activo o no el botón de selección de ruta y el textBox de la ruta.
+        /// </summary>
+        /// <param name="sender">Componente que lanza el evento.</param>
+        /// <param name="e">Argumentos asociados al evento.</param>
+        private void checkBoxExportEndTable_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (checkBoxExportEndTable.Checked)
+            {
+                buttonPathExportEndTable.Enabled = true;
+            }
+            else
+            {
+                buttonPathExportEndTable.Enabled = false;
+                textBoxOutputEndTablePath.Text = string.Empty;
+            }
+        }
+
+        /// <summary>
         /// Muestra u oculta el campo de texto para introducir el delimitador.
         /// </summary>
         /// <param name="sender">Componente que lanza el evento.</param>
@@ -376,6 +408,7 @@ namespace transformer_generator.src.View
             _controller.Metadata.Source.Delimiter = textBoxDelimiter.Text;
             _controller.Metadata.Source.Path = textBoxInputFilePath.Text;
             _controller.Metadata.Configuration.OutputPathCode = textBoxOutputFolderPath.Text;
+            _controller.Metadata.Configuration.OutputCSVPath = textBoxOutputEndTablePath.Text;
             if (radioButtonCSV.Checked)
             {
                 _controller.Metadata.Source.Type = DataSource.DataSourceType.CSV;
@@ -396,5 +429,6 @@ namespace transformer_generator.src.View
         }
 
         #endregion "Private Methods"
+        
     }
 }
