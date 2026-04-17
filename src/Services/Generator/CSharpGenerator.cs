@@ -65,6 +65,7 @@ namespace transformer_generator.src.Utils.Generator
                 // Crea los ficheros de servicios del proyecto.
                 File.WriteAllText(Path.Combine(base_path, "src", "Services", "Metadata"         , "MetadataDAO.cs"   ), CSharp.MetadataDAO); 
                 File.WriteAllText(Path.Combine(base_path, "src", "Services", "TableManagment"   , "TableManagment.cs"), CSharp.TableManagment);
+                File.WriteAllText(Path.Combine(base_path, "src", "Services", "TableManagment"   , "ShowTable.cs"     ), CSharp.ShowTable);
 
                 // Crea el programa principal del proyecto y los ficheros de proyecto.
                 File.WriteAllText(Path.Combine(base_path, "Program.cs"), program);
@@ -123,7 +124,22 @@ namespace transformer_generator.src.Utils.Generator
                 instructions.AppendLine(GenerateStep(step));
             }
 
+            instructions.AppendLine(GeneratePrintTable(_query_model.Steps[_query_model.Steps.Count - 1].Name));
+
+            instructions.AppendLine(GenerateTableOutputFile(_query_model.Steps[_query_model.Steps.Count - 1].Name));
+
             return instructions.ToString();
+        }
+
+        /// <summary>
+        /// Genera la instrucción en C# para mostrar la tabla resultante.
+        /// </summary>
+        /// <param name="param_table">Nombre de la variable donde se almacena la tabla.</param>
+        /// <returns>Orden para imprimir la tabla por consola.</returns>
+        private string GeneratePrintTable(string param_table)
+        {
+            return $"// Export table\n" +
+                $"ShowTable.PrintTable({param_table});\n";
         }
 
         /// <summary>
@@ -261,6 +277,17 @@ namespace transformer_generator.src.Utils.Generator
             }
         }
 
+        /// <summary>
+        /// Función para generar la operación de impresión de tabla por consola.
+        /// </summary>
+        /// <param name="param_table">Tabla a imprimir por pantalla.</param>
+        /// <returns>Orden para imprimir una tabla por pantalla.</returns>
+        private string GenerateTableOutputFile(string param_table)
+        {
+            return $"// PrintTable order\n" +
+                $"ShowTable.CreateCSV({param_table});\n";
+        }
+        
         #endregion "Private Methods"
     }
 }

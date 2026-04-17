@@ -666,6 +666,93 @@ namespace m_transformer.src.Services.TableManagment
 }";
 
         /// <summary>
+        /// Servicio de impresión y expotación de tablas.
+        /// </summary>
+        static readonly public string ShowTable =
+@"using m_transformer.src.Model;
+
+namespace m_transformer.src.Services.TableManagment
+{
+    internal class ShowTable
+    {
+        /// <summary>
+        /// Genera un fichero CSV con la información de la tabla pasada por parámetros.
+        /// </summary>
+        /// <param name=""param_table"">Tabla a exportar a un fichero CSV.</param>
+        static public void CreateCSV(List<Column> param_table)
+        {
+            // Variable de generación
+            string text = string.Empty;
+
+            // Cabeceras
+            foreach (Column column in param_table)
+            {
+                if (!string.IsNullOrEmpty(text))
+                {
+                    text += "","";
+                }
+                text += column.Name;
+            }
+
+            // Valores
+            int row_count = param_table[0].Values.Count;
+            for (int row_index = 0; row_index < row_count; row_index++)
+            {
+                string line = string.Empty;
+                foreach (Column column in param_table)
+                {
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        line += "","";
+                    }
+                    line += column.Values[row_index];
+                }
+                text += ""\n"" + line;
+            }
+
+            // Generación del fichero
+            File.WriteAllText(""C:\\Users\\FELIPE\\Desktop\\output.csv"", text);
+        }
+
+        /// <summary>
+        /// Imprime la tabla en consola de forma tabular.
+        /// </summary>
+        /// <param name=""param_table"">Tabla a imprimir.</param>
+        static public void PrintTable(List<Column> param_table)
+        {
+            if (param_table == null || param_table.Count == 0)
+            {
+                Console.WriteLine(""(Tabla vacía)"");
+                return;
+            }
+
+            int row_count = param_table[0].Values.Count;
+
+            // Cabeceras
+            foreach (Column column in param_table)
+            {
+                Console.Write(column.Name + ""\t"");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine(""----------------------------------"");
+
+            // Filas
+            for (int i = 0; i < row_count; i++)
+            {
+                foreach (Column column in param_table)
+                {
+                    Console.Write(column.Values[i] + ""\t"");
+                }
+                Console.WriteLine();
+            }
+        }
+
+    }
+}
+";
+
+        /// <summary>
         /// Programa principal, ejecuta las instrucciones iniciales.
         /// </summary>
         static readonly public string Program =
@@ -673,35 +760,7 @@ namespace m_transformer.src.Services.TableManagment
 using m_transformer.src.Utils.MetadataDAO;
 using m_transformer.src.Services.TableManagment;
 
-{Instructions}
-// PrintTable order
-if ({TableName} == null || {TableName}.Count == 0)
-{
-    Console.WriteLine(""(Tabla vacía)"");
-    return;
-}
-
-int row_count = {TableName}[0].Values.Count;
-
-// Cabeceras
-foreach (Column column in {TableName})
-{
-    Console.Write(column.Name + ""\t"");
-}
-
-Console.WriteLine();
-Console.WriteLine(""----------------------------------"");
-
-// Filas
-for (int i = 0; i < row_count; i++)
-{
-    foreach (Column column in {TableName})
-    {
-        Console.Write(column.Values[i] + ""\t"");
-    }
-    Console.WriteLine();
-}
-        
+{Instructions}    
 ";
 
         /// <summary>

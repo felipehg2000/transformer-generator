@@ -245,11 +245,17 @@ namespace transformer_generator.src.Utils.Generator
             }
         }
         
+        /// <summary>
+        /// Función para generar la operación de impresión de tabla por consola.
+        /// </summary>
+        /// <param name="param_table">Tabla a imprimir por pantalla.</param>
+        /// <returns>Orden para imprimir una tabla por pantalla.</returns>
         private string GenerateTableOutputFile(string param_table)
         {
             return $"\t// PrintTable order\n" +
                 $"\tTableOutput::ExportTableToCSV({param_table});\n";
         }
+
         #endregion "Private Methods"
     }
 }
