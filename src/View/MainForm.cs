@@ -139,6 +139,16 @@ namespace transformer_generator.src.View
             textBoxDelimiter.Text = _controller.Metadata.Source.Delimiter;
             textBoxInputFilePath.Text = _controller.Metadata.Source.Path;
             textBoxOutputFolderPath.Text = _controller.Metadata.Configuration.OutputPathCode;
+            textBoxOutputEndTablePath.Text = _controller.Metadata.Configuration.OutputCSVPath;
+            if (string.IsNullOrEmpty(textBoxOutputEndTablePath.Text))
+            {
+                checkBoxExportEndTable.Checked = false;
+            }
+            else
+            {
+                checkBoxExportEndTable.Checked = true;
+            }
+
             FillListBoxSteps(_controller.Metadata.QueryModel.Steps);
 
             if (_controller.Metadata.Source.Type == DataSource.DataSourceType.CSV)
