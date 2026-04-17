@@ -47,24 +47,28 @@ namespace transformer_generator.src.Utils.Generator
                     .Replace("{Instrucciones}", instructions)
                     .Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
 
-                // Generar TableManagment
-                string table_managment_h = Cpp.TableManagmentH
-                    .Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
-                string table_managment_cpp = Cpp.TableManagmentCpp
-                    .Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
-
-                // Generar CMakeLists
-                string cmake_lists_txt = Cpp.CMakeLists;
+                // Generar ficheros src
+                string table_managment_h = Cpp.TableManagmentH.Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
+                string table_managment_cpp = Cpp.TableManagmentCpp.Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
+                string table_output_h = Cpp.TableOutputH.Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
+                string table_output_cpp = Cpp.TableOutputCpp.Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
 
                 // Crear estructura de directorios
                 Directory.CreateDirectory(base_path);
                 Directory.CreateDirectory(src_path);
 
                 // Generar ficheros
-                File.WriteAllText(Path.Combine(base_path, "main.cpp"), main);
-                File.WriteAllText(Path.Combine(base_path, "CMakeLists.txt"), cmake_lists_txt);
+                File.WriteAllText(Path.Combine(base_path, "m-transformer.cpp"), main);
                 File.WriteAllText(Path.Combine(src_path, "TableManagment.h"), table_managment_h);
                 File.WriteAllText(Path.Combine(src_path, "TableManagment.cpp"), table_managment_cpp);
+                File.WriteAllText(Path.Combine(src_path, "TableOutput.h"), table_output_h);
+                File.WriteAllText(Path.Combine(src_path, "TableOutput.cpp"), table_output_cpp);
+
+                // Generar ficheros de proyecto
+                File.WriteAllText(Path.Combine(base_path, "m-transformer.slnx"), Cpp.MTransformerSlnx);
+                File.WriteAllText(Path.Combine(base_path, "m-transformer.vcxproj"), Cpp.MTransformerVcxproj);
+                File.WriteAllText(Path.Combine(base_path, "m-transformer.vcxproj.filters"), Cpp.MTransformerFilters);
+                File.WriteAllText(Path.Combine(base_path, "m-transformer.vcxproj.user"), Cpp.MTransformerUser);
 
                 // Genera fichero CSV que leerá el código creado
                 CSVFiles csv_file = new CSVFiles(_metadata.Configuration.OutputPathMetadata, ",");
@@ -123,6 +127,7 @@ namespace transformer_generator.src.Utils.Generator
 
             int step_index = _query_model.Steps.Count - 1;
             instructions.AppendLine(GeneratePrintTable(_query_model.Steps[step_index].Name));
+            instructions.AppendLine(this.GenerateTableOutputFile(_query_model.Steps[step_index].Name));
 
             return instructions.ToString();
         }
@@ -135,7 +140,7 @@ namespace transformer_generator.src.Utils.Generator
         private string GeneratePrintTable(string param_table)
         {
             return $"\t// PrintTable order\n" +
-                $"\tPrintTable({param_table});\n";
+                $"\tTableOutput::PrintTable({param_table});\n";
         }
 
         /// <summary>
@@ -240,6 +245,11 @@ namespace transformer_generator.src.Utils.Generator
             }
         }
         
+        private string GenerateTableOutputFile(string param_table)
+        {
+            return $"\t// PrintTable order\n" +
+                $"\tTableOutput::ExportTableToCSV({param_table});\n";
+        }
         #endregion "Private Methods"
     }
 }

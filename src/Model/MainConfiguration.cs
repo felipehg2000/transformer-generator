@@ -35,6 +35,11 @@ namespace transformer_generator.src.Utils.Generator
         public string OutputPathCode { get; set; }
 
         /// <summary>
+        /// Ruta donde se almacenará el CSV que generá el código generado automáticamente.
+        /// </summary>
+        public string OutputCSVPath {  get; set; }
+
+        /// <summary>
         /// Constructor, inicializa los atributos a vacío.
         /// </summary>
         [JsonConstructor]
@@ -43,6 +48,7 @@ namespace transformer_generator.src.Utils.Generator
             Type = OutputType.None;
             OutputPathMetadata = string.Empty;
             OutputPathCode = string.Empty;
+            OutputCSVPath = string.Empty;
         }
 
         /// <summary>
@@ -53,11 +59,13 @@ namespace transformer_generator.src.Utils.Generator
         /// <param name="param_input_m_lenguage_path">Ruta del archivo de lenguaje de entrada.</param>
         public MainConfiguration(OutputType param_type,
             string param_output_path_code,
-            string param_input_m_lenguage_path)
+            string param_input_m_lenguage_path,
+            string param_output_csv_path)
         {
             Type = param_type;
             OutputPathMetadata = Path.Combine(param_output_path_code, DateTime.Now.ToString("yyyyMMddHHmmss") + ".json");
             OutputPathCode = param_output_path_code;
+            OutputCSVPath = param_output_csv_path;
         }
     }
 }
