@@ -4,10 +4,9 @@ using transformer_generator.src.Model;
 using transformer_generator.src.Model.ControllerResult;
 using transformer_generator.src.Services.FileExplorer;
 using transformer_generator.src.Services.ManageFileTypes;
-using transformer_generator.src.Utils.FileExplorer;
-using transformer_generator.src.Utils.Generator;
-using transformer_generator.src.Utils.MetadataDAO;
-using transformer_generator.src.Utils.Parsing;
+using transformer_generator.src.Services.Generator;
+using transformer_generator.src.Services.MetadataDAO;
+using transformer_generator.src.Services.Parsing;
 
 namespace transformer_generator.src.Controller
 {

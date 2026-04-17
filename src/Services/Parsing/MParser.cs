@@ -4,7 +4,7 @@ using System.Linq;
 using transformer_generator.src.Model;
 using transformer_generator.src.Model.ControllerResult;
 
-namespace transformer_generator.src.Utils.Parsing
+namespace transformer_generator.src.Services.Parsing
 {
     /// <summary>
     /// Clase encargada de analizar sintácticamente el lenguaje M y traducirlo a información manejable por la aplicación, en este caso, un objeto QueryModel.

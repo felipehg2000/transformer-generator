@@ -1,7 +1,7 @@
 ﻿using System;
 using transformer_generator.src.Model;
 
-namespace transformer_generator.src.Utils.Generator
+namespace transformer_generator.src.Services.Generator
 {
     /// <summary>
     /// Método de fábrica para generar el generador de código según el tipo de salida.

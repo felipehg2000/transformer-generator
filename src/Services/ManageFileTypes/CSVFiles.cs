@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using transformer_generator.src.Model;
 using transformer_generator.src.Model.ControllerResult;
-using transformer_generator.src.Utils.FileExplorer;
+using transformer_generator.src.Services.FileExplorer;
 
 namespace transformer_generator.src.Services.ManageFileTypes
 {

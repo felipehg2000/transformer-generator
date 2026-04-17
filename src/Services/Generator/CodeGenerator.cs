@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using transformer_generator.src.Model;
 
-namespace transformer_generator.src.Utils.Generator
+namespace transformer_generator.src.Services.Generator
 {
     /// <summary>
     /// Clase base para los generadores de código. Da la capacidad de usar el polimorfismo para un patrón de fábrica.

@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using transformer_generator.src.Utils.Generator;
+using transformer_generator.src.Services.Generator;
 
 namespace transformer_generator.src.Model
 {

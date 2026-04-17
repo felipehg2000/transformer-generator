@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text.Json.Serialization;
 
-namespace transformer_generator.src.Utils.Generator
+namespace transformer_generator.src.Services.Generator
 {
     /// <summary>
     /// Almacena los datos que puede configurar el usuario en la herramienta.

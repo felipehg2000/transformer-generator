@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using transformer_generator.src.Model;
 using transformer_generator.Templates;
 
-namespace transformer_generator.src.Utils.Generator
+namespace transformer_generator.src.Services.Generator
 {
     /// <summary>
     /// Clase para generar un proyecto c# compilable con visual studio.

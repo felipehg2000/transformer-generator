@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.Json;
 using transformer_generator.src.Model;
 
-namespace transformer_generator.src.Utils.MetadataDAO
+namespace transformer_generator.src.Services.MetadataDAO
 {
     /// <summary>
     /// Clase encargada de la persistencia de los metadatos.

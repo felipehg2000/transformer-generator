@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace transformer_generator.src.Utils.FileExplorer
+namespace transformer_generator.src.Services.FileExplorer
 {
     /// <summary>
     /// Clase para gestionar diferentes operaciones relacionadas con archivos.
