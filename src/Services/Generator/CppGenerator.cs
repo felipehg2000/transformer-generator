@@ -37,7 +37,7 @@ namespace transformer_generator.src.Utils.Generator
                 // Inicializa atributos y rellena configuración
                 string base_path = _metadata.Configuration.OutputPathCode;
                 string src_path = Path.Combine(base_path, "src");
-                _metadata.Configuration.OutputPathMetadata = Path.Combine(base_path, DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv");
+                _metadata.Configuration.OutputPathMetadata = Path.Combine(base_path, "metadata" + ".csv");
 
                 // Traducir instrucciones del objeto QueryModel al código C++
                 string instructions = GenerateInstructions();
@@ -52,6 +52,8 @@ namespace transformer_generator.src.Utils.Generator
                 string table_managment_cpp = Cpp.TableManagmentCpp.Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
                 string table_output_h = Cpp.TableOutputH.Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
                 string table_output_cpp = Cpp.TableOutputCpp.Replace("{Fecha}", DateTime.Now.ToString("yyyy-MM-dd"));
+                string csv_path = _metadata.Configuration.OutputCSVPath.Replace("\\", "\\\\") + "\\\\output.csv";
+                table_output_cpp = table_output_cpp.Replace("{Path}", csv_path);
 
                 // Crear estructura de directorios
                 Directory.CreateDirectory(base_path);
@@ -126,8 +128,15 @@ namespace transformer_generator.src.Utils.Generator
             }
 
             int step_index = _query_model.Steps.Count - 1;
-            instructions.AppendLine(GeneratePrintTable(_query_model.Steps[step_index].Name));
-            instructions.AppendLine(this.GenerateTableOutputFile(_query_model.Steps[step_index].Name));
+
+            if (string.IsNullOrEmpty(_metadata.Configuration.OutputCSVPath))
+            {
+                instructions.AppendLine(GeneratePrintTable(_query_model.Steps[step_index].Name));
+            }
+            else
+            {
+                instructions.AppendLine(this.GenerateTableOutputFile(_query_model.Steps[step_index].Name));
+            }
 
             return instructions.ToString();
         }
@@ -244,7 +253,7 @@ namespace transformer_generator.src.Utils.Generator
                     throw new Exception($"Operación no soportada por el generador de código: {param_step.Operation}");
             }
         }
-        
+
         /// <summary>
         /// Función para generar la operación de impresión de tabla por consola.
         /// </summary>
@@ -253,7 +262,8 @@ namespace transformer_generator.src.Utils.Generator
         private string GenerateTableOutputFile(string param_table)
         {
             return $"\t// PrintTable order\n" +
-                $"\tTableOutput::ExportTableToCSV({param_table});\n";
+                $"\tTableOutput::ExportTableToCSV({param_table});\n" +
+                $"\tstd::cout << \"Tabla exportada a la ruta: {_metadata.Configuration.OutputCSVPath.Replace("\\", "\\\\")}\\\\output.csv\";";
         }
 
         #endregion "Private Methods"
