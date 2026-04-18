@@ -104,6 +104,8 @@ namespace transformer_generator.src.Services.Generator
             string column_name = param_step.Arguments["columnName"];
             string expression = param_step.Arguments["expression"];
 
+            AgregarColumna(column_name);
+
             expression = expression.Replace("each", "").Trim();
             expression = TransformRowAccess(expression);
 

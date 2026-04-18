@@ -324,7 +324,7 @@ namespace transformer_generator.src.View
                     MessageBoxIcon.Error);
                 return;
             }
-            else if (!radioButtonCpp.Checked || !radioButtonCSharp.Checked)
+            else if (!radioButtonCpp.Checked && !radioButtonCSharp.Checked)
             {
                 MessageBox.Show("Debe seleccionar un tipo de lenguaje de salida",
                     "Error",

@@ -20,6 +20,11 @@ namespace transformer_generator.src.Services.Generator
         protected QueryModel _query_model;
 
         /// <summary>
+        /// Columnas agregadas con la orden de AddColumn
+        /// </summary>
+        protected List<Column> _new_columns;
+
+        /// <summary>
         /// Constructor, inicializa atributos.
         /// </summary>
         /// <param name="param_metadata">Metadatos para crear una salida controlada.</param>
@@ -29,6 +34,7 @@ namespace transformer_generator.src.Services.Generator
         {
             _metadata = param_metadata;
             _query_model = param_query_model;
+            _new_columns = new List<Column>();
         }
 
         /// <summary>
@@ -73,6 +79,14 @@ namespace transformer_generator.src.Services.Generator
                 }
             }
 
+            foreach (Column column in _new_columns)
+            {
+                if (param_column_name == column.Name)
+                {
+                    return column.Name;
+                }
+            }
+
             throw new Exception($"Nombre de columna no encontrado: {param_column_name}");
         }
 
@@ -98,7 +112,26 @@ namespace transformer_generator.src.Services.Generator
                 }
             }
 
+            foreach (Column column in _new_columns)
+            {
+                if (param_column_name == column.Name)
+                {
+                    return Column.DataType.Text;
+                }
+            }
+
             throw new Exception($"Nombre de columna no encontrado: {param_column_name}");
+        }
+
+        /// <summary>
+        /// Agrega columnas nuevas por la orden AddColumn
+        /// </summary>
+        /// <param name="param_column_name">Nombre de la nueva columna</param>
+        protected void AgregarColumna(string param_column_name)
+        {
+            Column new_column = new Column();
+            new_column.Name = param_column_name;
+            _new_columns.Add(new_column);
         }
 
         #endregion "Protected methods"
